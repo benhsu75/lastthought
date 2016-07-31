@@ -36,7 +36,7 @@ def messenger_callback(request):
 
     # Print request for debugging
     print("------RECEIVED MESSAGE (BODY BELOW)------")
-    print(request.body)
+    print(request.body[0])
     print("------DONE PRINTING------------")
 
     # Loop through multiple entries
