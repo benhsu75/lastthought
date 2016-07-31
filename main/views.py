@@ -19,16 +19,15 @@ def test(request):
     template = loader.get_template('main/test.html')
     return HttpResponse(template.render(context))
 
+def index(request):
+    context = RequestContext(request, {
+        'page_visits': len(TestModel.objects.all())
+    })
+    template = loader.get_template('main/index.html')
+    return HttpResponse(template.render(context))
 
 @csrf_exempt
 def messenger_callback(request):
-    print("!!!!!!!TESTING")
-    verify_token = 'userdatagraph_verify_token'
-
-    # Verify from FB
-    # if('hub.verify_token' not in request.GET or request.GET['hub.verify_token'] != verify_token):
-    #     print("REQUEST NOT FROM FB - EXITING")
-    #     return HttpResponse("This endpoint only receives from Facebook Messenger", status=500)
 
     # Challenge verification
     if('hub.challenge' in request.GET):
@@ -36,9 +35,34 @@ def messenger_callback(request):
         return HttpResponse(request.GET['hub.challenge'])
 
     # Print request for debugging
-    print("------RECEIVED MESSAGE------")
-    print(request.GET)
-    print(request.POST)
+    print("------RECEIVED MESSAGE (BODY BELOW)------")
     print(request.body)
+    print("------DONE PRINTING------------")
+
+    # Loop through multiple entries
+    entry_list = request.body['entry']
+    for entry in entry_list:
+        page_id = entry['id']
+        timestamp = entry['time']
+
+        messaging_list = entry['messaging']
+
+        for messaging in messaging_list:
+
+            fbid = messaging['sender']['id']
+            print("# FBID: " + fbid)
+
+            # Handle different webhooks times
+            if 'message' in messaging:
+                # Message received webhook
+                print('# Message received webhook')
+            elif 'optin' in messaging:
+                # Plugin authentication webhook
+                print('# Authentication')
+            elif 'postback' in messaging:
+                # Postback webhook
+                print('# Postback webhook')
+            
     
+
     return HttpResponse(status=200)
