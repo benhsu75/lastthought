@@ -24,3 +24,6 @@ def test2(request):
     })
     template = loader.get_template('main/test.html')
     return HttpResponse(template.render(context))
+
+def messenger_callback(request):
+    return HttpResponse(status=200)
