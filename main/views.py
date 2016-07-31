@@ -26,9 +26,9 @@ def messenger_callback(request):
     verify_token = 'userdatagraph_verify_token'
 
     # Verify from FB
-    if('hub.verify_token' not in request.GET or request.GET['hub.verify_token'] != verify_token):
-        print("REQUEST NOT FROM FB - EXITING")
-        return HttpResponse("This endpoint only receives from Facebook Messenger", status=500)
+    # if('hub.verify_token' not in request.GET or request.GET['hub.verify_token'] != verify_token):
+    #     print("REQUEST NOT FROM FB - EXITING")
+    #     return HttpResponse("This endpoint only receives from Facebook Messenger", status=500)
 
     # Challenge verification
     if('hub.challenge' in request.GET):
