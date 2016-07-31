@@ -62,10 +62,15 @@ def messenger_callback(request):
             elif 'optin' in messaging:
                 # Plugin authentication webhook
                 print('# Authentication')
+                handle_authentication(fbid)
+
             elif 'postback' in messaging:
                 # Postback webhook
                 print('# Postback webhook')
-            
-    
 
     return HttpResponse(status=200)
+
+# Sends the user our initial message 
+def handle_authentication(fbid):
+    x = 1
+
