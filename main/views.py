@@ -20,6 +20,7 @@ def test(request):
 
 
 def messenger_callback(request):
+    print("!!!!!!!TESTING")
     verify_token = 'userdatagraph_verify_token'
 
     if('hub.verify_token' not in request.GET or request.GET['hub.verify_token'] != verify_token):
@@ -29,4 +30,4 @@ def messenger_callback(request):
     print("------RECEIVED MESSAGE------")
     print(request)
 
-    return HttpResponse(challenge)
+    return HttpResponse(status=200)
