@@ -106,6 +106,8 @@ def send_basic_text_message(fbid, text):
     }
     url_to_post = SEND_BASE_URL + PAGE_ACCESS_TOKEN
     r = requests.post(url_to_post, data = send_payload)
+    print(r.text)
+    print("SENT MESSAGE")
 
 def delete_users(request):
     all_users = User.objects.all()
