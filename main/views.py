@@ -111,7 +111,7 @@ def delete_users(request):
     all_users = User.objects.all()
     num_of_users_deleted = len(all_users)
     for u in all_users:
-        u.remove()
+        u.delete()
 
     return HttpResponse("Deleted " + str(num_of_users_deleted) + " users!")
 
