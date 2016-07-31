@@ -18,12 +18,6 @@ def test(request):
     template = loader.get_template('main/test.html')
     return HttpResponse(template.render(context))
 
-def test2(request):
-    context = RequestContext(request, {
-        'page_visits': 10000000    
-    })
-    template = loader.get_template('main/test.html')
-    return HttpResponse(template.render(context))
 
 def messenger_callback(request):
     return HttpResponse(status=200)
