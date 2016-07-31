@@ -5,6 +5,7 @@ from main.models import TestModel
 
 import random
 from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 def test(request):
@@ -34,13 +35,15 @@ def messenger_callback(request):
         print("REQUEST IS A CHALLENGE")
         return HttpResponse(request.GET['hub.challenge'])
 
+    body = json.loads(request.body)
+
     # Print request for debugging
     print("------RECEIVED MESSAGE (BODY BELOW)------")
-    print(request.body[0])
+    print(body)
     print("------DONE PRINTING------------")
 
     # Loop through multiple entries
-    entry_list = request.body['entry']
+    entry_list = body['entry']
     for entry in entry_list:
         page_id = entry['id']
         timestamp = entry['time']
