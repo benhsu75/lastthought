@@ -25,4 +25,6 @@ def messenger_callback(request):
     if(request.GET['hub.verify_token'] == verify_token):
         challenge = request.GET['hub.challenge']
 
+    print("RESPONDING")
+
     return HttpResponse(challenge)
