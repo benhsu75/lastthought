@@ -79,7 +79,7 @@ def handle_authentication(fbid):
 
         return # Do nothing
     except User.DoesNotExist:
-        continue
+        pass
 
     # If user doesn't exist, create user
     u = User(fbid=fbid, state=0)
