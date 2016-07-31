@@ -4,6 +4,7 @@ from django.template import RequestContext, loader
 from main.models import TestModel
 
 import random
+from django.views.decorators.csrf import csrf_exempt
 
 
 def test(request):
@@ -19,6 +20,7 @@ def test(request):
     return HttpResponse(template.render(context))
 
 
+@csrf_exempt
 def messenger_callback(request):
     print("!!!!!!!TESTING")
     verify_token = 'userdatagraph_verify_token'
