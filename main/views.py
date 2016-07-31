@@ -39,5 +39,6 @@ def messenger_callback(request):
     print("------RECEIVED MESSAGE------")
     print(request.GET)
     print(request.POST)
-
+    print(request.body)
+    
     return HttpResponse(status=200)
