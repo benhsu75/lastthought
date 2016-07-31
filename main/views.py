@@ -27,10 +27,12 @@ def messenger_callback(request):
 
     # Verify from FB
     if('hub.verify_token' not in request.GET or request.GET['hub.verify_token'] != verify_token):
+        print("REQUEST NOT FROM FB - EXITING")
         return HttpResponse("This endpoint only receives from Facebook Messenger", status=500)
 
     # Challenge verification
     if('hub.challenge' in request.GET):
+        print("REQUEST IS A CHALLENGE")
         return HttpResponse(request.GET['hub.challenge'])
 
     # Print request for debugging
