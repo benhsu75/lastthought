@@ -20,4 +20,6 @@ def test(request):
 
 
 def messenger_callback(request):
+    print(request.POST)
+    print(request.GET)
     return HttpResponse(status=200)
