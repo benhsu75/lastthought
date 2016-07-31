@@ -111,6 +111,6 @@ def delete_users(request):
     for u in all_users:
         u.remove()
 
-    return HttpResponse("Deleted " + num_of_users_deleted + " users!")
+    return HttpResponse("Deleted " + str(num_of_users_deleted) + " users!")
 
 
