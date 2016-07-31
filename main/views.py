@@ -75,6 +75,7 @@ def messenger_callback(request):
 def handle_authentication(fbid):
     # Check if user exists, if it does, do nothing
     try:
+        print("# USER EXISTS")
         existing_user = User.objects.get(fbid=fbid)
 
         return # Do nothing
@@ -82,6 +83,7 @@ def handle_authentication(fbid):
         pass
 
     # If user doesn't exist, create user
+    print("# CREATING USER")
     u = User(fbid=fbid, state=0)
     u.save()
 
