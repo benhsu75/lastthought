@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Goal</title>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+</head>
+<body>
+
+    <div>
+        <h3>Create Goal</h3>
+        <input type="hidden" name="fbid" value="{{ fbid }}"><br>
+        <input type="text" name="goal-name" placeholder="Name e.g. Gym"><br>
+        <input type="text" name="goal-send-text" placeholder="Send Text e.g. Did you go to the gym today?"><br>
+        <input type="text" name="goal-send-time" placeholder="UTC Hour e.g. 15 (3 PM)"><br>
+        <input type="radio" name="goal-response-type" value="0" checked>Numeric<br>
+        <input type="radio" name="goal-response-type" value="1">Binary<br>
+        <input type="radio" name="goal-response-type" value="2">Text<br><br>
+
+
+        <button class="create-goal-button">Create!</button>
+
+    </div>
+    <span class="response-message"></span>
+    <script type="text/javascript">
+        $('.create-goal-button').click(function() {
+            var fbid = $('input[name=fbid]').val();
+            var name = $('input[name=goal-name]').val();
+            var sendText = $('input[name=goal-send-text]').val();
+            var sendTime = $('input[name=goal-send-time]').val();
+            var responseType = $('input[name=goal-response-type]:checked').val();
+
+            console.log(fbid);
+            console.log(name);
+            console.log(sendText);
+            console.log(sendTime);
+            console.log(responseType);
+
+            var payload = {
+                'name': name,
+                'send_text': sendText,
+                'send_time_utc': sendTime,
+                'response_type': responseType,
+                'csrfmiddlewaretoken': '{{csrf_token}}'
+            };
+
+            // POST to /goals
+            $.ajax({
+                method: 'POST',
+                url: '/goals/' + fbid + '/',
+                data: payload,
+                success: function() {
+                    // Clear fields
+                    $('input[name=fbid]').val("");
+                    $('input[name=goal-name]').val("");
+                    $('input[name=goal-send-text]').val("");
+                    $('input[name=goal-send-time]').val("");
+                    $('input[name=goal-response-type]:checked').val("");
+
+                    $('.response-message').text("Success! Goal added!");
+                }
+            })
+
+        });
+    </script>
+</body>
+</html>

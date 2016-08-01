@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from django.contrib import admin
-from main import views
+from main import views, goal_views
 
 urlpatterns = [
     url(r'^$', views.index),
@@ -9,4 +9,10 @@ urlpatterns = [
 
     # Temp helper methods
     url(r'^delete_users/', views.delete_users),
+
+    # Goal endpoints
+    url(r'^goals/(?P<fbid>\d+)/$', goal_views.goals),
+    url(r'^goals/(?P<fbid>\d+)/list', goal_views.list),
+    url(r'^goals/(?P<fbid>\d+)/add', goal_views.add),
+
 ]

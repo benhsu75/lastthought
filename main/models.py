@@ -20,7 +20,7 @@ class Goal(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    fbid = models.CharField(max_length=200)
+    user = models.ForeignKey(User)
     name = models.CharField(max_length=200)
     send_text = models.CharField(max_length=200)
     send_time_utc = models.SmallIntegerField(null=True)
