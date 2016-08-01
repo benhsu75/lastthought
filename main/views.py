@@ -113,6 +113,19 @@ def handle_message_received(fbid, text):
     state = current_user.state
     if(state == 0):
         create_first_goal_flow(current_user, fbid, text)
+    elif(text == 'goals')
+        send_button_message(fbid, "Manage your goals:", [
+                {
+                    'type': 'web_url',
+                    'url': 'http://userdatagraph.herokuapp.com/goals/'+fbid+'/list',
+                    'title': 'See Goals'    
+                },
+                {
+                    'type': 'web_url',
+                    'url': 'http://userdatagraph.herokuapp.com/goals/'+fbid+'/add',
+                    'title': 'Add Goal'    
+                }
+            ])
     else:
         send_basic_text_message(fbid, "Sorry, I don't understand.")
 
