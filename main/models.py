@@ -9,6 +9,8 @@ class User(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     fbid = models.CharField(max_length=200)
     state = models.SmallIntegerField()
+    full_name = models.CharField(max_length=200)
+    first_name = models.CharField(max_length=200)
 
 # User States
 # 0 - Onboarding after initial messages
