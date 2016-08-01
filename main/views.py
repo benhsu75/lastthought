@@ -139,7 +139,7 @@ def create_first_goal_flow(current_user, fbid, text):
         send_button_message(fbid, learn_more_message, [
                 {
                     'type': 'web_url',
-                    'url': 'http://userdatagraph.herokuapp.com/learn_more'
+                    'url': 'http://userdatagraph.herokuapp.com/learn_more',
                     'title': 'Learn More'    
                 }
             ])
