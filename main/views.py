@@ -113,7 +113,9 @@ def handle_message_received(fbid, text):
     state = current_user.state
     if(state == 0):
         create_first_goal_flow(current_user, fbid, text)
+        print('STATE=0')
     elif(text == 'goals')
+        print("IN GOALS")
         send_button_message(fbid, "Manage your goals:", [
                 {
                     'type': 'web_url',
