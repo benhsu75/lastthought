@@ -14,7 +14,6 @@ def test(request):
     t = TestModel(random_number = random.randint(0,10))
     t.save()
 
-
     context = RequestContext(request, {
         'page_visits': len(TestModel.objects.all())
     })
@@ -54,12 +53,15 @@ def messenger_callback(request):
         for messaging in messaging_list:
 
             fbid = messaging['sender']['id']
+            message_text = messaging['message']['text']
+
             print("# FBID: " + fbid)
 
             # Handle different webhooks times
             if 'message' in messaging:
                 # Message received webhook
                 print('# Message received webhook')
+                handle_message_received(fbid, message_text)
             elif 'optin' in messaging:
                 # Plugin authentication webhook
                 print('# Authentication')
@@ -68,6 +70,7 @@ def messenger_callback(request):
             elif 'postback' in messaging:
                 # Postback webhook
                 print('# Postback webhook')
+                handle_postback(fbid)
 
     return HttpResponse(status=200)
 
@@ -76,7 +79,7 @@ def handle_authentication(fbid):
     # Check if user exists, if it does, do nothing
     try:
         print("# USER EXISTS")
-        existing_user = User.objects.get(fbid=fbid)
+        current_user = User.objects.get(fbid=fbid)
 
         return # Do nothing
     except User.DoesNotExist:
@@ -88,8 +91,35 @@ def handle_authentication(fbid):
     u.save()
 
     # Send user intro message
-    intro_message = "Hey! Nice to meet you. I'm Jarvis, here to help be your better self."
+    intro_message = "Hey! Nice to meet you. I'm Jarvis, here to help be your better self :)."
+    second_message = "To begin, what's your full name?"
     send_basic_text_message(fbid, intro_message)
+    send_basic_text_message(fbid, second_message)
+
+def handle_message_received(fbid, text):
+    try:
+        current_user = User.objects.get(fbid=fbid)
+    except User.DoesNotExist:
+        send_basic_text_message(fbid,"Something went wrong :(")
+        return
+
+    state = current_user.state
+    if(state == 0):
+        create_first_goal_flow(current_user, fbid, text)
+    else:
+        send_basic_text_message(fbid, "Sorry, I don't understand.")
+
+def handle_postback(fbid):
+    return
+
+def create_first_goal_flow(current_user, fbid, text):
+    if(current_user.state == 0):
+        # Parse out name from text
+        print("NAME: " + text)
+    else:
+        return
+
+
 
 # Helper method to send message
 PAGE_ACCESS_TOKEN = 'EAADqZAUs43F4BAM24X91sSlhAIU7UHnLyO6eNp1rGMmQncyKsz34AgvlqfJKRnn3rNfYLMZBZA914L5z9MO8G6AVsGhljVUZCZAYtNfjbt0NKX7FFHDjOPvBcsiZCNzpSdNVZC4lCsbHVevRIhzKxFzjFzAMDVWq4W8KNuqtxXt8QZDZD'

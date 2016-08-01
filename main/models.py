@@ -11,7 +11,7 @@ class User(models.Model):
     state = models.SmallIntegerField()
 
 # User States
-# 0 - Onboarding after initial message
+# 0 - Onboarding after initial messages
 
 class Goal(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
