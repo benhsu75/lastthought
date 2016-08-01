@@ -27,6 +27,13 @@ def index(request):
     template = loader.get_template('main/index.html')
     return HttpResponse(template.render(context))
 
+def learn_more(request):
+    context = RequestContext(request, {
+        'page_visits': len(TestModel.objects.all())
+    })
+    template = loader.get_template('main/learn_more.html')
+    return HttpResponse(template.render(context))
+
 @csrf_exempt
 def messenger_callback(request):
 
@@ -115,7 +122,32 @@ def handle_postback(fbid):
 def create_first_goal_flow(current_user, fbid, text):
     if(current_user.state == 0):
         # Parse out name from text
-        print("NAME: " + text)
+        name = text
+        name_tokenized = name.split(' ')
+        first_name = name_tokenized[0]
+
+        # Update user
+        current_user.full_name = name
+        current_user.first_name = first_name
+        current_user.save()
+
+        # Send message about how to use
+        how_to_use_message = "Nice to meet you, " + first_name + "! I'm here to make it easier for you to do things. I can help you track reminders, set goals, and more."
+        send_basic_text_message(fbid, how_to_use_message)
+
+        learn_more_message = "To learn more about everything I can help you with, click Learn More!"
+        send_button_message(fbid, learn_more_message, [
+                {
+                    'type': 'web_url',
+                    'url': 'http://userdatagraph.herokuapp.com/learn_more'
+                    'title': 'Learn More'    
+                }
+            ])
+
+        # Update user state
+        current_user.state = 1
+        current_user.save()
+
     else:
         return
 
@@ -137,7 +169,26 @@ def send_basic_text_message(fbid, text):
     url_to_post = SEND_BASE_URL + PAGE_ACCESS_TOKEN
     r = requests.post(url_to_post, json=send_payload)
     print(r.text)
-    print("SENT MESSAGE")
+
+def send_button_message(fbid, text, button_list):
+    send_payload = {
+        'recipient': {
+            'id': fbid
+        },
+        'message': {
+            'attachment': {
+                'type': 'template',
+                'payload': {
+                    'template_type': 'button',
+                    'text': text,
+                    'buttons': button_list
+                }
+            }
+        }
+    }
+    url_to_post = SEND_BASE_URL + PAGE_ACCESS_TOKEN
+    r = requests.post(url_to_post, json=send_payload)
+    print(r.text)
 
 def delete_users(request):
     all_users = User.objects.all()

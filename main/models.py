@@ -14,6 +14,7 @@ class User(models.Model):
 
 # User States
 # 0 - Onboarding after initial messages
+# 1 - Neutral state
 
 class Goal(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
