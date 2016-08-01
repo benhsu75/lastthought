@@ -4,6 +4,11 @@
     <title>List Goals</title>
 </head>
 <body>
-
+    {{ goals }}
+    {% for goal in goals %}
+    <div>
+        {{ goal.fields.name }}
+    </div>
+    {% endfor %}
 </body>
 </html>

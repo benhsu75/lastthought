@@ -56,8 +56,13 @@ def list(request, fbid):
     if not user_exists(fbid):
         return HttpResponse(status=404)
 
+    current_user = User.objects.get(fbid=fbid)
+    goals_list = Goal.objects.filter(user=current_user)
+    serialized_response = serializers.serialize('json', goals_list)
+
     context = RequestContext(request, {
-        'fbid': fbid
+        'fbid': fbid,
+        'goals': serialized_response
     })
     template = loader.get_template('goals/list.html')
     return HttpResponse(template.render(context))
