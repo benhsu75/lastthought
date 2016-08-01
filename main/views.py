@@ -53,7 +53,6 @@ def messenger_callback(request):
         for messaging in messaging_list:
 
             fbid = messaging['sender']['id']
-            message_text = messaging['message']['text']
 
             print("# FBID: " + fbid)
 
@@ -61,6 +60,7 @@ def messenger_callback(request):
             if 'message' in messaging:
                 # Message received webhook
                 print('# Message received webhook')
+                message_text = messaging['message']['text']
                 handle_message_received(fbid, message_text)
             elif 'optin' in messaging:
                 # Plugin authentication webhook
