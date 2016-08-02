@@ -4,6 +4,11 @@
     <title>Add Goal</title>
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <!-- Timepicker -->
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.timepicker.css' %}">
+    <script src="{% static 'js/jquery.timepicker.min.js' %}"></script>
 </head>
 <body>
 
@@ -23,11 +28,26 @@
     </div>
     <span class="response-message"></span>
     <script type="text/javascript">
+        // Load timepicker
+        $('input[name=goal-send-time]').timepicker({
+            step: 60
+        });
+
+
+        // Event listeners
         $('.create-goal-button').click(function() {
             var fbid = $('input[name=fbid]').val();
             var name = $('input[name=goal-name]').val();
             var sendText = $('input[name=goal-send-text]').val();
-            var sendTime = $('input[name=goal-send-time]').val();
+
+            var date = $('input[name=goal-send-time]').timepicker('getTime', new Date());
+
+            if (date == null) {
+                // Form validation error
+                return;
+            }
+
+            var sendTime = date.getUTCHours();
             var responseType = $('input[name=goal-response-type]:checked').val();
 
             console.log(fbid);
