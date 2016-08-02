@@ -1,12 +1,43 @@
 from django.core.management.base import BaseCommand, CommandError
 from main.models import *
 from main import messenger_helper
+from datetime import datetime
 
 class Command(BaseCommand):
     
     def handle(self, *args, **options):
-        all_goals = Goal.objects.all()
+        # Get current UTC hour
+        current_datetime = datetime.utcnow()
+        current_utc_hour = current_datetime.hour
 
-        for g in all_goals:
-            print('SENDING')
-            print(g.name)
+        # Filter
+        all_goals_at_current_time = Goal.objects.all().filter(send_time_utc=current_utc_hour)
+
+        # Send messages
+        for g in all_goals_at_current_time:
+            user = g.user
+            fbid = user.fbid
+
+            if(g.response_type == 0): # Numeric response
+                messenger_helper.send_basic_text_message(fbid, g.send_text)
+            elif(g.response_type == 1): # Binary response
+                # Construct button_list
+                button_list = []
+                button_list.append({
+                        'type': 'postback',
+                        'title': 'Yes',
+                        'payload': '1'
+                    })
+                button_list.append({
+                        'type': 'postback',
+                        'title': 'No',
+                        'payload': '0'
+                    })
+
+                messenger_helper.send_button_message(fbid, g.send_text, button_list)
+            elif(g.response_type == 2):
+                # Text response
+                messenger_helper.send_basic_text_message(fbid, g.send_text)
+            elif(g.response_type == 3):
+                # File response
+                messenger_helper.send_basic_text_message(fbid, g.send_text)
