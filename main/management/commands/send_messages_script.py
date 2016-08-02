@@ -4,4 +4,8 @@ from main.models import *
 class Command(BaseCommand):
     
     def handle(self, *args, **options):
-        print("EXECUTING COMMAND")
+        all_goals = Goal.objects.all()
+
+        for g in all_goals:
+            print('SENDING')
+            print(g.name)
