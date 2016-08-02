@@ -14,11 +14,11 @@ def user_exists(fbid):
     except User.DoesNotExist:
         return False
 
-def goal_entry_exists(goal_entry_id):
+def goal_exists(goal_id):
     try:
-        goal_entry = GoalEntry.objects.get(id=goal_entry_id)
+        goal = Goal.objects.get(id=goal_id)
         return True
-    except GoalEntry.DoesNotExist:
+    except Goal.DoesNotExist:
         return False
 
 # REST endpoint
@@ -78,7 +78,7 @@ def list(request, fbid):
 
 # Allow users to see entries for a given goal
 def show(request, goal_id):
-    if not goal_entry_exists(goal_entry_exists):
+    if not goal_exists(goal_id):
         return HttpResponse(status=404)
 
     goal = Goal.objects.get(id=goal_id)
