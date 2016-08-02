@@ -33,12 +33,16 @@ class Goal(models.Model):
 
 class GoalEntry(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
+    sent_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     goal = models.ForeignKey(Goal)
 
     numeric_value = models.FloatField(null=True)
-    binary_value = models.BooleanField(default=False)
-    text_value = models.CharField(max_length=1000)
+    binary_value = models.SmallIntegerField(null=True) # 0 = False, 1 = True
+    text_value = models.CharField(max_length=1000, null=True)
+
+    response_collected = models.BooleanField(default=False)
+
 
 
