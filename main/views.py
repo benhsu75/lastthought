@@ -7,7 +7,7 @@ from main import messenger_helper
 import random
 from django.views.decorators.csrf import csrf_exempt
 import json
-import requests
+
 
 
 def test(request):
