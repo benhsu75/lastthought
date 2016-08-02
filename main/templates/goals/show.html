@@ -4,6 +4,16 @@
     <title>Show Goal</title>
 </head>
 <body>
-    Show Goal
+    <div>
+        <h3>{{ goal.name }}</h3>
+    </div>
+    <div>
+        {% for goal_entry in goal_entries %}
+            <div>
+                
+                {{ goal_entry. }}
+            </div>
+        {% endfor %}
+    </div>
 </body>
 </html>

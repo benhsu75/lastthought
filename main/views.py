@@ -137,7 +137,7 @@ def handle_message_received(fbid, text):
         for g in goal_list:
             button_list.append({
                     'type': 'web_url',
-                    'url': 'http://userdatagraph.herokuapp.com/goals/'+g.id+'/list',
+                    'url': 'http://userdatagraph.herokuapp.com/goals/'+str(g.id)+'/show',
                     'title': g.name
                 })
 
