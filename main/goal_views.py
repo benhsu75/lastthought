@@ -36,7 +36,7 @@ def goals(request, fbid):
 
         name = request.POST['name']
         send_text = request.POST['send_text']
-        send_time_utc = request.POST['send_time']
+        send_time_utc = request.POST['send_time_utc']
         response_type = request.POST['response_type']
 
         g = Goal(user=current_user, name=name, send_text=send_text, send_time_utc=send_time_utc, response_type=response_type)
