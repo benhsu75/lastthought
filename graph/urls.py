@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.conf.urls import url, patterns
 from django.contrib import admin
 from main import views, goal_views
 from django.conf import settings
