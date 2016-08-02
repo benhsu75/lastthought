@@ -1,8 +1,5 @@
 from django.db import models
 
-class TestModel(models.Model):
-    timestamp = models.DateTimeField(auto_now_add=True)
-    random_number = models.SmallIntegerField()
 
 class User(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)

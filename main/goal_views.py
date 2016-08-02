@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import RequestContext, loader
-from main.models import TestModel, User, Goal, GoalEntry
+from main.models import *
 
 import json
 from django.core import serializers
