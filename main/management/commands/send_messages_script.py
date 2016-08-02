@@ -18,6 +18,7 @@ class Command(BaseCommand):
             user = g.user
             fbid = user.fbid
 
+            # Message format depends on the response type
             if(g.response_type == 0): # Numeric response
                 messenger_helper.send_basic_text_message(fbid, g.send_text)
             elif(g.response_type == 1): # Binary response
@@ -41,3 +42,10 @@ class Command(BaseCommand):
             elif(g.response_type == 3):
                 # File response
                 messenger_helper.send_basic_text_message(fbid, g.send_text)
+
+            # Create GoalEntry
+            goal_entry = GoalEntry(goal=g)
+            goal_entry.save()
+
+            user.active_goal_entry = goal_entry
+            user.save()
