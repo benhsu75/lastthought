@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.contrib import admin
 from main import views, goal_views
+from django.conf import settings
 
 urlpatterns = [
     url(r'^$', views.index),
@@ -16,3 +17,8 @@ urlpatterns = [
     url(r'^goals/(?P<fbid>\d+)/add', goal_views.add),
 
 ]
+
+if not settings.DEBUG:
+    urlpatterns += patterns('',
+        (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
+    )
