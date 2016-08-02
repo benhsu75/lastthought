@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^goals/(?P<fbid>\d+)/$', goal_views.goals),
     url(r'^goals/(?P<fbid>\d+)/list', goal_views.list),
     url(r'^goals/(?P<fbid>\d+)/add', goal_views.add),
+    url(r'^goals/(?P<goal_id>\d+)/show', goal_views.show),
 
 ]
 

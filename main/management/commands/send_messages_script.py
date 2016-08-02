@@ -6,12 +6,16 @@ from datetime import datetime
 class Command(BaseCommand):
     
     def handle(self, *args, **options):
+        print("SENDING MESSAGES")
         # Get current UTC hour
         current_datetime = datetime.utcnow()
         current_utc_hour = current_datetime.hour
+        print('Current UTC: ' + str(current_utc_hour))
 
         # Filter
         all_goals_at_current_time = Goal.objects.all().filter(send_time_utc=current_utc_hour)
+
+        print(len(all_goals_at_current_time))
 
         # Send messages
         for g in all_goals_at_current_time:

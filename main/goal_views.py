@@ -14,6 +14,13 @@ def user_exists(fbid):
     except User.DoesNotExist:
         return False
 
+def goal_entry_exists(goal_entry_id):
+    try:
+        goal_entry = GoalEntry.objects.get(id=goal_entry_id)
+        return True
+    except GoalEntry.DoesNotExist:
+        return False
+
 # REST endpoint
 def goals(request, fbid):
     print('GOALS REST ENDPOINT')
@@ -52,6 +59,8 @@ def goals(request, fbid):
         return HttpResponse(status=404)
 
 # Views
+
+# List all goals for a given user
 def list(request, fbid):
     if not user_exists(fbid):
         return HttpResponse(status=404)
@@ -67,6 +76,22 @@ def list(request, fbid):
     template = loader.get_template('goals/list.html')
     return HttpResponse(template.render(context))
 
+# Allow users to see entries for a given goal
+def show(request, goal_id):
+    if not goal_entry_exists(goal_entry_exists):
+        return HttpResponse(status=404)
+
+    goal = Goal.objects.get(id=goal_id)
+    goal_entries = GoalEntry.objects.filter(goal=goal)
+
+    context = RequestContext(request, {
+        'goal': goal,
+        'goal_entries': goal_entries
+    })
+    template = loader.get_template('goals/show.html')
+    return HttpResponse(template.render(context))
+
+# Allow users to add a goal
 def add(request, fbid):
     if not user_exists(fbid):
         return HttpResponse(status=404)

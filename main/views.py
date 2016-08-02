@@ -112,6 +112,8 @@ def handle_message_received(fbid, text):
         return
 
     state = current_user.state
+    text = text.lower()
+
     if(state == 0):
         create_first_goal_flow(current_user, fbid, text)
         print('STATE=0')
@@ -129,6 +131,18 @@ def handle_message_received(fbid, text):
                     'title': 'Add Goal'    
                 }
             ])
+    elif(text == 'show me my goals'):
+        button_list = []
+        goal_list = Goal.objects.filter(user=current_user)
+        for g in goal_list:
+            button_list.append({
+                    'type': 'web_url',
+                    'url': 'http://userdatagraph.herokuapp.com/goals/'+g.id+'/list',
+                    'title': g.name
+                })
+
+        messenger_helper.send_button_message(fbid, "Your goals:", button_list)
+
     else:
         messenger_helper.send_basic_text_message(fbid, "Sorry, I don't understand.")
 
