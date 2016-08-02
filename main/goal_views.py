@@ -62,7 +62,7 @@ def list(request, fbid):
 
     context = RequestContext(request, {
         'fbid': fbid,
-        'goals': serialized_response
+        'goals': goals_list
     })
     template = loader.get_template('goals/list.html')
     return HttpResponse(template.render(context))

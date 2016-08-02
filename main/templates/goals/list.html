@@ -4,10 +4,10 @@
     <title>List Goals</title>
 </head>
 <body>
-    {{ goals }}
+    <h3>List Goals</h3>
     {% for goal in goals %}
     <div>
-        {{ goal.fields.name }}
+        <span>{{ goal.name }}</span>
     </div>
     {% endfor %}
 </body>
