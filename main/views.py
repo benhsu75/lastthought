@@ -132,17 +132,28 @@ def handle_message_received(fbid, text):
                 }
             ])
     elif(text == 'show me my goals'):
-        button_list = []
-        goal_list = Goal.objects.filter(user=current_user)
-        for g in goal_list:
-            button_list.append({
+        # button_list = []
+        # goal_list = Goal.objects.filter(user=current_user)
+        # for g in goal_list:
+        #     button_list.append({
+        #             'type': 'web_url',
+        #             'url': 'http://userdatagraph.herokuapp.com/goals/'+str(g.id)+'/show',
+        #             'title': g.name
+        #         })
+
+        # messenger_helper.send_button_message(fbid, "Your goals:", button_list)
+        messenger_helper.send_button_message(fbid, "Manage your goals:", [
+                {
                     'type': 'web_url',
-                    'url': 'http://userdatagraph.herokuapp.com/goals/'+str(g.id)+'/show',
-                    'title': g.name
-                })
-
-        messenger_helper.send_button_message(fbid, "Your goals:", button_list)
-
+                    'url': 'http://userdatagraph.herokuapp.com/goals/'+fbid+'/list',
+                    'title': 'See Goals'    
+                },
+                {
+                    'type': 'web_url',
+                    'url': 'http://userdatagraph.herokuapp.com/goals/'+fbid+'/add',
+                    'title': 'Add Goal'    
+                }
+            ])
     else:
         messenger_helper.send_basic_text_message(fbid, "Sorry, I don't understand.")
 
