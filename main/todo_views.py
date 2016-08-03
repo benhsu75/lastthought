@@ -41,6 +41,7 @@ def todo(request, todo_id):
 
     elif request.method == 'DELETE':
         todo.delete()
+        
         return HttpResponse(status=200)
     # Error 404 Not Found
     else:

@@ -57,17 +57,18 @@
             console.log(responseType);
 
             var payload = {
-                'name': name,
-                'send_text': sendText,
-                'send_time_utc': sendTime,
-                'response_type': responseType,
-                'csrfmiddlewaretoken': '{{csrf_token}}'
+                fbid: fbid,
+                name: name,
+                send_text: sendText,
+                send_time_utc: sendTime,
+                response_type: responseType,
+                csrfmiddlewaretoken: '{{csrf_token}}'
             };
 
             // POST to /goals
             $.ajax({
                 method: 'POST',
-                url: '/goals/' + fbid + '/',
+                url: '/goals/',
                 data: payload,
                 success: function() {
                     // Clear fields

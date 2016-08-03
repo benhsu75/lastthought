@@ -7,6 +7,7 @@
     <h3>List Goals</h3>
     {% for goal in goals %}
     <div>
+        <span>{{ goal.id }}</span> -
         <span>{{ goal.name }}</span> - 
         <span>{{ goal.user.full_name }}</span> - 
         <span>{{ goal.send_text }}</span> - 

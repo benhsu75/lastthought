@@ -6,7 +6,7 @@ from main.models import *
 import json
 from django.core import serializers
 
-# Helper method
+############### HELPER METHODS ################
 def user_exists(fbid):
     try:
         user = User.objects.get(fbid=fbid)
@@ -21,44 +21,63 @@ def goal_exists(goal_id):
     except Goal.DoesNotExist:
         return False
 
-# REST endpoint
-def goals(request, fbid):
-    print('GOALS REST ENDPOINT')
-    if not user_exists(fbid):
-        print("User doesn't exist")
+
+
+############# REST API ENDPOINTS #################
+
+def goals(request, goal_id):
+
+    # Get goal if it exists
+    try:
+        goal = Goal.objects.get(id=goal_id)
+        goal_entries = GoalEntry.objects.filter(goal=goal)
+
+    except Goal.DoesNotExist:
         return HttpResponse(status=404)
 
-    print("User exists!")
-    current_user = User.objects.get(fbid=fbid)
-        
     # Get list of all goals
     if request.method == 'GET':
-        goals_list = Goal.objects.filter(user=current_user)
-        serialized_response = serializers.serialize('json', goals_list)
-        return HttpResponse(serialized_response)
-
-    # Create new goal
-    elif request.method == 'POST':
-        current_user = User.objects.get(fbid=fbid)
-
-        name = request.POST['name']
-        send_text = request.POST['send_text']
-        send_time_utc = request.POST['send_time_utc']
-        response_type = request.POST['response_type']
-
-        g = Goal(user=current_user, name=name, send_text=send_text, send_time_utc=send_time_utc, response_type=response_type)
-        g.save()
-
-        return HttpResponse(status=200)
-
+        serialized_goal = serializers.serialize('json', [goal])
+        serialized_goal_entries = serializers.serialize('json', goal_entries)
+        print("RETURNING")
+        return HttpResponse(json.dumps({
+                'goal': serialized_goal,
+                'goal_entries': serialized_goal_entries
+            }))
     # Delete goal
     elif request.method == 'DELETE':
+        goal.delete()
+
         return HttpResponse(status=200)
     # Error 404 Not Found
     else:
         return HttpResponse(status=404)
 
-# Views
+def add_goal(request):
+    fbid = request.POST['fbid']
+    if user_exists(fbid):
+        current_user = User.objects.get(fbid=fbid)
+
+    # Create new goal
+    if request.method == 'POST':
+        print("ADDING GOAL")
+        name = request.POST['name']
+        send_text = request.POST['send_text']
+        send_time_utc = request.POST['send_time_utc']
+        response_type = request.POST['response_type']
+
+        goal = Goal(user=current_user, name=name, send_text=send_text, send_time_utc=send_time_utc, response_type=response_type)
+        goal.save()
+
+        return HttpResponse(status=200)
+    # Error 404 Not Found
+    else:
+        return HttpResponse(status=404)
+
+
+
+
+################# VIEWS ####################
 
 # List all goals for a given user
 def list(request, fbid):
@@ -92,7 +111,7 @@ def show(request, goal_id):
     return HttpResponse(template.render(context))
 
 # Allow users to add a goal
-def add(request, fbid):
+def add_goal_page(request, fbid):
     if not user_exists(fbid):
         return HttpResponse(status=404)
         
