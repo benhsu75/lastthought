@@ -30,16 +30,17 @@ def list(request, fbid):
     return HttpResponse(template.render(context))
 
 # REST endpoints
-def todo(request, fbid):
-    current_user = User.objects.get(fbid=fbid)
+def todo(request, todo_id):
+
+    todo = ToDoTask.objects.get(id=todo_id)
 
     # Get list of all todo's
     if request.method == 'GET':
-        todo_list = ToDoTask.objects.filter(user=current_user)
-        serialized_response = serializers.serialize('json', todo_list)
+        serialized_response = serializers.serialize('json', [todo])
         return HttpResponse(serialized_response)
 
     elif request.method == 'DELETE':
+        todo.delete()
         return HttpResponse(status=200)
     # Error 404 Not Found
     else:
