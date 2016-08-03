@@ -143,6 +143,14 @@ def handle_message_received(fbid, text):
                     'title': 'Add Goal'    
                 }
             ])
+    elif(text == 'todo'):
+        messenger_helper.send_button_message(fbid, "Your todo list:", [
+                {
+                    'type': 'web_url',
+                    'url': BASE_HEROKU_URL + '/users/'+fbid+'/todo',
+                    'title': 'To Do List'
+                }
+            ])
     else:
         messenger_helper.send_basic_text_message(fbid, "Sorry, I don't understand.")
 
