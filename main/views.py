@@ -8,8 +8,6 @@ import random
 from django.views.decorators.csrf import csrf_exempt
 import json
 
-
-
 def index(request):
     context = RequestContext(request, {
     })
@@ -91,6 +89,10 @@ def handle_authentication(fbid):
     messenger_helper.send_basic_text_message(fbid, intro_message)
     messenger_helper.send_basic_text_message(fbid, second_message)
 
+
+
+BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
+
 def handle_message_received(fbid, text):
     try:
         current_user = User.objects.get(fbid=fbid)
@@ -132,12 +134,12 @@ def handle_message_received(fbid, text):
         messenger_helper.send_button_message(fbid, "Manage your goals:", [
                 {
                     'type': 'web_url',
-                    'url': 'http://userdatagraph.herokuapp.com/goals/'+fbid+'/list',
+                    'url': BASE_HEROKU_URL + '/users/'+fbid+'/goals',
                     'title': 'See Goals'    
                 },
                 {
                     'type': 'web_url',
-                    'url': 'http://userdatagraph.herokuapp.com/goals/'+fbid+'/add',
+                    'url': BASE_HEROKU_URL + '/users/'+fbid+'/add_goal',
                     'title': 'Add Goal'    
                 }
             ])
