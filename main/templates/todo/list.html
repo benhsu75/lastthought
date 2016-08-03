@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To Do List</title>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>   
+</head>
+<body>
+    <h3>My To Do List</h3>
+    {% if todo_list|length == 0 %}
+        No tasks to do!
+    {% endif %}
+    {% for todo in todo_list %}
+        <li>
+            <span>{{ todo.text }}</span>
+        </li>
+    {% endfor %}
+    <br>
+    <div>
+        <h3>Add Task</h3>
+        <input type="text" name="todo-task">
+        <input type="hidden" name="fbid" value="{{ fbid }}">
+        <button class="add-todo-button">Submit</button>
+    </div>
+
+    <script type="text/javascript">
+        $('.add-todo-button').click(function() {
+            var taskName = $('input[name="todo-task"]').val();
+            var fbid = $('input[name="fbid"]').val();
+
+            var payload = {
+                fbid: fbid,
+                text: taskName,
+                csrfmiddlewaretoken: '{{csrf_token}}'
+            };
+
+            console.log(payload);
+
+            $.ajax({
+                method: 'POST',
+                data: payload,
+                url: '/todo/',
+                success: function(response) {
+                    console.log(response);
+                }
+            });
+
+        });
+                
+    </script>
+</body>
+</html>

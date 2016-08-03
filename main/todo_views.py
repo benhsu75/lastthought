@@ -14,8 +14,55 @@ def user_exists(fbid):
     except User.DoesNotExist:
         return False
 
-def index(request, fbid):
+# View methods
+def list(request, fbid):
     if not user_exists(fbid):
         return HttpResponse(status=404)
 
     current_user = User.objects.get(fbid=fbid)
+    todo_list = ToDoTask.objects.filter(user=current_user)
+
+    context = RequestContext(request, {
+        'todo_list': todo_list,
+        'fbid' : fbid
+    })
+    template = loader.get_template('todo/list.html')
+    return HttpResponse(template.render(context))
+
+# REST endpoints
+def todo(request, fbid):
+    current_user = User.objects.get(fbid=fbid)
+
+    # Get list of all todo's
+    if request.method == 'GET':
+        todo_list = ToDoTask.objects.filter(user=current_user)
+        serialized_response = serializers.serialize('json', todo_list)
+        return HttpResponse(serialized_response)
+
+    elif request.method == 'DELETE':
+        return HttpResponse(status=200)
+    # Error 404 Not Found
+    else:
+        return HttpResponse(status=404)
+
+def add_todo(request):
+    # Create new todo
+    if request.method == 'POST':
+        fbid = request.POST['fbid']
+        text = request.POST['text']
+        current_user = User.objects.get(fbid=fbid)
+
+        todo = ToDoTask(text=text, user=current_user)
+        todo.save()
+
+        return HttpResponse(status=200)
+    # Error 404 Not Found
+    else:
+        return HttpResponse(status=404)
+
+
+
+
+
+
+

@@ -1,6 +1,6 @@
 from django.conf.urls import url, patterns
 from django.contrib import admin
-from main import views, goal_views
+from main import views, goal_views, todo_views
 from django.conf import settings
 
 urlpatterns = [
@@ -17,7 +17,15 @@ urlpatterns = [
     url(r'^goals/(?P<fbid>\d+)/add', goal_views.add),
     url(r'^goals/(?P<goal_id>\d+)/show', goal_views.show),
 
-]
+    # Todo endpoints
+    url(r'^todo/(?P<fbid>\d+)/$', todo_views.todo),
+    url(r'^todo/$', todo_views.add_todo),
+
+    # Display endpoints
+    url(r'^users/(?P<fbid>\d+)/todo', todo_views.list),
+    url(r'^users/(?P<fbid>\d+)/goals', goal_views.list),
+]   
+
 
 if True:
     urlpatterns += patterns('',
