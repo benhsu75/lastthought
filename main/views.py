@@ -151,6 +151,16 @@ def handle_message_received(fbid, text):
                     'title': 'To Do List'
                 }
             ])
+    elif('add todo' in text):
+        # Create todo
+        todo_text = text.replace('add todo', '')
+
+        todo = ToDoTask(text=todo_text, user=current_user)
+        todo.save()
+
+        # Send message telling them that we created the todo
+        messenger_helper.send_basic_text_message(fbid,'"'+todo_text+'" added to your to do list!')
+        
     else:
         messenger_helper.send_basic_text_message(fbid, "Sorry, I don't understand.")
 
