@@ -25,8 +25,7 @@ urlpatterns = [
     url(r'^users/(?P<fbid>\d+)/add_goal', goal_views.add_goal_page),
     url(r'^goals/(?P<goal_id>\d+)/show', goal_views.show),
 
-]   
-
+]
 
 if True:
     urlpatterns += patterns('',

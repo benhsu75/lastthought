@@ -107,16 +107,16 @@ def handle_message_received(fbid, text):
         create_first_goal_flow(current_user, fbid, text)
         print('STATE=0')
     elif(text == 'goals'):
-        print("IN GOALS")
+        # messenger_helper.send_button_message(fbid, "Your goals:", button_list)
         messenger_helper.send_button_message(fbid, "Manage your goals:", [
                 {
                     'type': 'web_url',
-                    'url': 'http://userdatagraph.herokuapp.com/goals/'+fbid+'/list',
+                    'url': BASE_HEROKU_URL + '/users/'+fbid+'/goals',
                     'title': 'See Goals'    
                 },
                 {
                     'type': 'web_url',
-                    'url': 'http://userdatagraph.herokuapp.com/goals/'+fbid+'/add',
+                    'url': BASE_HEROKU_URL + '/users/'+fbid+'/add_goal',
                     'title': 'Add Goal'    
                 }
             ])
