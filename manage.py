@@ -2,6 +2,9 @@
 import os
 import sys
 
+def hello():
+	print "hello"
+
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "graph.settings")
 
