@@ -96,7 +96,7 @@ def handle_message_received(fbid, text):
 
         onboarding_domain.handle_onboard_flow(current_user, fbid, text)
     
-    elif(nlp.is_goals_domain(current_user)):
+    elif(nlp.is_goals_domain(current_user, text)):
 
         goals_domain.handle_goals(current_user, text)
 
