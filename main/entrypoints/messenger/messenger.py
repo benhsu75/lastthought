@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from main.models import *
-import messenger_helper
+from main.entrypoints.messenger import messenger_helper
 
 import random
 from django.views.decorators.csrf import csrf_exempt
