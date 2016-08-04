@@ -6,6 +6,11 @@ import random
 from django.views.decorators.csrf import csrf_exempt
 import json
 
+
+######################################
+######### MESSENGER WEBHOOK ##########
+######################################
+
 @csrf_exempt
 def messenger_callback(request):
 
@@ -78,6 +83,9 @@ def handle_optin(fbid):
 
 BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
 
+def handle_postback(fbid):
+    return
+
 def handle_message_received(fbid, text):
     try:
         current_user = User.objects.get(fbid=fbid)
@@ -149,8 +157,9 @@ def handle_message_received(fbid, text):
     else:
         send_api_helper.send_basic_text_message(fbid, "Sorry, I don't understand.")
 
-def handle_postback(fbid):
-    return
+######################################
+################## OTHER #############
+######################################
 
 def onboard_flow(current_user, fbid, text):
     if(current_user.state == 0):
