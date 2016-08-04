@@ -6,6 +6,8 @@ import random
 from django.views.decorators.csrf import csrf_exempt
 import json
 from main.message_log import message_log
+from main.utils import nlp
+from main.domains import goals_domain, onboarding_domain, todo_domain, misunderstood_domain
 
 ######################################
 ######### MESSENGER WEBHOOK ##########
@@ -61,7 +63,6 @@ def messenger_callback(request):
 def handle_optin(fbid):
     # Check if user exists, if it does, do nothing
     try:
-        print("# USER EXISTS")
         current_user = User.objects.get(fbid=fbid)
 
         return # Do nothing
@@ -78,11 +79,8 @@ def handle_optin(fbid):
     message_log.log_message('welcome_message', current_user, welcome_message, None)
 
     ask_for_name_message = "To begin, what's your full name?"
-    send_api_helper.send_basic_text_message(fbid, ask_for_name_message)
+    send_api_helper.send_basic_text_message(fbid, second_message)
     message_log.log_message('ask_for_name_message', current_user, ask_for_name_message, None)
-
-
-BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
 
 def handle_postback(fbid):
     return
@@ -94,96 +92,20 @@ def handle_message_received(fbid, text):
         send_api_helper.send_basic_text_message(fbid,"Something went wrong :(")
         return
 
-    state = current_user.state
-    text = text.lower()
+    if(nlp.is_onboarding_domain(current_user, text)):
 
-    if(state == 0):
-        onboard_flow(current_user, fbid, text)
-        print('STATE=0')
-    elif(text == 'goals'):
-        # send_api_helper.send_button_message(fbid, "Your goals:", button_list)
-        send_api_helper.send_button_message(fbid, "Manage your goals:", [
-                {
-                    'type': 'web_url',
-                    'url': BASE_HEROKU_URL + '/users/'+fbid+'/goals',
-                    'title': 'See Goals'    
-                },
-                {
-                    'type': 'web_url',
-                    'url': BASE_HEROKU_URL + '/users/'+fbid+'/add_goal',
-                    'title': 'Add Goal'    
-                }
-            ])
-    elif(text == 'show me my goals'):
+        onboarding_domain.handle_onboard_flow(current_user, fbid, text)
+    
+    elif(nlp.is_goals_domain(current_user)):
 
-        # send_api_helper.send_button_message(fbid, "Your goals:", button_list)
-        send_api_helper.send_button_message(fbid, "Manage your goals:", [
-                {
-                    'type': 'web_url',
-                    'url': BASE_HEROKU_URL + '/users/'+fbid+'/goals',
-                    'title': 'See Goals'    
-                },
-                {
-                    'type': 'web_url',
-                    'url': BASE_HEROKU_URL + '/users/'+fbid+'/add_goal',
-                    'title': 'Add Goal'    
-                }
-            ])
-    elif(text == 'todo'):
-        send_api_helper.send_button_message(fbid, "Your todo list:", [
-                {
-                    'type': 'web_url',
-                    'url': BASE_HEROKU_URL + '/users/'+fbid+'/todo',
-                    'title': 'To Do List'
-                }
-            ])
-    elif('add todo' in text):
-        # Create todo
-        todo_text = text.replace('add todo', '')
+        goals_domain.handle_goals(current_user, text)
 
-        todo = ToDoTask(text=todo_text, user=current_user)
-        todo.save()
+    elif(nlp.is_todo_domain(current_user, text)):
 
-        # Send message telling them that we created the todo
-        send_api_helper.send_basic_text_message(fbid,'"'+todo_text+'" added to your to do list!')
+        todo_domain.handle_todo(current_user, text)
 
     else:
-        send_api_helper.send_basic_text_message(fbid, "Sorry, I don't understand.")
 
-######################################
-################## OTHER #############
-######################################
+        misunderstood_domain.handle_misunderstood(current_user, text)
+        
 
-def onboard_flow(current_user, fbid, text):
-    if(current_user.state == 0):
-        # Parse out name from text
-        name = text
-        name_tokenized = name.split(' ')
-        first_name = name_tokenized[0]
-
-        # Update user
-        current_user.full_name = name
-        current_user.first_name = first_name
-        current_user.save()
-
-        # Send message about how to use
-        nice_to_meet_message = "Nice to meet you, " + first_name + "! I'm here to make it easier for you to do things. I can help you track reminders, set goals, and more."
-        send_api_helper.send_basic_text_message(fbid, nice_to_meet_message)
-        message_log.log_message('nice_to_meet_message', current_user, nice_to_meet_message, None)
-
-        learn_more_message = "To learn more about everything I can help you with, click Learn More!"
-        send_api_helper.send_button_message(fbid, learn_more_message, [
-                {
-                    'type': 'web_url',
-                    'url': 'http://userdatagraph.herokuapp.com/learn_more',
-                    'title': 'Learn More'    
-                }
-            ])
-        message_log.log_message('learn_more_message', current_user, learn_more_message, None)
-
-        # Update user state
-        current_user.state = 1
-        current_user.save()
-
-    else:
-        return
