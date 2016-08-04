@@ -6,6 +6,8 @@ from main.models import *
 BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
 
 def handle_todo(current_user, text):
+    fbid = current_user.fbid
+    
     if('add todo' in text):
         # Create todo
         todo_text = text.replace('add todo', '')

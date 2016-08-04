@@ -5,6 +5,8 @@ from main.models import *
 BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
 
 def handle_onboard_flow(current_user, fbid, text):
+    fbid = current_user.fbid
+    
     if(current_user.state == 0):
         # Parse out name from text
         name = text
