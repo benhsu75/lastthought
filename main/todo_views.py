@@ -6,7 +6,10 @@ from main.models import *
 import json
 from django.core import serializers
 
-# Helper method
+################################################
+############### HELPER METHODS #################
+################################################
+
 def user_exists(fbid):
     try:
         user = User.objects.get(fbid=fbid)
@@ -14,7 +17,10 @@ def user_exists(fbid):
     except User.DoesNotExist:
         return False
 
-# View methods
+################################################
+################# VIEW METHODS #################
+################################################
+
 def list(request, fbid):
     if not user_exists(fbid):
         return HttpResponse(status=404)
@@ -29,7 +35,10 @@ def list(request, fbid):
     template = loader.get_template('todo/list.html')
     return HttpResponse(template.render(context))
 
-# REST endpoints
+################################################
+############### REST ENDPOINT #$################
+################################################
+
 def todo(request, todo_id=None):
 
     # Get list of all todo's
@@ -55,21 +64,6 @@ def todo(request, todo_id=None):
     # Error 404 Not Found
     else:
         return HttpResponse(status=404)
-
-# def add_todo(request):
-#     # Create new todo
-#     if request.method == 'POST':
-#         fbid = request.POST['fbid']
-#         text = request.POST['text']
-#         current_user = User.objects.get(fbid=fbid)
-
-#         todo = ToDoTask(text=text, user=current_user)
-#         todo.save()
-
-#         return HttpResponse(status=200)
-#     # Error 404 Not Found
-#     else:
-#         return HttpResponse(status=404)
 
 
 

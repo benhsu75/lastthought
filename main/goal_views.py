@@ -6,7 +6,10 @@ from main.models import *
 import json
 from django.core import serializers
 
+###############################################
 ############### HELPER METHODS ################
+###############################################
+
 def user_exists(fbid):
     try:
         user = User.objects.get(fbid=fbid)
@@ -21,8 +24,9 @@ def goal_exists(goal_id):
     except Goal.DoesNotExist:
         return False
 
-
+#################################################
 ############# REST API ENDPOINT #################
+#################################################
 
 def goals(request, goal_id=None):
 
@@ -69,30 +73,9 @@ def goals(request, goal_id=None):
     else:
         return HttpResponse(status=404)
 
-# def add_goal(request):
-
-#     # Create new goal
-#     if request.method == 'POST':
-#         fbid = request.POST['fbid']
-#         if user_exists(fbid):
-#             current_user = User.objects.get(fbid=fbid)
-#         else:
-#             return HttpResponse(status=200)
-
-#         name = request.POST['name']
-#         send_text = request.POST['send_text']
-#         send_time_utc = request.POST['send_time_utc']
-#         response_type = request.POST['response_type']
-
-#         goal = Goal(user=current_user, name=name, send_text=send_text, send_time_utc=send_time_utc, response_type=response_type)
-#         goal.save()
-
-#         return HttpResponse(status=200)
-#     # Error 404 Not Found
-#     else:
-#         return HttpResponse(status=404)
-
+############################################
 ################# VIEWS ####################
+############################################
 
 # List all goals for a given user
 def list(request, fbid):
