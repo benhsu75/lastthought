@@ -30,26 +30,20 @@ def list(request, fbid):
     return HttpResponse(template.render(context))
 
 # REST endpoints
-def todo(request, todo_id):
-
-    todo = ToDoTask.objects.get(id=todo_id)
+def todo(request, todo_id=None):
 
     # Get list of all todo's
     if request.method == 'GET':
+        todo = ToDoTask.objects.get(id=todo_id)
         serialized_response = serializers.serialize('json', [todo])
         return HttpResponse(serialized_response)
 
     elif request.method == 'DELETE':
+        todo = ToDoTask.objects.get(id=todo_id)
         todo.delete()
-        
-        return HttpResponse(status=200)
-    # Error 404 Not Found
-    else:
-        return HttpResponse(status=404)
 
-def add_todo(request):
-    # Create new todo
-    if request.method == 'POST':
+        return HttpResponse(status=200)
+    elif request.method == 'POST':
         fbid = request.POST['fbid']
         text = request.POST['text']
         current_user = User.objects.get(fbid=fbid)
@@ -61,6 +55,21 @@ def add_todo(request):
     # Error 404 Not Found
     else:
         return HttpResponse(status=404)
+
+# def add_todo(request):
+#     # Create new todo
+#     if request.method == 'POST':
+#         fbid = request.POST['fbid']
+#         text = request.POST['text']
+#         current_user = User.objects.get(fbid=fbid)
+
+#         todo = ToDoTask(text=text, user=current_user)
+#         todo.save()
+
+#         return HttpResponse(status=200)
+#     # Error 404 Not Found
+#     else:
+#         return HttpResponse(status=404)
 
 
 

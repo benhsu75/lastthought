@@ -160,7 +160,7 @@ def handle_message_received(fbid, text):
 
         # Send message telling them that we created the todo
         messenger_helper.send_basic_text_message(fbid,'"'+todo_text+'" added to your to do list!')
-        
+
     else:
         messenger_helper.send_basic_text_message(fbid, "Sorry, I don't understand.")
 

@@ -13,11 +13,11 @@ urlpatterns = [
 
     # Goal endpoints
     url(r'^goals/(?P<goal_id>\d+)/$', goal_views.goals),
-    url(r'^goals/$', goal_views.add_goal),
+    url(r'^goals/$', goal_views.goals),
     
     # Todo endpoints
     url(r'^todo/(?P<todo_id>\d+)/$', todo_views.todo),
-    url(r'^todo/$', todo_views.add_todo),
+    url(r'^todo/$', todo_views.todo),
 
     # Display endpoints
     url(r'^users/(?P<fbid>\d+)/todo', todo_views.list),

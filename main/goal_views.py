@@ -22,18 +22,18 @@ def goal_exists(goal_id):
         return False
 
 
+############# REST API ENDPOINT #################
 
-############# REST API ENDPOINTS #################
-
-def goals(request, goal_id):
+def goals(request, goal_id=None):
 
     # Get goal if it exists
-    try:
-        goal = Goal.objects.get(id=goal_id)
-        goal_entries = GoalEntry.objects.filter(goal=goal)
+    if(goal_id != None):
+        try:
+            goal = Goal.objects.get(id=goal_id)
+            goal_entries = GoalEntry.objects.filter(goal=goal)
 
-    except Goal.DoesNotExist:
-        return HttpResponse(status=404)
+        except Goal.DoesNotExist:
+            return HttpResponse(status=404)
 
     # Get list of all goals
     if request.method == 'GET':
@@ -47,20 +47,15 @@ def goals(request, goal_id):
     # Delete goal
     elif request.method == 'DELETE':
         goal.delete()
-
         return HttpResponse(status=200)
-    # Error 404 Not Found
-    else:
-        return HttpResponse(status=404)
 
-def add_goal(request):
-    fbid = request.POST['fbid']
-    if user_exists(fbid):
-        current_user = User.objects.get(fbid=fbid)
+    elif request.method == 'POST':
+        fbid = request.POST['fbid']
+        if user_exists(fbid):
+            current_user = User.objects.get(fbid=fbid)
+        else:
+            return HttpResponse(status=200)
 
-    # Create new goal
-    if request.method == 'POST':
-        print("ADDING GOAL")
         name = request.POST['name']
         send_text = request.POST['send_text']
         send_time_utc = request.POST['send_time_utc']
@@ -74,8 +69,28 @@ def add_goal(request):
     else:
         return HttpResponse(status=404)
 
+# def add_goal(request):
 
+#     # Create new goal
+#     if request.method == 'POST':
+#         fbid = request.POST['fbid']
+#         if user_exists(fbid):
+#             current_user = User.objects.get(fbid=fbid)
+#         else:
+#             return HttpResponse(status=200)
 
+#         name = request.POST['name']
+#         send_text = request.POST['send_text']
+#         send_time_utc = request.POST['send_time_utc']
+#         response_type = request.POST['response_type']
+
+#         goal = Goal(user=current_user, name=name, send_text=send_text, send_time_utc=send_time_utc, response_type=response_type)
+#         goal.save()
+
+#         return HttpResponse(status=200)
+#     # Error 404 Not Found
+#     else:
+#         return HttpResponse(status=404)
 
 ################# VIEWS ####################
 
