@@ -5,6 +5,7 @@ PAGE_ACCESS_TOKEN = 'EAADqZAUs43F4BAM24X91sSlhAIU7UHnLyO6eNp1rGMmQncyKsz34Agvlqf
 SEND_BASE_URL = 'https://graph.facebook.com/v2.6/me/messages?access_token='
 
 def send_basic_text_message(fbid, text):
+    # Send message through FB Send API
     send_payload = {
         'recipient': {
             'id': fbid
@@ -17,7 +18,9 @@ def send_basic_text_message(fbid, text):
     r = requests.post(url_to_post, json=send_payload)
     print(r.text)
 
+
 def send_button_message(fbid, text, button_list):
+    # Send message through FB Send API
     send_payload = {
         'recipient': {
             'id': fbid
