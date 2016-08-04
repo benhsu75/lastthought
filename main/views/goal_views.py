@@ -41,6 +41,9 @@ def goals(request, goal_id=None):
 
     # Get list of all goals
     if request.method == 'GET':
+        # Handle get to /goals
+        if(not goal_id):
+            return HttpResponse(status=404)
         serialized_goal = serializers.serialize('json', [goal])
         serialized_goal_entries = serializers.serialize('json', goal_entries)
         print("RETURNING")

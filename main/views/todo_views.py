@@ -43,6 +43,8 @@ def todo(request, todo_id=None):
 
     # Get list of all todo's
     if request.method == 'GET':
+        if(not todo_id):
+            return HttpResponse(status=404)
         todo = ToDoTask.objects.get(id=todo_id)
         serialized_response = serializers.serialize('json', [todo])
         return HttpResponse(serialized_response)
