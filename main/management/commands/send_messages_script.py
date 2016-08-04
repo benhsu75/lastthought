@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from main.models import *
-from main import messenger_helper
+from main.entrypoints.messenger import send_api_helper
 from datetime import datetime
 
 class Command(BaseCommand):
@@ -24,7 +24,7 @@ class Command(BaseCommand):
 
             # Message format depends on the response type
             if(g.response_type == 0): # Numeric response
-                messenger_helper.send_basic_text_message(fbid, g.send_text)
+                send_api_helper.send_basic_text_message(fbid, g.send_text)
             elif(g.response_type == 1): # Binary response
                 # Construct button_list
                 button_list = []
@@ -39,13 +39,13 @@ class Command(BaseCommand):
                         'payload': '0'
                     })
 
-                messenger_helper.send_button_message(fbid, g.send_text, button_list)
+                send_api_helper.send_button_message(fbid, g.send_text, button_list)
             elif(g.response_type == 2):
                 # Text response
-                messenger_helper.send_basic_text_message(fbid, g.send_text)
+                send_api_helper.send_basic_text_message(fbid, g.send_text)
             elif(g.response_type == 3):
                 # File response
-                messenger_helper.send_basic_text_message(fbid, g.send_text)
+                send_api_helper.send_basic_text_message(fbid, g.send_text)
 
             # Create GoalEntry
             goal_entry = GoalEntry(goal=g)

@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from main.models import *
-from main.entrypoints.messenger import messenger_helper
+from main.entrypoints.messenger import send_api_helper
 
 import random
 from django.views.decorators.csrf import csrf_exempt
@@ -44,8 +44,7 @@ def messenger_callback(request):
             elif 'optin' in messaging:
                 # Plugin authentication webhook
                 print('# Authentication')
-                handle_authentication(fbid)
-
+                handle_optin(fbid)
             elif 'postback' in messaging:
                 # Postback webhook
                 print('# Postback webhook')
@@ -54,7 +53,7 @@ def messenger_callback(request):
     return HttpResponse(status=200)
 
 # Sends the user our initial message 
-def handle_authentication(fbid):
+def handle_optin(fbid):
     # Check if user exists, if it does, do nothing
     try:
         print("# USER EXISTS")
@@ -72,8 +71,8 @@ def handle_authentication(fbid):
     # Send user intro message
     intro_message = "Hey! Nice to meet you. I'm Jarvis, here to help be your better self :)."
     second_message = "To begin, what's your full name?"
-    messenger_helper.send_basic_text_message(fbid, intro_message)
-    messenger_helper.send_basic_text_message(fbid, second_message)
+    send_api_helper.send_basic_text_message(fbid, intro_message)
+    send_api_helper.send_basic_text_message(fbid, second_message)
 
 
 
@@ -83,18 +82,18 @@ def handle_message_received(fbid, text):
     try:
         current_user = User.objects.get(fbid=fbid)
     except User.DoesNotExist:
-        messenger_helper.send_basic_text_message(fbid,"Something went wrong :(")
+        send_api_helper.send_basic_text_message(fbid,"Something went wrong :(")
         return
 
     state = current_user.state
     text = text.lower()
 
     if(state == 0):
-        create_first_goal_flow(current_user, fbid, text)
+        onboard_flow(current_user, fbid, text)
         print('STATE=0')
     elif(text == 'goals'):
-        # messenger_helper.send_button_message(fbid, "Your goals:", button_list)
-        messenger_helper.send_button_message(fbid, "Manage your goals:", [
+        # send_api_helper.send_button_message(fbid, "Your goals:", button_list)
+        send_api_helper.send_button_message(fbid, "Manage your goals:", [
                 {
                     'type': 'web_url',
                     'url': BASE_HEROKU_URL + '/users/'+fbid+'/goals',
@@ -116,8 +115,8 @@ def handle_message_received(fbid, text):
         #             'title': g.name
         #         })
 
-        # messenger_helper.send_button_message(fbid, "Your goals:", button_list)
-        messenger_helper.send_button_message(fbid, "Manage your goals:", [
+        # send_api_helper.send_button_message(fbid, "Your goals:", button_list)
+        send_api_helper.send_button_message(fbid, "Manage your goals:", [
                 {
                     'type': 'web_url',
                     'url': BASE_HEROKU_URL + '/users/'+fbid+'/goals',
@@ -130,7 +129,7 @@ def handle_message_received(fbid, text):
                 }
             ])
     elif(text == 'todo'):
-        messenger_helper.send_button_message(fbid, "Your todo list:", [
+        send_api_helper.send_button_message(fbid, "Your todo list:", [
                 {
                     'type': 'web_url',
                     'url': BASE_HEROKU_URL + '/users/'+fbid+'/todo',
@@ -145,15 +144,15 @@ def handle_message_received(fbid, text):
         todo.save()
 
         # Send message telling them that we created the todo
-        messenger_helper.send_basic_text_message(fbid,'"'+todo_text+'" added to your to do list!')
+        send_api_helper.send_basic_text_message(fbid,'"'+todo_text+'" added to your to do list!')
 
     else:
-        messenger_helper.send_basic_text_message(fbid, "Sorry, I don't understand.")
+        send_api_helper.send_basic_text_message(fbid, "Sorry, I don't understand.")
 
 def handle_postback(fbid):
     return
 
-def create_first_goal_flow(current_user, fbid, text):
+def onboard_flow(current_user, fbid, text):
     if(current_user.state == 0):
         # Parse out name from text
         name = text
@@ -167,10 +166,10 @@ def create_first_goal_flow(current_user, fbid, text):
 
         # Send message about how to use
         how_to_use_message = "Nice to meet you, " + first_name + "! I'm here to make it easier for you to do things. I can help you track reminders, set goals, and more."
-        messenger_helper.send_basic_text_message(fbid, how_to_use_message)
+        send_api_helper.send_basic_text_message(fbid, how_to_use_message)
 
         learn_more_message = "To learn more about everything I can help you with, click Learn More!"
-        messenger_helper.send_button_message(fbid, learn_more_message, [
+        send_api_helper.send_button_message(fbid, learn_more_message, [
                 {
                     'type': 'web_url',
                     'url': 'http://userdatagraph.herokuapp.com/learn_more',

@@ -25,7 +25,6 @@ urlpatterns = [
     url(r'^users/(?P<fbid>\d+)/goals', goal_views.list),
     url(r'^users/(?P<fbid>\d+)/add_goal', goal_views.add_goal_page),
     url(r'^goals/(?P<goal_id>\d+)/show', goal_views.show),
-
 ]
 
 # Ensure static files are accessible
