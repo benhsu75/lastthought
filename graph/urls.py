@@ -15,12 +15,16 @@ urlpatterns = [
     # Goal endpoints
     url(r'^goals/(?P<goal_id>\d+)/$', goal_views.goals),
     url(r'^goals/$', goal_views.goals),
+
+    # Log endpoints
+
     
     # Todo endpoints
     url(r'^todo/(?P<todo_id>\d+)/$', todo_views.todo),
     url(r'^todo/$', todo_views.todo),
 
     # Display endpoints
+    url(r'^users/(?P<fbid>\d+)', general.dashboard),
     url(r'^users/(?P<fbid>\d+)/todo', todo_views.list),
     url(r'^users/(?P<fbid>\d+)/goals', goal_views.list),
     url(r'^users/(?P<fbid>\d+)/add_goal', goal_views.add_goal_page),

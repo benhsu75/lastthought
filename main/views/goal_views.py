@@ -5,17 +5,12 @@ from main.models import *
 
 import json
 from django.core import serializers
+from main.utils import helper_util
 
 ###############################################
 ############### HELPER METHODS ################
 ###############################################
 
-def user_exists(fbid):
-    try:
-        user = User.objects.get(fbid=fbid)
-        return True
-    except User.DoesNotExist:
-        return False
 
 def goal_exists(goal_id):
     try:
@@ -28,10 +23,11 @@ def goal_exists(goal_id):
 ############# REST API ENDPOINT #################
 #################################################
 
+
 def goals(request, goal_id=None):
 
     # Get goal if it exists
-    if(goal_id != None):
+    if(goal_id is not None):
         try:
             goal = Goal.objects.get(id=goal_id)
             goal_entries = GoalEntry.objects.filter(goal=goal)
@@ -48,9 +44,9 @@ def goals(request, goal_id=None):
         serialized_goal_entries = serializers.serialize('json', goal_entries)
         print("RETURNING")
         return HttpResponse(json.dumps({
-                'goal': serialized_goal,
-                'goal_entries': serialized_goal_entries
-            }))
+            'goal': serialized_goal,
+            'goal_entries': serialized_goal_entries
+        }))
     # Delete goal
     elif request.method == 'DELETE':
         goal.delete()
@@ -58,7 +54,7 @@ def goals(request, goal_id=None):
 
     elif request.method == 'POST':
         fbid = request.POST['fbid']
-        if user_exists(fbid):
+        if helper_util.user_exists(fbid):
             current_user = User.objects.get(fbid=fbid)
         else:
             return HttpResponse(status=200)
@@ -68,7 +64,13 @@ def goals(request, goal_id=None):
         send_time_utc = request.POST['send_time_utc']
         response_type = request.POST['response_type']
 
-        goal = Goal(user=current_user, name=name, send_text=send_text, send_time_utc=send_time_utc, response_type=response_type)
+        goal = Goal(
+            user=current_user,
+            name=name,
+            send_text=send_text,
+            send_time_utc=send_time_utc,
+            response_type=response_type
+        )
         goal.save()
 
         return HttpResponse(status=200)
@@ -80,9 +82,10 @@ def goals(request, goal_id=None):
 ################# VIEWS ####################
 ############################################
 
+
 # List all goals for a given user
 def list(request, fbid):
-    if not user_exists(fbid):
+    if not helper_util.user_exists(fbid):
         return HttpResponse(status=404)
 
     current_user = User.objects.get(fbid=fbid)
@@ -95,6 +98,7 @@ def list(request, fbid):
     })
     template = loader.get_template('goals/list.html')
     return HttpResponse(template.render(context))
+
 
 # Allow users to see entries for a given goal
 def show(request, goal_id):
@@ -111,14 +115,14 @@ def show(request, goal_id):
     template = loader.get_template('goals/show.html')
     return HttpResponse(template.render(context))
 
+
 # Allow users to add a goal
 def add_goal_page(request, fbid):
-    if not user_exists(fbid):
+    if not helper_util.user_exists(fbid):
         return HttpResponse(status=404)
-        
+
     context = RequestContext(request, {
         'fbid': fbid
     })
     template = loader.get_template('goals/add.html')
     return HttpResponse(template.render(context))
-

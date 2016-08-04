@@ -2,27 +2,17 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from main.models import *
-
 import json
 from django.core import serializers
-
-################################################
-############### HELPER METHODS #################
-################################################
-
-def user_exists(fbid):
-    try:
-        user = User.objects.get(fbid=fbid)
-        return True
-    except User.DoesNotExist:
-        return False
+from main.utils import helper_util
 
 ################################################
 ################# VIEW METHODS #################
 ################################################
 
+
 def list(request, fbid):
-    if not user_exists(fbid):
+    if not helper_util.user_exists(fbid):
         return HttpResponse(status=404)
 
     current_user = User.objects.get(fbid=fbid)
@@ -30,7 +20,7 @@ def list(request, fbid):
 
     context = RequestContext(request, {
         'todo_list': todo_list,
-        'fbid' : fbid
+        'fbid': fbid,
     })
     template = loader.get_template('todo/list.html')
     return HttpResponse(template.render(context))
@@ -38,6 +28,7 @@ def list(request, fbid):
 ################################################
 ############### REST ENDPOINT #$################
 ################################################
+
 
 def todo(request, todo_id=None):
 
@@ -66,10 +57,3 @@ def todo(request, todo_id=None):
     # Error 404 Not Found
     else:
         return HttpResponse(status=404)
-
-
-
-
-
-
-
