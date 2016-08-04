@@ -1,24 +1,10 @@
-from django.shortcuts import render
 from django.http import HttpResponse
-from django.template import RequestContext, loader
 from main.models import *
-from main import messenger_helper
+import messenger_helper
 
 import random
 from django.views.decorators.csrf import csrf_exempt
 import json
-
-def index(request):
-    context = RequestContext(request, {
-    })
-    template = loader.get_template('main/index.html')
-    return HttpResponse(template.render(context))
-
-def learn_more(request):
-    context = RequestContext(request, {
-    })
-    template = loader.get_template('main/learn_more.html')
-    return HttpResponse(template.render(context))
 
 @csrf_exempt
 def messenger_callback(request):
@@ -198,13 +184,3 @@ def create_first_goal_flow(current_user, fbid, text):
 
     else:
         return
-
-def delete_users(request):
-    all_users = User.objects.all()
-    num_of_users_deleted = len(all_users)
-    for u in all_users:
-        u.delete()
-
-    return HttpResponse("Deleted " + str(num_of_users_deleted) + " users!")
-
-

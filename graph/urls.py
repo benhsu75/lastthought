@@ -1,15 +1,16 @@
 from django.conf.urls import url, patterns
 from django.contrib import admin
-from main import views, goal_views, todo_views
+from main.views import general, goal_views, todo_views
+from main.entrypoints.messenger import messenger
 from django.conf import settings
 
 urlpatterns = [
-    url(r'^$', views.index),
-    url(r'^messenger_callback/', views.messenger_callback),
-    url(r'^learn_more/', views.learn_more),
+    url(r'^$', general.index),
+    url(r'^messenger_callback/', .messenger_callback),
+    url(r'^learn_more/', general.learn_more),
 
     # Temp helper methods
-    url(r'^delete_users/', views.delete_users),
+    url(r'^delete_users/', general.delete_users),
 
     # Goal endpoints
     url(r'^goals/(?P<goal_id>\d+)/$', goal_views.goals),
