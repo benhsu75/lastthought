@@ -13,6 +13,9 @@ def handle_onboard_flow(current_user, fbid, text):
         name_tokenized = name.split(' ')
         first_name = name_tokenized[0]
 
+        # Log response
+        message_log.log_message('name_response', current_user, text, None)
+
         # Update user
         current_user.full_name = name
         current_user.first_name = first_name

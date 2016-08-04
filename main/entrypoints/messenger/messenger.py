@@ -92,6 +92,7 @@ def handle_message_received(fbid, text):
         send_api_helper.send_basic_text_message(fbid,"Something went wrong :(")
         return
 
+    # Use nlp to determine which domain it goes under, then triage to that domain. The domain handles the sub-triaging within itself
     if(nlp.is_onboarding_domain(current_user, text)):
 
         onboarding_domain.handle_onboard_flow(current_user, fbid, text)

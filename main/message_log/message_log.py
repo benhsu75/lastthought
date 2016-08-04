@@ -24,12 +24,16 @@ message_mapping = {
   'name_response' : 2,
   'nice_to_meet_message' : 3,
   'learn_more_message' : 4,
-  'goals_trigger_message' : 5,
   'goal_prompt_message' : 6,  
-  'goal_response' : 7,
+  'goal_prompt_response' : 7,
   'misunderstood_response' : 9,
-  'show_todo_message' : 10,
-  'add_todo_message' : 11,
+  'misunderstood_message' : 10,
+  'show_todo_message' : 11,
+  'show_todo_response': 12,
+  'add_todo_message' : 13,
+  'add_todo_response' : 14,
+  'goals_trigger_message' : 15,
+  'goals_trigger_response' : 16,
 }
 
 def log_message(message_key, user, text, data):
@@ -48,10 +52,7 @@ def log_message(message_key, user, text, data):
   m.save()
 
   # Add any extra data depending on message_type
-  if(message_type == 5):
-      m.goal_in_reference = data['goal']
-      m.save()
-  elif(message_type == 6):
+  if(message_type == 6):
       m.goal_in_reference = data['goal']
       m.save()
   elif(message_type == 7):

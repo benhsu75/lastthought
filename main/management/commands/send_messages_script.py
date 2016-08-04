@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from main.models import *
 from main.entrypoints.messenger import send_api_helper
 from datetime import datetime
+from main.message_log import message_log
 
 class Command(BaseCommand):
     
@@ -25,6 +26,7 @@ class Command(BaseCommand):
             # Message format depends on the response type
             if(g.response_type == 0): # Numeric response
                 send_api_helper.send_basic_text_message(fbid, g.send_text)
+                message_log.log_message('goal_prompt_message', user, g.send_text, {'goal': g})
             elif(g.response_type == 1): # Binary response
                 # Construct button_list
                 button_list = []
@@ -40,12 +42,15 @@ class Command(BaseCommand):
                     })
 
                 send_api_helper.send_button_message(fbid, g.send_text, button_list)
+                message_log.log_message('goal_prompt_message', user, g.send_text, {'goal': g})
             elif(g.response_type == 2):
                 # Text response
                 send_api_helper.send_basic_text_message(fbid, g.send_text)
+                message_log.log_message('goal_prompt_message', user, g.send_text, {'goal': g})
             elif(g.response_type == 3):
                 # File response
                 send_api_helper.send_basic_text_message(fbid, g.send_text)
+                message_log.log_message('goal_prompt_message', user, g.send_text, {'goal': g})
 
             # Create GoalEntry
             goal_entry = GoalEntry(goal=g)
