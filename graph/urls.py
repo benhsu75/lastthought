@@ -6,7 +6,7 @@ from django.conf import settings
 
 urlpatterns = [
     url(r'^$', general.index),
-    url(r'^messenger_callback/', .messenger_callback),
+    url(r'^messenger_callback/', messenger.messenger_callback),
     url(r'^learn_more/', general.learn_more),
 
     # Temp helper methods
