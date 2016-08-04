@@ -114,14 +114,6 @@ def handle_message_received(fbid, text):
                 }
             ])
     elif(text == 'show me my goals'):
-        # button_list = []
-        # goal_list = Goal.objects.filter(user=current_user)
-        # for g in goal_list:
-        #     button_list.append({
-        #             'type': 'web_url',
-        #             'url': 'http://userdatagraph.herokuapp.com/goals/'+str(g.id)+'/show',
-        #             'title': g.name
-        #         })
 
         # send_api_helper.send_button_message(fbid, "Your goals:", button_list)
         send_api_helper.send_button_message(fbid, "Manage your goals:", [
