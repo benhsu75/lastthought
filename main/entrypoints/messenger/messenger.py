@@ -5,7 +5,7 @@ from main.entrypoints.messenger import send_api_helper
 import random
 from django.views.decorators.csrf import csrf_exempt
 import json
-
+from main.message_log import message_log
 
 ######################################
 ######### MESSENGER WEBHOOK ##########
@@ -69,16 +69,17 @@ def handle_optin(fbid):
         pass
 
     # If user doesn't exist, create user
-    print("# CREATING USER")
     u = User(fbid=fbid, state=0)
     u.save()
 
     # Send user intro message
-    intro_message = "Hey! Nice to meet you. I'm Jarvis, here to help be your better self :)."
-    second_message = "To begin, what's your full name?"
+    welcome_message = "Hey! Nice to meet you. I'm Jarvis, here to help be your better self :)."
     send_api_helper.send_basic_text_message(fbid, intro_message)
-    send_api_helper.send_basic_text_message(fbid, second_message)
+    message_log.log_message('welcome_message', current_user, welcome_message, None)
 
+    ask_for_name_message = "To begin, what's your full name?"
+    send_api_helper.send_basic_text_message(fbid, ask_for_name_message)
+    message_log.log_message('ask_for_name_message', current_user, ask_for_name_message, None)
 
 
 BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
@@ -166,8 +167,9 @@ def onboard_flow(current_user, fbid, text):
         current_user.save()
 
         # Send message about how to use
-        how_to_use_message = "Nice to meet you, " + first_name + "! I'm here to make it easier for you to do things. I can help you track reminders, set goals, and more."
-        send_api_helper.send_basic_text_message(fbid, how_to_use_message)
+        nice_to_meet_message = "Nice to meet you, " + first_name + "! I'm here to make it easier for you to do things. I can help you track reminders, set goals, and more."
+        send_api_helper.send_basic_text_message(fbid, nice_to_meet_message)
+        message_log.log_message('nice_to_meet_message', current_user, nice_to_meet_message, None)
 
         learn_more_message = "To learn more about everything I can help you with, click Learn More!"
         send_api_helper.send_button_message(fbid, learn_more_message, [
@@ -177,6 +179,7 @@ def onboard_flow(current_user, fbid, text):
                     'title': 'Learn More'    
                 }
             ])
+        message_log.log_message('learn_more_message', current_user, learn_more_message, None)
 
         # Update user state
         current_user.state = 1
