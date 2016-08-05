@@ -48,7 +48,7 @@ def log_message(message_key, user, text, data):
       sent_to_user = False
 
   message_type = message_mapping[message_key]
-  m = Message(user=user, sent_to_user=sent_to_user, message_type=message_type)
+  m = Message(user=user, sent_to_user=sent_to_user, message_type=message_type, text=text)
   m.save()
 
   # Add any extra data depending on message_type
