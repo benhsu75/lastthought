@@ -56,8 +56,9 @@ class Message(models.Model):
 
     user = models.ForeignKey(User)
     sent_to_user = models.BooleanField() # If false, then the message was sent from the user
-    message_type = models.SmallIntegerField()
-    # 0 - Welcome message
+    message_type = models.SmallIntegerField() # Message types are enumerated in message_log.py
+
+    text = models.CharField(max_length=200, null=True)
 
     goal_in_reference = models.ForeignKey(Goal, null=True)
 
