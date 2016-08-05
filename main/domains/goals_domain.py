@@ -69,7 +69,7 @@ def handle_goals(current_user, text):
             goal_entry.save()
 
             # Understood!
-            understood_goal_response(current_user)
+            understood_goal_response(current_user, last_prompt_message)
 
         elif(goal_in_reference.response_type == 1): # Binary
             # Convert text to 0 or 1
@@ -91,7 +91,7 @@ def handle_goals(current_user, text):
             goal_entry.save()
 
             # Understood
-            understood_goal_response(current_user)
+            understood_goal_response(current_user, last_prompt_message)
 
 
         elif(goal_in_reference.response_type == 2): # Text
@@ -103,7 +103,7 @@ def handle_goals(current_user, text):
             goal_entry.save()
 
             # Send confirmation message and log
-            understood_goal_response(current_user)
+            understood_goal_response(current_user, last_prompt_message)
 
         else:
             misunderstood_goal_response(current_user, goal_in_reference.response_type)
@@ -120,8 +120,12 @@ def misunderstood_goal_response(current_user, correct_response_type):
     # Log message
     message_log.message_log('misunderstood_goal_message', current_user, misunderstood_goal_message, None)
 
-def understood_goal_response(current_user):
+def understood_goal_response(current_user, original_message):
     # Send confirmation message and log
     goal_response_received_confirmation = "Recorded! :)"
     send_api_helper.send_basic_text_message(current_user.fbid, goal_response_received_confirmation)
     message_log.message_log('goal_response_received_confirmation', current_user, goal_response_received_confirmation, None)
+
+    # Mark the original message as resolved
+    original_message.response_captured = True
+    original_message.save()
