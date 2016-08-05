@@ -127,13 +127,13 @@ def misunderstood_goal_response(current_user, correct_response_type):
     send_api_helper.send_basic_text_message(current_user.fbid, misunderstood_goal_message)
 
     # Log message
-    message_log.message_log('misunderstood_goal_message', current_user, misunderstood_goal_message, None)
+    message_log.log_message('misunderstood_goal_message', current_user, misunderstood_goal_message, None)
 
 def understood_goal_response(current_user, original_message):
     # Send confirmation message and log
     goal_response_received_confirmation = "Recorded! :)"
     send_api_helper.send_basic_text_message(current_user.fbid, goal_response_received_confirmation)
-    message_log.message_log('goal_response_received_confirmation', current_user, goal_response_received_confirmation, None)
+    message_log.log_message('goal_response_received_confirmation', current_user, goal_response_received_confirmation, None)
 
     # Mark the original message as resolved
     original_message.response_captured = True
