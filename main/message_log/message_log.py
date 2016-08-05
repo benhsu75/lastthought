@@ -34,6 +34,8 @@ message_mapping = {
   'add_todo_response' : 14,
   'goals_trigger_message' : 15,
   'goals_trigger_response' : 16,
+  'misunderstood_goal_response': 17,
+  'misunderstood_goal_message' : 18
 }
 
 def log_message(message_key, user, text, data):
