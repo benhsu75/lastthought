@@ -13,4 +13,5 @@ class Message(models.Model):
 
     text = models.CharField(max_length=200, null=True)
 
+    response_captured = models.BooleanField(default=False)
     goal_in_reference = models.ForeignKey(Goal, null=True)

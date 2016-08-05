@@ -1,6 +1,7 @@
 from main.message_log import message_log
 from main.entrypoints.messenger import send_api_helper
 from main.models import *
+from main.utils import helper_util
 
 BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
 
@@ -23,6 +24,7 @@ def handle_goals(current_user, text):
     # Get context
     fbid = current_user.fbid
     last_message = Message.objects.filter(user=current_user).order_by('-created_at')[0]
+    last_prompt_message = Message.objects.filter(user=current_user, message_type=6).order_by('-created_at')[0]
     
     # Send message
     if 'goals' in text:
@@ -44,7 +46,7 @@ def handle_goals(current_user, text):
                     }
                 ])
         message_log.log_message('goals_trigger_message', current_user, goals_trigger_message, None)
-    elif(last_message.message_type == 6):
+    elif(last_message.message_type  == 6 or helper_util.same_day(last_prompt_message.created_at, datetime.today())):
         # Triage and store
         goal_in_reference = last_message.goal_in_reference
         goal_entry = GoalEntry.objects.filter(goal=goal_in_reference).order_by('-created_at')[0]
@@ -116,10 +118,10 @@ def misunderstood_goal_response(current_user, correct_response_type):
     send_api_helper.send_basic_text_message(current_user.fbid, misunderstood_goal_message)
 
     # Log message
-    message_log('misunderstood_goal_message', current_user, misunderstood_goal_message, None)
+    message_log.message_log('misunderstood_goal_message', current_user, misunderstood_goal_message, None)
 
 def understood_goal_response(current_user):
     # Send confirmation message and log
     goal_response_received_confirmation = "Recorded! :)"
     send_api_helper.send_basic_text_message(current_user.fbid, goal_response_received_confirmation)
-    message_log('goal_response_received_confirmation', current_user, goal_response_received_confirmation, None)
+    message_log.message_log('goal_response_received_confirmation', current_user, goal_response_received_confirmation, None)
