@@ -12,13 +12,13 @@ def create_new_user(fbid):
     # Send user intro message
     welcome_message = "Hey! Nice to meet you. I'm Jarvis, here to help be your better self :)."
     send_api_helper.send_basic_text_message(fbid, welcome_message)
-    message_log.log_message('welcome_message', current_user, welcome_message, None)
+    message_log.log_message('welcome_message', u, welcome_message, None)
 
     ask_for_name_message = "To begin, what's your full name?"
     send_api_helper.send_basic_text_message(fbid, ask_for_name_message)
-    message_log.log_message('ask_for_name_message', current_user, ask_for_name_message, None)
+    message_log.log_message('ask_for_name_message', u, ask_for_name_message, None)
 
-    
+
 def handle_onboard_flow(current_user, fbid, text):
     fbid = current_user.fbid
     
