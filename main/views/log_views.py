@@ -8,12 +8,8 @@ from django.core import serializers
 from main.utils import helper_util
 
 def logs(request, log_id=None):
-
     if request.method == 'GET':
-        return HttpResponse(status=200)
-    elif request.method == 'DELETE':
-        return HttpResponse(status=200)
-
+        return HttpResponse("GET", status=200)
     elif request.method == 'POST':
         return HttpResponse(status=200)
     else:
