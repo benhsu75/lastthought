@@ -6,7 +6,7 @@ import random
 from django.views.decorators.csrf import csrf_exempt
 import json
 from main.message_log import message_log
-from main.utils import nlp
+from main.utils import nlp, helper_util
 from main.domains import goals_domain, onboarding_domain, todo_domain, misunderstood_domain
 
 ######################################
@@ -42,19 +42,20 @@ def messenger_callback(request):
 
             print("# FBID: " + fbid)
 
+            if(!helper_util.user_exists(fbid)):
+                onboarding_domain.create_new_user(fbid)
+                continue
+
             # Handle different webhooks times
             if 'message' in messaging:
                 # Message received webhook
-                print('# Message received webhook')
                 message_text = messaging['message']['text']
                 handle_message_received(fbid, message_text)
             elif 'optin' in messaging:
                 # Plugin authentication webhook
-                print('# Authentication')
                 handle_optin(fbid)
             elif 'postback' in messaging:
                 # Postback webhook
-                print('# Postback webhook')
                 handle_postback(fbid)
 
     return HttpResponse(status=200)
@@ -69,18 +70,7 @@ def handle_optin(fbid):
     except User.DoesNotExist:
         pass
 
-    # If user doesn't exist, create user
-    u = User(fbid=fbid, state=0)
-    u.save()
-
-    # Send user intro message
-    welcome_message = "Hey! Nice to meet you. I'm Jarvis, here to help be your better self :)."
-    send_api_helper.send_basic_text_message(fbid, welcome_message)
-    message_log.log_message('welcome_message', current_user, welcome_message, None)
-
-    ask_for_name_message = "To begin, what's your full name?"
-    send_api_helper.send_basic_text_message(fbid, ask_for_name_message)
-    message_log.log_message('ask_for_name_message', current_user, ask_for_name_message, None)
+    onboarding_domain.create_new_user(fbid)
 
 def handle_postback(fbid):
     return
