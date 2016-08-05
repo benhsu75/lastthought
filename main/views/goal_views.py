@@ -13,7 +13,8 @@ from main.utils import helper_util
 
 
 def get_goal(goal_id):
-    if goal_id is None return None
+    if goal_id is None:
+        return None
     try:
         goal = Goal.objects.get(id=goal_id)
         return goal
