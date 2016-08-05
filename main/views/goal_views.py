@@ -10,8 +10,6 @@ from main.utils import helper_util
 ###############################################
 ############### HELPER METHODS ################
 ###############################################
-
-
 def goal_exists(goal_id):
     try:
         goal = Goal.objects.get(id=goal_id)
