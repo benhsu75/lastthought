@@ -54,7 +54,7 @@ def handle_goals(current_user, text):
         message_log.log_message('goals_trigger_message', current_user, goals_trigger_message, None)
     elif(last_message.message_type  == 6 or (last_prompt_message != None and helper_util.same_day_as_now(last_prompt_message.created_at))):
         # Triage and store
-        goal_in_reference = last_message.goal_in_reference
+        goal_in_reference = last_prompt_message.goal_in_reference
         goal_entry = GoalEntry.objects.filter(goal=goal_in_reference).order_by('-created_at')[0]
 
         if(goal_in_reference.response_type == 0): # Numeric
