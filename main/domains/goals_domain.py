@@ -23,8 +23,14 @@ def handle_goals(current_user, text):
 
     # Get context
     fbid = current_user.fbid
+    
     last_message = Message.objects.filter(user=current_user).order_by('-created_at')[0]
-    last_prompt_message = Message.objects.filter(user=current_user, message_type=6).order_by('-created_at')[0]
+    prompt_message_list = Message.objects.filter(user=current_user, message_type=6).order_by('-created_at')
+    
+    if len(prompt_message_list) > 0:
+        last_prompt_message = prompt_message_list[0]
+    else:
+        last_prompt_message = None
     
     # Send message
     if 'goals' in text:
@@ -46,7 +52,7 @@ def handle_goals(current_user, text):
                     }
                 ])
         message_log.log_message('goals_trigger_message', current_user, goals_trigger_message, None)
-    elif(last_message.message_type  == 6 or helper_util.same_day(last_prompt_message.created_at, datetime.today())):
+    elif(last_message.message_type  == 6 or (last_prompt_message != None and helper_util.same_day(last_prompt_message.created_at, datetime.today()))):
         # Triage and store
         goal_in_reference = last_message.goal_in_reference
         goal_entry = GoalEntry.objects.filter(goal=goal_in_reference).order_by('-created_at')[0]
