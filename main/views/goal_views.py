@@ -24,17 +24,18 @@ def goal_exists(goal_id):
 
 def goals(request, goal_id=None):
 
-    # Get goal if it exists
-    if(goal_id is not None):
-        try:
-            goal = Goal.objects.get(id=goal_id)
-            goal_entries = GoalEntry.objects.filter(goal=goal)
-
-        except Goal.DoesNotExist:
-            return HttpResponse(status=404)
-
     # Get list of all goals
     if request.method == 'GET':
+
+        if(goal_id is not None):
+            if not goal_exists(goal_id):
+                return HttpResponse(status=404)
+        else:
+            return HttpResponse(status=404)
+
+        goal = Goal.objects.get(id=goal_id)
+        goal_entries = GoalEntry.objects.filter(goal=goal)
+
         # Handle get to /goals
         if(not goal_id):
             return HttpResponse(status=404)
