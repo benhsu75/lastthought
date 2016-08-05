@@ -87,6 +87,9 @@ def list(request, fbid):
         return HttpResponse(status=404)
 
     current_user = User.objects.get(fbid=fbid)
+    if(not current_user):
+        return HttpResponse("Invalid user")
+
     goals_list = Goal.objects.filter(user=current_user)
     serialized_response = serializers.serialize('json', goals_list)
 
@@ -118,6 +121,10 @@ def show(request, goal_id):
 def add_goal_page(request, fbid):
     if not helper_util.user_exists(fbid):
         return HttpResponse(status=404)
+
+    current_user = User.objects.get(fbid=fbid)
+    if(not current_user):
+        return HttpResponse("Invalid user")
 
     context = RequestContext(request, {
         'fbid': fbid

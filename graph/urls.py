@@ -11,6 +11,7 @@ urlpatterns = [
 
     # Temp helper methods
     url(r'^delete_users/', general.delete_users),
+    url(r'^delete_all/', general.delete_all),
 
     # Goal endpoints
     url(r'^goals/(?P<goal_id>\d+)/$', goal_views.goals),

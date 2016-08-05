@@ -24,6 +24,15 @@ def delete_users(request):
         u.delete()
     return HttpResponse("Deleted " + str(num_of_users_deleted) + " users!")
 
+def delete_all(request):
+    User.objects.all().delete()
+    Goal.objects.all().delete()
+    GoalEntry.objects.all().delete()
+    ToDoTask.objects.all().delete()
+    Message.objects.all().delete()
+
+    return HttpResponse("Deleted all")
+
 
 def dashboard(request, fbid):
     if not helper_util.user_exists(fbid):
