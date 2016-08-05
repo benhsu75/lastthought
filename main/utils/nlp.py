@@ -1,3 +1,4 @@
+from main.models import *
 
 def is_onboarding_domain(current_user, text):
     return current_user.state == 0
