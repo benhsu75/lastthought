@@ -42,7 +42,7 @@ def messenger_callback(request):
 
             print("# FBID: " + fbid)
 
-            if(!helper_util.user_exists(fbid)):
+            if(not helper_util.user_exists(fbid)):
                 onboarding_domain.create_new_user(fbid)
                 continue
 
