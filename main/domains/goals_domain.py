@@ -63,12 +63,12 @@ def handle_goals(current_user, text):
                 val = float(text)
             except:
                 # Log response
-                message_log.log_message('goals_trigger_response', current_user, text, None)
+                message_log.log_message('misunderstood_goal_response', current_user, text, None)
                 misunderstood_goal_response(current_user, goal_in_reference.response_type)
                 return
 
             # Log response
-            message_log.log_message('goal_prompt_response', current_user, text, None)
+            message_log.log_message('goal_prompt_response', current_user, text, {'goal':goal_in_reference})
             
             # Set the data in goal_entry
             goal_entry.numeric_value = val
@@ -86,11 +86,14 @@ def handle_goals(current_user, text):
                 binary_value = 0
             else:
                 # Log invalid response
-                message_log.log_message('goals_trigger_response', current_user, text, None)
+                message_log.log_message('misunderstood_goal_response', current_user, text, None)
 
                 # Send message
                 misunderstood_goal_response(current_user, goal_in_reference.response_type)
                 return
+
+            # Log response
+            message_log.log_message('goal_prompt_response', current_user, text, {'goal':goal_in_reference})
 
             # Set the data in goal_entry
             goal_entry.binary_value = binary_value
@@ -102,7 +105,7 @@ def handle_goals(current_user, text):
 
         elif(goal_in_reference.response_type == 2): # Text
             # Log response
-            message_log.log_message('goal_prompt_response', current_user, text, None)
+            message_log.log_message('goal_prompt_response', current_user, text, {'goal':goal_in_reference})
 
             # Set the data in goal_entry
             goal_entry.text_value = text
