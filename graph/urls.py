@@ -1,6 +1,6 @@
 from django.conf.urls import url, patterns
 from django.contrib import admin
-from main.views import general, goal_views, todo_views
+from main.views import general, goal_views, todo_views, log_views
 from main.entrypoints.messenger import messenger
 from django.conf import settings
 
@@ -18,7 +18,8 @@ urlpatterns = [
     url(r'^goals/$', goal_views.goals),
 
     # Log endpoints
-    
+    url(r'^logs/(?P<log_id>\d+)/$', log_views.logs),
+    url(r'^logs/$', log_views.logs),
 
     # Todo endpoints
     url(r'^todo/(?P<todo_id>\d+)/$', todo_views.todo),
