@@ -10,12 +10,15 @@ from main.utils import helper_util
 ###############################################
 ############### HELPER METHODS ################
 ###############################################
-def goal_exists(goal_id):
+
+
+def get_goal(goal_id):
+    if goal_id is None return None
     try:
         goal = Goal.objects.get(id=goal_id)
-        return True
+        return goal
     except Goal.DoesNotExist:
-        return False
+        return None
 
 #################################################
 ############# REST API ENDPOINT #################
@@ -23,31 +26,26 @@ def goal_exists(goal_id):
 
 
 def goals(request, goal_id=None):
+    goal = get_goal(goal_id)
 
     # Get list of all goals
     if request.method == 'GET':
+        if goal is None:
+            return HttpResponse(status=403)
 
-        if(goal_id is not None):
-            if not goal_exists(goal_id):
-                return HttpResponse(status=404)
-        else:
-            return HttpResponse(status=404)
-
-        goal = Goal.objects.get(id=goal_id)
         goal_entries = GoalEntry.objects.filter(goal=goal)
-
-        # Handle get to /goals
-        if(not goal_id):
-            return HttpResponse(status=404)
         serialized_goal = serializers.serialize('json', [goal])
         serialized_goal_entries = serializers.serialize('json', goal_entries)
-        print("RETURNING")
         return HttpResponse(json.dumps({
             'goal': serialized_goal,
             'goal_entries': serialized_goal_entries
         }))
+
     # Delete goal
     elif request.method == 'DELETE':
+        if goal is None:
+            return HttpResponse(status=403)
+
         goal.delete()
         return HttpResponse(status=200)
 
@@ -75,7 +73,7 @@ def goals(request, goal_id=None):
         return HttpResponse(status=200)
     # Error 404 Not Found
     else:
-        return HttpResponse(status=404)
+        return HttpResponse(status=403)
 
 ############################################
 ################# VIEWS ####################
