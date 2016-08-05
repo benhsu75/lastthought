@@ -1,5 +1,6 @@
 from main.models import *
 from datetime import datetime
+from django.utils import timezone
 
 def user_exists(fbid):
     try:
@@ -8,5 +9,5 @@ def user_exists(fbid):
     except User.DoesNotExist:
         return False
 
-def same_day(a, b):
-    return (a - b).total_seconds() < 86400
+def same_day_as_now(a):
+    return (datetime.now(timezone.utc) - a).total_seconds() < 86400

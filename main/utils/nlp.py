@@ -17,7 +17,7 @@ def is_goals_domain(current_user, text):
 
     if('goals' in text):
         return True
-    elif(last_message.message_type  == 6 or (last_prompt_message != None and helper_util.same_day(last_prompt_message.created_at, datetime.today()))):
+    elif(last_message.message_type  == 6 or (last_prompt_message != None and helper_util.same_day_as_now(last_prompt_message.created_at, datetime.today()))):
         return True
     else:
         return False
