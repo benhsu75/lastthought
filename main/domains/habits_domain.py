@@ -130,8 +130,6 @@ def handle_binary_postback(current_user, payload):
     # Send confirmation message and log
     understood_habit_response(current_user, last_prompt_message)
 
-
-
 def misunderstood_habit_response(current_user, correct_response_type):
     if correct_response_type == 0:
         misunderstood_habit_message = "I couldn't understand your response - make sure you reply with a number!"

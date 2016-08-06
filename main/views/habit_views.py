@@ -2,10 +2,11 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from main.models import *
-
+from main.entrypoints.messenger import send_api_helper
 import json
 from django.core import serializers
 from main.utils import helper_util
+from message_log import message_log
 
 ###############################################
 ############### HELPER METHODS ################
@@ -70,6 +71,11 @@ def habits(request, habit_id=None):
             response_type=response_type
         )
         habit.save()
+
+        # Tell the user that a goal was created
+        habit_creation_message = "Congrats, let's help you build this habit :). I'll ask you '" + send_text + "' everyday at " + send_time_utc + " UTC."
+        send_api_helper.send_basic_text_message(fbid, habit_creation_message)
+        message_log.log_message('habit_creation_message', current_user, habit_creation_message, None)
 
         return HttpResponse(status=200)
     # Error 404 Not Found
