@@ -17,7 +17,7 @@ def create_new_user(fbid):
     ask_for_name_message = "To begin, what's your full name?"
     send_api_helper.send_basic_text_message(fbid, ask_for_name_message)
     message_log.log_message('ask_for_name_message', u, ask_for_name_message, None)
-
+    print 'in create new user - after send'
 
 def handle_onboard_flow(current_user, fbid, text):
     fbid = current_user.fbid
