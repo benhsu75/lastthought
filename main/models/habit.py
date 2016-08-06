@@ -25,4 +25,5 @@ class HabitEntry(models.Model):
     numeric_value = models.FloatField(null=True)
     binary_value = models.SmallIntegerField(null=True) # 0 = False, 1 = True
     text_value = models.CharField(max_length=1000, null=True)
+    
     response_collected = models.SmallIntegerField(default=0)
