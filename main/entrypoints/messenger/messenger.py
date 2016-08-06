@@ -56,7 +56,8 @@ def messenger_callback(request):
                 handle_optin(fbid)
             elif 'postback' in messaging:
                 # Postback webhook
-                handle_postback(fbid)
+                payload = message['postback']['payload']
+                handle_postback(fbid, payload)
 
     return HttpResponse(status=200)
 
@@ -72,8 +73,23 @@ def handle_optin(fbid):
 
     onboarding_domain.create_new_user(fbid)
 
-def handle_postback(fbid):
-    return
+def handle_postback(fbid, string_payload):
+    payload = json.loads(string_payload)
+
+    state = payload['state']
+
+    # Get current user
+    if helper_util.user_exists(fbid):
+        current_user = User.objects.get(fbid=fbid)
+    else:
+        return HttpResponse(status=200)
+        # Should never get here
+
+    if state == 'habit_binary_response':
+        habits_domain.handle_binary_postback(current_user, payload)
+    else:
+        misunderstood_domain.handle_misunderstood(current_user, string_payload)
+
 
 def handle_message_received(fbid, text):
     try:
