@@ -43,18 +43,22 @@ def messenger_callback(request):
             print("# FBID: " + fbid)
 
             if(not helper_util.user_exists(fbid)):
+                print 'creating new user'
                 onboarding_domain.create_new_user(fbid)
                 continue
 
             # Handle different webhooks times
             if 'message' in messaging:
+                print 'handling message'
                 # Message received webhook
                 message_text = messaging['message']['text']
                 handle_message_received(fbid, message_text)
             elif 'optin' in messaging:
+                print 'handling optin'
                 # Plugin authentication webhook
                 handle_optin(fbid)
             elif 'postback' in messaging:
+                print 'handling postback'
                 # Postback webhook
                 payload = message['postback']['payload']
                 handle_postback(fbid, payload)
