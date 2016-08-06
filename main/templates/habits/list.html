@@ -16,6 +16,7 @@
         <span>{{ habit.user.full_name }}</span> - 
         <span>{{ habit.send_text }}</span> - 
         <span>{{ habit.send_time_utc }}</span> - 
+        <a href="/habits/{{ habit.id }}/show">View Habit Details</a>
     </div>
     {% endfor %}
 

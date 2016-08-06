@@ -6,19 +6,25 @@
 <body>
     <div>
         <h3>{{ habit.name }}</h3>
+        <h4>{{ habit.send_text }}</h4>
     </div>
     <div>
         {% for habit_entry in habit_entries %}
             <div>
-                {% if habit.response_type == 0 %}
-                    {{ habit_entry.numeric_value }}
-                {% elif habit.response_type == 1 %}
-                    {{ habit_entry.binary_value }}
-                {% elif habit.response_type == 2 %}
-                    {{ habit_entry.text_value }}
-                {% elif habit.response_type == 3 %}
-                    FILE GOES HERE
-                {% endif %}
+                <span>
+                    {{ habit_entry.created_at }}
+                </span> - 
+                <span>
+                    {% if habit.response_type == 0 %}
+                        {{ habit_entry.numeric_value }}
+                    {% elif habit.response_type == 1 %}
+                        {{ habit_entry.binary_value }}
+                    {% elif habit.response_type == 2 %}
+                        {{ habit_entry.text_value }}
+                    {% elif habit.response_type == 3 %}
+                        FILE GOES HERE
+                    {% endif %}
+                </span>
             </div>
         {% endfor %}
     </div>

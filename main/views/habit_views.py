@@ -109,10 +109,11 @@ def list(request, fbid):
 
 # Allow users to see entries for a given habit
 def show(request, habit_id):
-    if not habit_exists(habit_id):
-        return HttpResponse(status=404)
+    habit = get_habit(habit_id)
 
-    habit = Habit.objects.get(id=habit_id)
+    if not habit:
+        return HttpResponse(status=403)
+
     habit_entries = HabitEntry.objects.filter(habit=habit)
 
     context = RequestContext(request, {
