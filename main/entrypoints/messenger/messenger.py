@@ -105,7 +105,7 @@ def handle_message_received(fbid, text):
     
     elif(nlp.is_habits_domain(current_user, text)):
 
-        habits_domain.handle_habits(current_user, text)
+        habits_domain.handle_habits_text(current_user, text)
 
     elif(nlp.is_todo_domain(current_user, text)):
 
