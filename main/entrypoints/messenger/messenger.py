@@ -7,11 +7,15 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from main.message_log import message_log
 from main.utils import nlp, helper_util
-from main.domains import habits_domain, onboarding_domain, todo_domain, misunderstood_domain
+from main.domains import (habits_domain,
+                          onboarding_domain,
+                          todo_domain,
+                          misunderstood_domain)
 
 ######################################
 ######### MESSENGER WEBHOOK ##########
 ######################################
+
 
 @csrf_exempt
 def messenger_callback(request):
@@ -65,17 +69,19 @@ def messenger_callback(request):
 
     return HttpResponse(status=200)
 
-# Sends the user our initial message 
+
+# Sends the user our initial message
 def handle_optin(fbid):
     # Check if user exists, if it does, do nothing
     try:
         current_user = User.objects.get(fbid=fbid)
 
-        return # Do nothing
+        return  # Do nothing
     except User.DoesNotExist:
         pass
 
     onboarding_domain.create_new_user(fbid)
+
 
 def handle_postback(fbid, string_payload):
     payload = json.loads(string_payload)
@@ -99,24 +105,25 @@ def handle_message_received(fbid, text):
     try:
         current_user = User.objects.get(fbid=fbid)
     except User.DoesNotExist:
-        send_api_helper.send_basic_text_message(fbid,"Something went wrong :(")
+        send_api_helper.send_basic_text_message(
+            fbid, "Something went wrong :("
+        )
         return
 
-    # Use nlp to determine which domain it goes under, then triage to that domain. The domain handles the sub-triaging within itself
+    # Use nlp to determine which domain it goes under,
+    # then triage to that domain. The domain handles the
+    # sub-triaging within itself
     if(nlp.is_onboarding_domain(current_user, text)):
-
         onboarding_domain.handle_onboard_flow(current_user, fbid, text)
-    
-    elif(nlp.is_habits_domain(current_user, text)):
 
+    elif(nlp.is_habits_domain(current_user, text)):
         habits_domain.handle_habits_text(current_user, text)
 
-    elif(nlp.is_todo_domain(current_user, text)):
+    elif(nlp.is_logs_domain(text)):
+        logs_domain.handle_log_entry(current_user, text)
 
+    elif(nlp.is_todo_domain(current_user, text)):
         todo_domain.handle_todo(current_user, text)
 
     else:
-
         misunderstood_domain.handle_misunderstood(current_user, text)
-        
-
