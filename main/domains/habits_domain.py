@@ -19,7 +19,7 @@ negative_synonyms = [
     'nah'
 ]
 
-def handle_habits(current_user, text):
+def handle_habits_text(current_user, text):
 
     # Get context
     fbid = current_user.fbid
@@ -116,6 +116,14 @@ def handle_habits(current_user, text):
 
         else:
             misunderstood_habit_response(current_user, habit_in_reference.response_type)
+
+def handle_binary_postback(current_user, payload):
+    habit_entry_id = payload['habit_entry_id']
+    habit_entry = HabitEntry.objects.get(id=habit_entry_id)
+
+    habit_entry.binary_value = payload['value']
+    habit_entry.save()
+
 
 def misunderstood_habit_response(current_user, correct_response_type):
     if correct_response_type == 0:
