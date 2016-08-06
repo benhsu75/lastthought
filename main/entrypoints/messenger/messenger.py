@@ -60,7 +60,7 @@ def messenger_callback(request):
             elif 'postback' in messaging:
                 print 'handling postback'
                 # Postback webhook
-                payload = message['postback']['payload']
+                payload = messaging['postback']['payload']
                 handle_postback(fbid, payload)
 
     return HttpResponse(status=200)
