@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from main.message_log import message_log
 from main.utils import nlp, helper_util
-from main.domains import goals_domain, onboarding_domain, todo_domain, misunderstood_domain
+from main.domains import habits_domain, onboarding_domain, todo_domain, misunderstood_domain
 
 ######################################
 ######### MESSENGER WEBHOOK ##########
@@ -87,9 +87,9 @@ def handle_message_received(fbid, text):
 
         onboarding_domain.handle_onboard_flow(current_user, fbid, text)
     
-    elif(nlp.is_goals_domain(current_user, text)):
+    elif(nlp.is_habits_domain(current_user, text)):
 
-        goals_domain.handle_goals(current_user, text)
+        habits_domain.handle_habits(current_user, text)
 
     elif(nlp.is_todo_domain(current_user, text)):
 

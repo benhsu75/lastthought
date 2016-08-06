@@ -1,6 +1,6 @@
 from django.db import models
 from user import *
-from goal import *
+from habit import *
 
 
 class Message(models.Model):
@@ -14,4 +14,4 @@ class Message(models.Model):
     text = models.CharField(max_length=200, null=True)
 
     response_captured = models.BooleanField(default=False)
-    goal_in_reference = models.ForeignKey(Goal, null=True)
+    habit_in_reference = models.ForeignKey(Habit, null=True)

@@ -1,8 +1,7 @@
 from django.db import models
 from user import *
 
-
-class Goal(models.Model):
+class Habit(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -16,12 +15,12 @@ class Goal(models.Model):
     # 2 = Text
     # 3 = File
     
-class GoalEntry(models.Model):
+class HabitEntry(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     sent_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    goal = models.ForeignKey(Goal)
+    habit = models.ForeignKey(Habit)
 
     numeric_value = models.FloatField(null=True)
     binary_value = models.SmallIntegerField(null=True) # 0 = False, 1 = True

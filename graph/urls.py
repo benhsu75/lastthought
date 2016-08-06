@@ -1,6 +1,6 @@
 from django.conf.urls import url, patterns
 from django.contrib import admin
-from main.views import general, goal_views, todo_views, log_views
+from main.views import general, habit_views, todo_views, log_views
 from main.entrypoints.messenger import messenger
 from django.conf import settings
 
@@ -13,9 +13,9 @@ urlpatterns = [
     url(r'^delete_users/', general.delete_users),
     url(r'^delete_all/', general.delete_all),
 
-    # Goal endpoints
-    url(r'^goals/(?P<goal_id>\d+)/$', goal_views.goals),
-    url(r'^goals/$', goal_views.goals),
+    # Habit endpoints
+    url(r'^habits/(?P<habit_id>\d+)/$', habit_views.habits),
+    url(r'^habits/$', habit_views.habits),
 
     # Log endpoints
     url(r'^logs/(?P<log_id>\d+)/$', log_views.logs),
@@ -28,9 +28,9 @@ urlpatterns = [
     # Display endpoints
     url(r'^users/(?P<fbid>\d+)/$', general.dashboard),
     url(r'^users/(?P<fbid>\d+)/todo', todo_views.list),
-    url(r'^users/(?P<fbid>\d+)/goals', goal_views.list),
-    url(r'^users/(?P<fbid>\d+)/add_goal', goal_views.add_goal_page),
-    url(r'^goals/(?P<goal_id>\d+)/show', goal_views.show),
+    url(r'^users/(?P<fbid>\d+)/habits', habit_views.list),
+    url(r'^users/(?P<fbid>\d+)/add_habit', habit_views.add_habit_page),
+    url(r'^habits/(?P<habit_id>\d+)/show', habit_views.show),
 ]
 
 # Ensure static files are accessible
