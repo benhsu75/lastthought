@@ -128,7 +128,7 @@ def handle_binary_postback(current_user, payload):
     habit_entry.save()
 
     # Send confirmation message and log
-    understood_habit_response(current_user, last_prompt_message)
+    send_recorded_message(current_user)
 
 def misunderstood_habit_response(current_user, correct_response_type):
     if correct_response_type == 0:
@@ -143,11 +143,14 @@ def misunderstood_habit_response(current_user, correct_response_type):
     message_log.log_message('misunderstood_habit_message', current_user, misunderstood_habit_message, None)
 
 def understood_habit_response(current_user, original_message):
+    send_recorded_message(current_user)
+    
+    # Mark the original message as resolved
+    original_message.response_captured = True
+    original_message.save()
+
+def send_recorded_message(current_user):
     # Send confirmation message and log
     habit_response_received_confirmation = "Recorded! :)"
     send_api_helper.send_basic_text_message(current_user.fbid, habit_response_received_confirmation)
     message_log.log_message('habit_response_received_confirmation', current_user, habit_response_received_confirmation, None)
-
-    # Mark the original message as resolved
-    original_message.response_captured = True
-    original_message.save()
