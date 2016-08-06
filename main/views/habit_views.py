@@ -6,7 +6,7 @@ from main.entrypoints.messenger import send_api_helper
 import json
 from django.core import serializers
 from main.utils import helper_util
-from message_log import message_log
+from main.message_log import message_log
 
 ###############################################
 ############### HELPER METHODS ################
