@@ -1,5 +1,5 @@
 from user import *
-from goal import *
+from habit import *
 from message import *
 from log import *
 from todo import *

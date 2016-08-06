@@ -37,7 +37,7 @@ def handle_onboard_flow(current_user, fbid, text):
         current_user.save()
 
         # Send message about how to use
-        nice_to_meet_message = "Nice to meet you, " + first_name + "! I'm here to make it easier for you to do things. I can help you track reminders, set goals, and more."
+        nice_to_meet_message = "Nice to meet you, " + first_name + "! I'm here to make it easier for you to do things. I can help you track reminders, set habits, and more."
         send_api_helper.send_basic_text_message(fbid, nice_to_meet_message)
         message_log.log_message('nice_to_meet_message', current_user, nice_to_meet_message, None)
 

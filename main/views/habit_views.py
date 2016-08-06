@@ -12,13 +12,13 @@ from main.utils import helper_util
 ###############################################
 
 
-def get_goal(goal_id):
-    if goal_id is None:
+def get_habit(habit_id):
+    if habit_id is None:
         return None
     try:
-        goal = Goal.objects.get(id=goal_id)
-        return goal
-    except Goal.DoesNotExist:
+        habit = Habit.objects.get(id=habit_id)
+        return habit
+    except Habit.DoesNotExist:
         return None
 
 #################################################
@@ -26,28 +26,28 @@ def get_goal(goal_id):
 #################################################
 
 
-def goals(request, goal_id=None):
-    goal = get_goal(goal_id)
+def habits(request, habit_id=None):
+    habit = get_habit(habit_id)
 
-    # Get list of all goals
+    # Get list of all habits
     if request.method == 'GET':
-        if goal is None:
+        if habit is None:
             return HttpResponse(status=403)
 
-        goal_entries = GoalEntry.objects.filter(goal=goal)
-        serialized_goal = serializers.serialize('json', [goal])
-        serialized_goal_entries = serializers.serialize('json', goal_entries)
+        habit_entries = HabitEntry.objects.filter(habit=habit)
+        serialized_habit = serializers.serialize('json', [habit])
+        serialized_habit_entries = serializers.serialize('json', habit_entries)
         return HttpResponse(json.dumps({
-            'goal': serialized_goal,
-            'goal_entries': serialized_goal_entries
+            'habit': serialized_habit,
+            'habit_entries': serialized_habit_entries
         }))
 
-    # Delete goal
+    # Delete habit
     elif request.method == 'DELETE':
-        if goal is None:
+        if habit is None:
             return HttpResponse(status=403)
 
-        goal.delete()
+        habit.delete()
         return HttpResponse(status=200)
 
     elif request.method == 'POST':
@@ -62,14 +62,14 @@ def goals(request, goal_id=None):
         send_time_utc = request.POST['send_time_utc']
         response_type = request.POST['response_type']
 
-        goal = Goal(
+        habit = Habit(
             user=current_user,
             name=name,
             send_text=send_text,
             send_time_utc=send_time_utc,
             response_type=response_type
         )
-        goal.save()
+        habit.save()
 
         return HttpResponse(status=200)
     # Error 404 Not Found
@@ -81,7 +81,7 @@ def goals(request, goal_id=None):
 ############################################
 
 
-# List all goals for a given user
+# List all habits for a given user
 def list(request, fbid):
     if not helper_util.user_exists(fbid):
         return HttpResponse(status=404)
@@ -90,35 +90,35 @@ def list(request, fbid):
     if(not current_user):
         return HttpResponse("Invalid user")
 
-    goals_list = Goal.objects.filter(user=current_user)
-    serialized_response = serializers.serialize('json', goals_list)
+    habits_list = Habit.objects.filter(user=current_user)
+    serialized_response = serializers.serialize('json', habits_list)
 
     context = RequestContext(request, {
         'fbid': fbid,
-        'goals': goals_list
+        'habits': habits_list
     })
-    template = loader.get_template('goals/list.html')
+    template = loader.get_template('habits/list.html')
     return HttpResponse(template.render(context))
 
 
-# Allow users to see entries for a given goal
-def show(request, goal_id):
-    if not goal_exists(goal_id):
+# Allow users to see entries for a given habit
+def show(request, habit_id):
+    if not habit_exists(habit_id):
         return HttpResponse(status=404)
 
-    goal = Goal.objects.get(id=goal_id)
-    goal_entries = GoalEntry.objects.filter(goal=goal)
+    habit = Habit.objects.get(id=habit_id)
+    habit_entries = HabitEntry.objects.filter(habit=habit)
 
     context = RequestContext(request, {
-        'goal': goal,
-        'goal_entries': goal_entries
+        'habit': habit,
+        'habit_entries': habit_entries
     })
-    template = loader.get_template('goals/show.html')
+    template = loader.get_template('habits/show.html')
     return HttpResponse(template.render(context))
 
 
-# Allow users to add a goal
-def add_goal_page(request, fbid):
+# Allow users to add a habit
+def add_habit_page(request, fbid):
     if not helper_util.user_exists(fbid):
         return HttpResponse(status=404)
 
@@ -129,5 +129,5 @@ def add_goal_page(request, fbid):
     context = RequestContext(request, {
         'fbid': fbid
     })
-    template = loader.get_template('goals/add.html')
+    template = loader.get_template('habits/add.html')
     return HttpResponse(template.render(context))

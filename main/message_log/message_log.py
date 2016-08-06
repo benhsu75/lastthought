@@ -9,9 +9,9 @@ from main.models import Message
 # 2 - name_response
 # 3 - nice_to_meet_message
 # 4 - learn_more_message
-# 5 - goals_trigger_message
-# 6 - goal_prompt_message
-# 7 - goal_response
+# 5 - habits_trigger_message
+# 6 - habit_prompt_message
+# 7 - habit_response
 # 8 - misunderstood_message
 # 9 - misunderstood_response
 # 10 - show_todo_message
@@ -24,18 +24,18 @@ message_mapping = {
   'name_response' : 2,
   'nice_to_meet_message' : 3,
   'learn_more_message' : 4,
-  'goal_prompt_message' : 6,  
-  'goal_prompt_response' : 7,
+  'habit_prompt_message' : 6,  
+  'habit_prompt_response' : 7,
   'misunderstood_response' : 9,
   'misunderstood_message' : 10,
   'show_todo_message' : 11,
   'show_todo_response': 12,
   'add_todo_message' : 13,
   'add_todo_response' : 14,
-  'goals_trigger_message' : 15,
-  'goals_trigger_response' : 16,
-  'misunderstood_goal_response': 17,
-  'misunderstood_goal_message' : 18
+  'habits_trigger_message' : 15,
+  'habits_trigger_response' : 16,
+  'misunderstood_habit_response': 17,
+  'misunderstood_habit_message' : 18
 }
 
 def log_message(message_key, user, text, data):
@@ -55,10 +55,10 @@ def log_message(message_key, user, text, data):
 
   # Add any extra data depending on message_type
   if(message_type == 6):
-      m.goal_in_reference = data['goal']
+      m.habit_in_reference = data['habit']
       m.save()
   elif(message_type == 7):
-      m.goal_in_reference = data['goal']
+      m.habit_in_reference = data['habit']
       m.save()
 
   return True

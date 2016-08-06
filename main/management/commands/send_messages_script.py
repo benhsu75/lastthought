@@ -14,19 +14,19 @@ class Command(BaseCommand):
         print('Current UTC: ' + str(current_utc_hour))
 
         # Filter
-        all_goals_at_current_time = Goal.objects.all().filter(send_time_utc=current_utc_hour)
+        all_habits_at_current_time = Habit.objects.all().filter(send_time_utc=current_utc_hour)
 
-        print(len(all_goals_at_current_time))
+        print(len(all_habits_at_current_time))
 
         # Send messages
-        for g in all_goals_at_current_time:
+        for g in all_habits_at_current_time:
             user = g.user
             fbid = user.fbid
 
             # Message format depends on the response type
             if(g.response_type == 0): # Numeric response
                 send_api_helper.send_basic_text_message(fbid, g.send_text)
-                message_log.log_message('goal_prompt_message', user, g.send_text, {'goal': g})
+                message_log.log_message('habit_prompt_message', user, g.send_text, {'habit': g})
             elif(g.response_type == 1): # Binary response
                 # Construct button_list
                 button_list = []
@@ -42,19 +42,19 @@ class Command(BaseCommand):
                     })
 
                 send_api_helper.send_button_message(fbid, g.send_text, button_list)
-                message_log.log_message('goal_prompt_message', user, g.send_text, {'goal': g})
+                message_log.log_message('habit_prompt_message', user, g.send_text, {'habit': g})
             elif(g.response_type == 2):
                 # Text response
                 send_api_helper.send_basic_text_message(fbid, g.send_text)
-                message_log.log_message('goal_prompt_message', user, g.send_text, {'goal': g})
+                message_log.log_message('habit_prompt_message', user, g.send_text, {'habit': g})
             elif(g.response_type == 3):
                 # File response
                 send_api_helper.send_basic_text_message(fbid, g.send_text)
-                message_log.log_message('goal_prompt_message', user, g.send_text, {'goal': g})
+                message_log.log_message('habit_prompt_message', user, g.send_text, {'habit': g})
 
-            # Create GoalEntry
-            goal_entry = GoalEntry(goal=g)
-            goal_entry.save()
+            # Create HabitEntry
+            habit_entry = HabitEntry(habit=g)
+            habit_entry.save()
 
-            user.active_goal_entry = goal_entry
+            user.active_habit_entry = habit_entry
             user.save()

@@ -8,7 +8,7 @@ class User(models.Model):
     full_name = models.CharField(max_length=200)
     first_name = models.CharField(max_length=200)
 
-    active_goal_entry = models.ForeignKey('GoalEntry', default=None, null=True)
+    active_habit_entry = models.ForeignKey('HabitEntry', default=None, null=True)
 
 # User States
 # 0 - Onboarding after initial messages

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add Goal</title>
+    <title>Add Habit</title>
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
@@ -13,34 +13,34 @@
 <body>
 
     <div>
-        <h3>Create Goal</h3>
+        <h3>Create Habit</h3>
         <input type="hidden" name="fbid" value="{{ fbid }}"><br>
-        <input type="text" name="goal-name" placeholder="Name e.g. Gym"><br>
-        <input type="text" name="goal-send-text" placeholder="Send Text e.g. Did you go to the gym today?"><br>
-        <input type="text" name="goal-send-time" placeholder="UTC Hour e.g. 15 (3 PM)"><br>
-        <input type="radio" name="goal-response-type" value="0" checked>Numeric<br>
-        <input type="radio" name="goal-response-type" value="1">Binary<br>
-        <input type="radio" name="goal-response-type" value="2">Text<br><br>
+        <input type="text" name="habit-name" placeholder="Name e.g. Gym"><br>
+        <input type="text" name="habit-send-text" placeholder="Send Text e.g. Did you go to the gym today?"><br>
+        <input type="text" name="habit-send-time" placeholder="UTC Hour e.g. 15 (3 PM)"><br>
+        <input type="radio" name="habit-response-type" value="0" checked>Numeric<br>
+        <input type="radio" name="habit-response-type" value="1">Binary<br>
+        <input type="radio" name="habit-response-type" value="2">Text<br><br>
 
 
-        <button class="create-goal-button">Create!</button>
+        <button class="create-habit-button">Create!</button>
 
     </div>
     <span class="response-message"></span>
     <script type="text/javascript">
         // Load timepicker
-        $('input[name=goal-send-time]').timepicker({
+        $('input[name=habit-send-time]').timepicker({
             step: 60
         });
 
 
         // Event listeners
-        $('.create-goal-button').click(function() {
+        $('.create-habit-button').click(function() {
             var fbid = $('input[name=fbid]').val();
-            var name = $('input[name=goal-name]').val();
-            var sendText = $('input[name=goal-send-text]').val();
+            var name = $('input[name=habit-name]').val();
+            var sendText = $('input[name=habit-send-text]').val();
 
-            var date = $('input[name=goal-send-time]').timepicker('getTime', new Date());
+            var date = $('input[name=habit-send-time]').timepicker('getTime', new Date());
 
             if (date == null) {
                 // Form validation error
@@ -48,7 +48,7 @@
             }
 
             var sendTime = date.getUTCHours();
-            var responseType = $('input[name=goal-response-type]:checked').val();
+            var responseType = $('input[name=habit-response-type]:checked').val();
 
             console.log(fbid);
             console.log(name);
@@ -65,19 +65,19 @@
                 csrfmiddlewaretoken: '{{csrf_token}}'
             };
 
-            // POST to /goals
+            // POST to /habits
             $.ajax({
                 method: 'POST',
-                url: '/goals/',
+                url: '/habits/',
                 data: payload,
                 success: function() {
                     // Clear fields
-                    $('input[name=goal-name]').val("");
-                    $('input[name=goal-send-text]').val("");
-                    $('input[name=goal-send-time]').val("");
-                    $('input[name=goal-response-type]:checked').val("");
+                    $('input[name=habit-name]').val("");
+                    $('input[name=habit-send-text]').val("");
+                    $('input[name=habit-send-time]').val("");
+                    $('input[name=habit-response-type]:checked').val("");
 
-                    $('.response-message').text("Success! Goal added!");
+                    $('.response-message').text("Success! Habit added!");
                 }
             })
 
