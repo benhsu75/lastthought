@@ -3,6 +3,7 @@ from main.models import *
 from main.entrypoints.messenger import send_api_helper
 from datetime import datetime
 from main.message_log import message_log
+import json
 
 class Command(BaseCommand):
     

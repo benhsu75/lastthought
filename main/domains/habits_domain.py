@@ -2,7 +2,6 @@ from main.message_log import message_log
 from main.entrypoints.messenger import send_api_helper
 from main.models import *
 from main.utils import helper_util
-import json
 
 BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
 
