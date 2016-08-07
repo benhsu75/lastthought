@@ -44,7 +44,7 @@ def handle_habits_text(current_user, text):
         # Send message
         send_api_helper.send_basic_text_message(fbid, existing_habits_message)
         # Log message
-        message_log.log_message('existing_habits_message', current_user, misunderstood_habit_message, None)
+        message_log.log_message('existing_habits_message', current_user, existing_habits_message, None)
 
         # Send list of habits and links to view them
         habit_list = Habit.objects.filter(user=current_user)
@@ -61,10 +61,6 @@ def handle_habits_text(current_user, text):
                 ])
             # Log message
             message_log.log_message('habit_info_message', current_user, habit_info_message, None)
-
-
-            # Send message for habit
-            habit_info_message = "He"
 
         # Send manage message
         habits_trigger_message = "Manage your habits:"
