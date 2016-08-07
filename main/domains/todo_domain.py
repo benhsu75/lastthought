@@ -30,7 +30,7 @@ def handle_todo(current_user, text, processed_text):
         message_log.log_message('show_todo_response', current_user, text, None)
 
         # Send link to todo list
-        show_todo_message = ""
+        show_todo_message = "Todo:\n\n" + generate_todo_list_string(current_user) + "\n\nReply with the corresponding number to complete a task."
         send_api_helper.send_button_message(fbid, show_todo_message, [
                 {
                     'type': 'web_url',
@@ -40,10 +40,10 @@ def handle_todo(current_user, text, processed_text):
             ])
         message_log.log_message('show_todo_message', current_user, show_todo_message, None)
 
-        # Send todo list inline
-        todo_list_message = generate_todo_list_string(current_user)
-        send_api_helper.send_basic_text_message(fbid, todo_list_message)
-        message_log.log_message('todo_list_message', current_user, todo_list_message, None)
+        # # Send todo list inline
+        # todo_list_message = generate_todo_list_string(current_user)
+        # send_api_helper.send_basic_text_message(fbid, todo_list_message)
+        # message_log.log_message('todo_list_message', current_user, todo_list_message, None)
 
 def generate_todo_list_string(current_user):
     return_string = ''
@@ -53,7 +53,7 @@ def generate_todo_list_string(current_user):
     if len(todo_list) == 0:
         return_string = "You're done with everything!"
     else:
-        count = 0
+        count = 1
         for todo in todo_list:
             return_string += str(count) + ') ' + todo.text + '\n'
             count += 1
