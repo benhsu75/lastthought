@@ -1,9 +1,8 @@
 from main.message_log import message_log
 from main.entrypoints.messenger import send_api_helper
 from main.models import *
-from main.utils import helper_util, nlp
+from main.utils import helper_util, nlp, constants
 
-BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
 
 affirmative_synonyms = [
     'yes',
@@ -20,8 +19,6 @@ negative_synonyms = [
 ]
 
 def handle_habits_text(current_user, text, processed_text):
-
-    print 'handle_habits_text in habits_domain'
 
     # Get context
     fbid = current_user.fbid
@@ -54,7 +51,7 @@ def handle_habits_text(current_user, text, processed_text):
             send_api_helper.send_button_message(fbid, habit_info_message, [
                     {
                         'type': 'web_url',
-                        'url': BASE_HEROKU_URL + '/habits/'+str(habit.id)+'/show',
+                        'url': constants.BASE_HEROKU_URL + '/habits/'+str(habit.id)+'/show',
                         'title': 'View'    
                     },
                 ])
@@ -66,12 +63,12 @@ def handle_habits_text(current_user, text, processed_text):
         send_api_helper.send_button_message(fbid, habits_trigger_message, [
                     {
                         'type': 'web_url',
-                        'url': BASE_HEROKU_URL + '/users/'+fbid+'/habits',
+                        'url': constants.BASE_HEROKU_URL + '/users/'+fbid+'/habits',
                         'title': 'See Habits'    
                     },
                     {
                         'type': 'web_url',
-                        'url': BASE_HEROKU_URL + '/users/'+fbid+'/add_habit',
+                        'url': constants.BASE_HEROKU_URL + '/users/'+fbid+'/add_habit',
                         'title': 'Add Habit'    
                     }
                 ])
