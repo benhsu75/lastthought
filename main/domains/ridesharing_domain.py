@@ -12,7 +12,7 @@ def handle(current_user, text, processed_text):
     send_api_helper.send_button_message(current_user.fbid, ridesharing_setup_message, [{
             {
                 'type': 'web_url',
-                'url': constants.BASE_HEROKU_URL + '/users/'+str(fbid)+'/setup_ridesharing',
+                'url': constants.BASE_HEROKU_URL + '/users/'+str(current_user.fbid)+'/setup_ridesharing',
                 'title': 'Go'    
             },
         }])
