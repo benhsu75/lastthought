@@ -30,8 +30,7 @@ def is_todo_domain(current_user, text):
 
 # Returns whether or not the last message in the message log was us prompting a response
 def last_message_is_prompt(current_user):
-    return Message.objects.filter(
-        user=current_user).order_by('-created_at')[0].message_type == 6
+    return Message.objects.filter(user=current_user).order_by('-id')[0].message_type == 6
 
 # Looks at the message history, and returns whether or not this message is a response to a prompt
 def user_is_in_answer_prompt_state(current_user):
@@ -42,7 +41,7 @@ def user_is_in_answer_prompt_state(current_user):
     prompt_message_list = Message.objects.filter(
         user=current_user,
         message_type=6
-    ).order_by('-created_at')
+    ).order_by('-id')
     if len(prompt_message_list) > 0:
         last_prompt_message = prompt_message_list[0]
     else:
@@ -53,7 +52,7 @@ def user_is_in_answer_prompt_state(current_user):
         return False
 
     # Get all messages newer than the last_prompt_message
-    newer_messages = Message.objects.filter(created_at__gte=last_prompt_message.created_at)
+    newer_messages = Message.objects.filter(id__gte=last_prompt_message.id)
 
     accepted_message_types = [17, 18]
 
