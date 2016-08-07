@@ -4,9 +4,8 @@ import requests
 PAGE_ACCESS_TOKEN = 'EAADqZAUs43F4BAM24X91sSlhAIU7UHnLyO6eNp1rGMmQncyKsz34AgvlqfJKRnn3rNfYLMZBZA914L5z9MO8G6AVsGhljVUZCZAYtNfjbt0NKX7FFHDjOPvBcsiZCNzpSdNVZC4lCsbHVevRIhzKxFzjFzAMDVWq4W8KNuqtxXt8QZDZD'
 SEND_BASE_URL = 'https://graph.facebook.com/v2.6/me/messages?access_token='
 
-
+# Send's a normal messenger text message
 def send_basic_text_message(fbid, text):
-    print 'in send_basic_text_message'
     # Send message through FB Send API
     send_payload = {
         'recipient': {
@@ -20,9 +19,8 @@ def send_basic_text_message(fbid, text):
     r = requests.post(url_to_post, json=send_payload)
     print(r.text)
 
-
+# Sends a messenger text message with buttons
 def send_button_message(fbid, text, button_list):
-    print 'in send_button_message'
     # Send message through FB Send API
     send_payload = {
         'recipient': {
@@ -43,7 +41,7 @@ def send_button_message(fbid, text, button_list):
     r = requests.post(url_to_post, json=send_payload)
     print(r.text)
 
-
+# Sends a message with quick replies (10 max)
 def send_quick_reply_message(fbid, text, quick_replies):
     send_payload = {
         'recipient': {

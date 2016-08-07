@@ -8,16 +8,12 @@ import json
 class Command(BaseCommand):
     
     def handle(self, *args, **options):
-        print("SENDING MESSAGES")
         # Get current UTC hour
         current_datetime = datetime.utcnow()
         current_utc_hour = current_datetime.hour
-        print('Current UTC: ' + str(current_utc_hour))
 
-        # Filter
+        # Filter habits to send now
         all_habits_at_current_time = Habit.objects.all().filter(send_time_utc=current_utc_hour)
-
-        print(len(all_habits_at_current_time))
 
         # Send messages
         for h in all_habits_at_current_time:
@@ -29,10 +25,10 @@ class Command(BaseCommand):
             habit_entry.save()
 
             # Message format depends on the response type
-            if(h.response_type == 0): # Numeric response
+            if h.response_type == 0: # Numeric response
                 send_api_helper.send_basic_text_message(fbid, h.send_text)
                 message_log.log_message('habit_prompt_message', user, h.send_text, {'habit_entry': habit_entry})
-            elif(h.response_type == 1): # Binary response
+            elif h.response_type == 1: # Binary response
                 # Construct button_list
                 quick_reply_list = []
 
@@ -58,13 +54,18 @@ class Command(BaseCommand):
                         'payload': false_payload
                     })
 
+                # Send message and log
                 send_api_helper.send_quick_reply_message(fbid, h.send_text, quick_reply_list)
                 message_log.log_message('habit_prompt_message', user, h.send_text, {'habit_entry': habit_entry})
-            elif(h.response_type == 2):
+            elif h.response_type == 2:
                 # Text response
+
+                # Send message and log
                 send_api_helper.send_basic_text_message(fbid, h.send_text)
                 message_log.log_message('habit_prompt_message', user, h.send_text, {'habit_entry': habit_entry})
-            elif(h.response_type == 3):
+            elif h.response_type == 3:
                 # File response
+
+                # Send message and log
                 send_api_helper.send_basic_text_message(fbid, h.send_text)
                 message_log.log_message('habit_prompt_message', user, h.send_text, {'habit_entry': habit_entry})

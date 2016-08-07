@@ -92,7 +92,4 @@ def user_is_in_complete_todo_state(processed_text, current_user):
 
     return False
 
-    # It might be that the user has completed a todo before this, we want to allow them to complete many
-
-
 
