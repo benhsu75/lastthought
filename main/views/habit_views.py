@@ -12,7 +12,6 @@ from main.message_log import message_log
 ############### HELPER METHODS ################
 ###############################################
 
-
 def get_habit(habit_id):
     if habit_id is None:
         return None
@@ -25,7 +24,6 @@ def get_habit(habit_id):
 #################################################
 ############# REST API ENDPOINT #################
 #################################################
-
 
 def habits(request, habit_id=None):
     habit = get_habit(habit_id)
@@ -114,7 +112,7 @@ def show(request, habit_id):
     if not habit:
         return HttpResponse(status=403)
 
-    habit_entries = HabitEntry.objects.filter(habit=habit)
+    habit_entries = HabitEntry.objects.filter(habit=habit).order_by('id')
 
     context = RequestContext(request, {
         'habit': habit,
