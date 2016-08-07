@@ -54,7 +54,7 @@ def user_is_in_answer_prompt_state(current_user):
     # Get all messages newer than the last_prompt_message
     newer_messages = Message.objects.filter(id__gte=last_prompt_message.id)
 
-    accepted_message_types = [17, 18]
+    accepted_message_types = [6, 17, 18]
 
     for m in newer_messages:
         print 'message type is this message is ' + str(m.message_type)
