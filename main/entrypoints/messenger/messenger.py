@@ -131,5 +131,8 @@ def handle_message_received(fbid, text):
     elif nlp.is_todo_domain(current_user, processed_text):
         todo_domain.handle_todo(current_user, text, processed_text)
 
+    elif nlp.is_ridesharing_domain(processed_text):
+        ridesharing_domain.handle(current_user, text, processed_text)
+        
     else:
         misunderstood_domain.handle_misunderstood(current_user, text, processed_text)

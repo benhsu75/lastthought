@@ -33,6 +33,10 @@ def is_weather_domain(text):
     if 'weather' in text:
         return True
 
+def is_ridesharing_domain(text):
+    if 'ride' in text:
+        return True
+
 ##############################################
 ############### HELPER METHODS ###############
 ##############################################

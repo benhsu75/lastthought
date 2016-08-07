@@ -1,6 +1,6 @@
 from django.conf.urls import url, patterns
 from django.contrib import admin
-from main.views import general, habit_views, todo_views, log_views
+from main.views import general, habit_views, todo_views, log_views, ridesharing_views
 from main.entrypoints.messenger import messenger
 from django.conf import settings
 
@@ -31,6 +31,8 @@ urlpatterns = [
     url(r'^users/(?P<fbid>\d+)/habits', habit_views.list),
     url(r'^users/(?P<fbid>\d+)/add_habit', habit_views.add_habit_page),
     url(r'^habits/(?P<habit_id>\d+)/show', habit_views.show),
+    url(r'^users/(?P<fbid>\d+)/setup_ridesharing', ridesharing_views.setup),
+
 ]
 
 # Ensure static files are accessible
