@@ -117,7 +117,8 @@ def handle_habits_text(current_user, text):
         else:
             misunderstood_habit_response(current_user, habit_in_reference.response_type)
 
-def handle_binary_postback(current_user, payload):
+def handle_quick_reply(current_user, text, payload):
+
     # Get data from payload
     habit_entry_id = payload['habit_entry_id']
     habit_entry = HabitEntry.objects.get(id=habit_entry_id)
@@ -126,6 +127,9 @@ def handle_binary_postback(current_user, payload):
     habit_entry.binary_value = payload['value']
     habit_entry.response_collected = 1
     habit_entry.save()
+
+    # Log message
+    message_log.log_message('habit_prompt_response', current_user, text, {'habit':habit_entry.habit})
 
     # Send confirmation message and log
     send_recorded_message(current_user)

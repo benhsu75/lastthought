@@ -53,8 +53,18 @@ def messenger_callback(request):
 
             # Handle different webhooks times
             if 'message' in messaging:
+
+                # Reroute quick replies
+                if 'quick_reply' in messaging['message']:
+                    print 'handle quick reply'
+                    message_text = messaging['message']['text']
+                    payload = json.loads(messaging['message']['quick_reply']['payload'])
+
+                    handle_quick_reply(fbid, message_text, payload)
+                    continue
+
+                # Is normal message received
                 print 'handling message'
-                # Message received webhook
                 message_text = messaging['message']['text']
                 handle_message_received(fbid, message_text)
             elif 'optin' in messaging:
@@ -83,23 +93,25 @@ def handle_optin(fbid):
     onboarding_domain.create_new_user(fbid)
 
 
-def handle_postback(fbid, string_payload):
-    payload = json.loads(string_payload)
+# def handle_postback(fbid, string_payload):
+#     payload = json.loads(string_payload)
 
+#     state = payload['state']
+
+#     # Get current user
+#     if helper_util.user_exists(fbid):
+#         current_user = User.objects.get(fbid=fbid)
+#     else:
+#         return HttpResponse(status=200)
+#         # Should never get here
+
+def handle_quick_reply(fbid, text, payload):
     state = payload['state']
 
-    # Get current user
-    if helper_util.user_exists(fbid):
-        current_user = User.objects.get(fbid=fbid)
-    else:
-        return HttpResponse(status=200)
-        # Should never get here
-
     if state == 'habit_binary_response':
-        habits_domain.handle_binary_postback(current_user, payload)
+        habits_domain.handle_quick_reply(current_user, text, payload)
     else:
         misunderstood_domain.handle_misunderstood(current_user, string_payload)
-
 
 def handle_message_received(fbid, text):
     try:
