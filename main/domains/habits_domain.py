@@ -3,21 +3,6 @@ from main.entrypoints.messenger import send_api_helper
 from main.models import *
 from main.utils import helper_util, nlp, constants
 
-
-affirmative_synonyms = [
-    'yes',
-    'yep',
-    'y',
-    'ya'
-]
-
-negative_synonyms = [
-    'no',
-    'nope',
-    'n',
-    'nah'
-]
-
 def handle_habits_text(current_user, text, processed_text):
 
     # Get context
@@ -110,9 +95,9 @@ def handle_habits_text(current_user, text, processed_text):
 
         elif(habit_entry.habit.response_type  == 1): # Binary
             # Convert text to 0 or 1
-            if processed_text in affirmative_synonyms:
+            if processed_text in constants.AFFIRMATIVE_SYNONYMS:
                 binary_value = 1
-            elif processed_text in negative_synonyms:
+            elif processed_text in constants.NEGATIVE_SYNONYMS:
                 binary_value = 0
             else:
                 # Log invalid response
