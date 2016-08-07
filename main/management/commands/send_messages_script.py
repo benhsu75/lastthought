@@ -20,19 +20,19 @@ class Command(BaseCommand):
         print(len(all_habits_at_current_time))
 
         # Send messages
-        for g in all_habits_at_current_time:
-            user = g.user
+        for h in all_habits_at_current_time:
+            user = h.user
             fbid = user.fbid
 
             # Create HabitEntry
-            habit_entry = HabitEntry(habit=g)
+            habit_entry = HabitEntry(habit=h)
             habit_entry.save()
 
             # Message format depends on the response type
-            if(g.response_type == 0): # Numeric response
-                send_api_helper.send_basic_text_message(fbid, g.send_text)
-                message_log.log_message('habit_prompt_message', user, g.send_text, {'habit': g})
-            elif(g.response_type == 1): # Binary response
+            if(h.response_type == 0): # Numeric response
+                send_api_helper.send_basic_text_message(fbid, h.send_text)
+                message_loh.log_message('habit_prompt_message', user, h.send_text, {'habit_entry': habit_entry})
+            elif(h.response_type == 1): # Binary response
                 # Construct button_list
                 quick_reply_list = []
 
@@ -58,13 +58,13 @@ class Command(BaseCommand):
                         'payload': false_payload
                     })
 
-                send_api_helper.send_quick_reply_message(fbid, g.send_text, quick_reply_list)
-                message_log.log_message('habit_prompt_message', user, g.send_text, {'habit': g})
-            elif(g.response_type == 2):
+                send_api_helper.send_quick_reply_message(fbid, h.send_text, quick_reply_list)
+                message_loh.log_message('habit_prompt_message', user, h.send_text, {'habit_entry': habit_entry})
+            elif(h.response_type == 2):
                 # Text response
-                send_api_helper.send_basic_text_message(fbid, g.send_text)
-                message_log.log_message('habit_prompt_message', user, g.send_text, {'habit': g})
-            elif(g.response_type == 3):
+                send_api_helper.send_basic_text_message(fbid, h.send_text)
+                message_loh.log_message('habit_prompt_message', user, h.send_text, {'habit_entry': habit_entry})
+            elif(h.response_type == 3):
                 # File response
-                send_api_helper.send_basic_text_message(fbid, g.send_text)
-                message_log.log_message('habit_prompt_message', user, g.send_text, {'habit': g})
+                send_api_helper.send_basic_text_message(fbid, h.send_text)
+                message_loh.log_message('habit_prompt_message', user, h.send_text, {'habit_entry': habit_entry})
