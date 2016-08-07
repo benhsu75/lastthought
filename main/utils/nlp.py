@@ -41,6 +41,9 @@ def last_message_is_prompt(current_user):
 def last_message_is_show_todo(current_user):
     return Message.objects.filter(user=current_user).order_by('-id')[0].message_type == 11
 
+def last_message_is_incorrect_index_message(current_user):
+    return Message.objects.filter(user=current_user).order_by('-id')[0].message_type == 24
+
 # Looks at the message history, and returns whether or not this message is a response to a prompt
 def user_is_in_answer_prompt_state(current_user):
     if last_message_is_prompt(current_user):
@@ -80,6 +83,11 @@ def user_is_in_complete_todo_state(processed_text, current_user):
 
     if last_message_is_show_todo(current_user):
         return True
+
+    if last_message_is_incorrect_index_message(current_user):
+        return True
+
+    return False
 
     # It might be that the user has completed a todo before this, we want to allow them to complete many
 

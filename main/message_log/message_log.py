@@ -41,6 +41,7 @@ message_mapping = {
   'habit_info_message' : 21,
   'help_response' : 22,
   'complete_todo_response': 23, 
+  'incorrect_todo_index_message' : 24
 }
 
 def log_message(message_key, user, text, data):

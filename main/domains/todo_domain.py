@@ -44,8 +44,10 @@ def handle_todo(current_user, text, processed_text):
 
         if index_to_complete >= len(todo_list):
             # Error
-            # TODO
-            x = 1
+            incorrect_todo_index_message = 'Please try again and enter a valid todo number'
+            send_api_helper.send_basic_text_message(current_user.fbid, incorrect_todo_index_message)
+            message_log.log_message('incorrect_todo_index_message', current_user, incorrect_todo_index_message, None)
+
         else:
             todo_to_complete = todo_list[index_to_complete]
             todo_to_complete.completed = True
