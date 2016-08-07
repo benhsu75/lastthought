@@ -8,19 +8,22 @@ def is_onboarding_domain(current_user, text):
 
 
 def is_habits_domain(current_user, text):
+    # Get the last message
     last_message = Message.objects.filter(
         user=current_user
     ).order_by('-created_at')[0]
+
+    # Get the last prompt message
     prompt_message_list = Message.objects.filter(
         user=current_user,
         message_type=6
     ).order_by('-created_at')
-
     if len(prompt_message_list) > 0:
         last_prompt_message = prompt_message_list[0]
     else:
         last_prompt_message = None
 
+    # NLP Stuff
     if('habits' in text):
         return True
     elif (

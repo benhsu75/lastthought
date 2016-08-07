@@ -36,7 +36,9 @@ message_mapping = {
   'habits_trigger_response' : 16,
   'misunderstood_habit_response': 17,
   'misunderstood_habit_message' : 18,
-  'habit_creation_message' : 19
+  'habit_creation_message' : 19,
+  'existing_habits_message' : 20,
+  'habit_info_message' : 21
 }
 
 def log_message(message_key, user, text, data):
