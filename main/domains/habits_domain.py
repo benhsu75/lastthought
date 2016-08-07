@@ -31,13 +31,6 @@ def handle_habits_text(current_user, text):
         # Log response
         message_log.log_message('habits_trigger_response', current_user, text, None)
 
-        # Tell user that we are sending them their existing habits
-        existing_habits_message = "Here are your existing habits:"
-        # Send message
-        send_api_helper.send_basic_text_message(fbid, existing_habits_message)
-        # Log message
-        message_log.log_message('existing_habits_message', current_user, existing_habits_message, None)
-
         # Send list of habits and links to view them
         habit_list = Habit.objects.filter(user=current_user)
 
