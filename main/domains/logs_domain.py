@@ -40,7 +40,7 @@ def handle_log_entry(current_user, text):
             "payload": "LOG_CONTEXT-NEW"
         })
 
-        send_api_helper.send_button_message(
+        send_api_helper.send_quick_reply_message(
             current_user.fbid,
             "Add a context to your log entry?",
             quick_replies
