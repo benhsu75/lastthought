@@ -82,10 +82,10 @@ def handle_habits_text(current_user, text):
 
         elif(habit_in_reference.response_type == 1): # Binary
             # Convert text to 0 or 1
-            text = text.strip()
-            if text in affirmative_synonyms:
+            processed_text = text.strip().lower()
+            if processed_text in affirmative_synonyms:
                 binary_value = 1
-            elif text in negative_synonyms:
+            elif processed_text in negative_synonyms:
                 binary_value = 0
             else:
                 # Log invalid response
