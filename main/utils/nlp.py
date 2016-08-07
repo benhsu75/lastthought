@@ -58,7 +58,7 @@ def user_is_in_answer_prompt_state(current_user):
     accepted_message_types = [17, 18]
 
     for m in newer_messages:
-        print 'message type is this message is ' + m.message_type
+        print 'message type is this message is ' + str(m.message_type)
         if m.message_type not in accepted_message_types:
             return False
 
