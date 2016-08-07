@@ -130,16 +130,17 @@ def handle_message_received(fbid, text):
     # Use nlp to determine which domain it goes under,
     # then triage to that domain. The domain handles the
     # sub-triaging within itself
-    if(nlp.is_onboarding_domain(current_user, text)):
+    if nlp.is_onboarding_domain(current_user, text):
         onboarding_domain.handle_onboard_flow(current_user, fbid, text)
-
-    elif(nlp.is_habits_domain(current_user, text)):
+    if nlp.is_help_domain(text):
+        help_domain.handle(current_user, text)
+    elif nlp.is_habits_domain(current_user, text):
         habits_domain.handle_habits_text(current_user, text)
 
-    elif(nlp.is_logs_domain(text)):
+    elif nlp.is_logs_domain(text):
         logs_domain.handle_log_entry(current_user, text)
 
-    elif(nlp.is_todo_domain(current_user, text)):
+    elif nlp.is_todo_domain(current_user, text):
         todo_domain.handle_todo(current_user, text)
 
     else:
