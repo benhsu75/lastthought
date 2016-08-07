@@ -8,6 +8,7 @@ import json
 from main.message_log import message_log
 from main.utils import nlp, helper_util
 from main.domains import (habits_domain,
+                          logs_domain,
                           onboarding_domain,
                           todo_domain,
                           misunderstood_domain)
@@ -20,7 +21,6 @@ from main.domains import (habits_domain,
 @csrf_exempt
 def messenger_callback(request):
 
-    # Challenge verification
     if('hub.challenge' in request.GET):
         print("REQUEST IS A CHALLENGE")
         return HttpResponse(request.GET['hub.challenge'])
