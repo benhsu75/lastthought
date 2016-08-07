@@ -31,7 +31,7 @@ class Command(BaseCommand):
             # Message format depends on the response type
             if(h.response_type == 0): # Numeric response
                 send_api_helper.send_basic_text_message(fbid, h.send_text)
-                message_loh.log_message('habit_prompt_message', user, h.send_text, {'habit_entry': habit_entry})
+                message_log.log_message('habit_prompt_message', user, h.send_text, {'habit_entry': habit_entry})
             elif(h.response_type == 1): # Binary response
                 # Construct button_list
                 quick_reply_list = []
@@ -59,12 +59,12 @@ class Command(BaseCommand):
                     })
 
                 send_api_helper.send_quick_reply_message(fbid, h.send_text, quick_reply_list)
-                message_loh.log_message('habit_prompt_message', user, h.send_text, {'habit_entry': habit_entry})
+                message_log.log_message('habit_prompt_message', user, h.send_text, {'habit_entry': habit_entry})
             elif(h.response_type == 2):
                 # Text response
                 send_api_helper.send_basic_text_message(fbid, h.send_text)
-                message_loh.log_message('habit_prompt_message', user, h.send_text, {'habit_entry': habit_entry})
+                message_log.log_message('habit_prompt_message', user, h.send_text, {'habit_entry': habit_entry})
             elif(h.response_type == 3):
                 # File response
                 send_api_helper.send_basic_text_message(fbid, h.send_text)
-                message_loh.log_message('habit_prompt_message', user, h.send_text, {'habit_entry': habit_entry})
+                message_log.log_message('habit_prompt_message', user, h.send_text, {'habit_entry': habit_entry})
