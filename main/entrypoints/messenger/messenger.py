@@ -99,14 +99,20 @@ def handle_optin(fbid):
 #     state = payload['state']
 
 #     # Get current user
-#     if helper_util.user_exists(fbid):
-#         current_user = User.objects.get(fbid=fbid)
-#     else:
-#         return HttpResponse(status=200)
-#         # Should never get here
+    # if helper_util.user_exists(fbid):
+    #     current_user = User.objects.get(fbid=fbid)
+    # else:
+    #     return HttpResponse(status=200)
+    #     # Should never get here
 
 def handle_quick_reply(fbid, text, payload):
     state = payload['state']
+
+    if helper_util.user_exists(fbid):
+        current_user = User.objects.get(fbid=fbid)
+    else:
+        return HttpResponse(status=200)
+        # Should never get here
 
     if state == 'habit_binary_response':
         habits_domain.handle_quick_reply(current_user, text, payload)
