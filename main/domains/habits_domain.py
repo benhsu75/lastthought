@@ -55,7 +55,7 @@ def handle_habits_text(current_user, text):
             send_api_helper.send_button_message(fbid, habit_info_message, [
                     {
                         'type': 'web_url',
-                        'url': BASE_HEROKU_URL + '/habits/'+habit.id+'/show',
+                        'url': BASE_HEROKU_URL + '/habits/'+str(habit.id)+'/show',
                         'title': 'View'    
                     },
                 ])
