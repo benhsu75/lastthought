@@ -18,7 +18,7 @@ urlpatterns = [
     url(r'^habits/$', habit_views.habits),
 
     # Log endpoints
-    url(r'^logs/(?P<log_id>\d+)/$', log_views.logs),
+    url(r'^logs/(?P<logentry_id>\d+)/$', log_views.logs),
     url(r'^logs/$', log_views.logs),
 
     # Todo endpoints

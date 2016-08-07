@@ -9,11 +9,15 @@ class Log(models.Model):
 
     user = models.ForeignKey(User)
 
-    name = models.CharField(max_length=200)
-    # 0: Text
-    # 1: Picture
-    # 2: Numeric
-    log_type = models.SmallIntegerField()
+    @staticmethod
+    def find_or_create(current_user):
+        user_log = Log.objects.filter(user=current_user)
+        if len(user_log) == 1:
+            user_log = user_log[0]
+        elif len(user_log) == 0:
+            user_log = Log(user=current_user)
+            user_log.save()
+        return user_log
 
 
 class LogContext(models.Model):
