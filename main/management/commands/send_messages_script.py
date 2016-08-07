@@ -34,7 +34,7 @@ class Command(BaseCommand):
                 message_log.log_message('habit_prompt_message', user, g.send_text, {'habit': g})
             elif(g.response_type == 1): # Binary response
                 # Construct button_list
-                button_list = []
+                quick_reply_list = []
 
                 true_payload = json.dumps({
                         'state' : 'habit_binary_response',
@@ -47,18 +47,18 @@ class Command(BaseCommand):
                         'value' : 0
                     })
 
-                button_list.append({
-                        'type': 'postback',
+                quick_reply_list.append({
+                        'content_type': 'text',
                         'title': 'Yes',
                         'payload': true_payload
                     })
-                button_list.append({
-                        'type': 'postback',
+                quick_reply_list.append({
+                        'content_type': 'text',
                         'title': 'No',
                         'payload': false_payload
                     })
 
-                send_api_helper.send_button_message(fbid, g.send_text, button_list)
+                send_api_helper.send_quick_reply_message(fbid, g.send_text, button_list)
                 message_log.log_message('habit_prompt_message', user, g.send_text, {'habit': g})
             elif(g.response_type == 2):
                 # Text response
