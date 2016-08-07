@@ -18,7 +18,6 @@ def is_habits_domain(current_user, text):
     else:
         return False
 
-
 def is_logs_domain(text):
     return text.split()[0].lower() == "log:"
 
@@ -29,6 +28,10 @@ def is_todo_domain(current_user, text):
         return True
     else:
         return False
+
+def is_weather_domain(text):
+    if 'weather' in text:
+        return True
 
 ##############################################
 ############### HELPER METHODS ###############
