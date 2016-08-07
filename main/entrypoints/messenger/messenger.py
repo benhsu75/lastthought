@@ -23,9 +23,9 @@ from main.domains import (habits_domain,
 def messenger_callback(request):
 
     if('hub.challenge' in request.GET):
-        print("REQUEST IS A CHALLENGE")
         return HttpResponse(request.GET['hub.challenge'])
 
+    # Get body from request
     body = json.loads(request.body)
 
     # Print request for debugging
@@ -38,17 +38,14 @@ def messenger_callback(request):
     for entry in entry_list:
         page_id = entry['id']
         timestamp = entry['time']
-
         messaging_list = entry['messaging']
 
         for messaging in messaging_list:
 
             fbid = messaging['sender']['id']
 
-            print("# FBID: " + fbid)
-
-            if(not helper_util.user_exists(fbid)):
-                print 'creating new user'
+            # Create new user
+            if not helper_util.user_exists(fbid):
                 onboarding_domain.create_new_user(fbid)
                 continue
 
@@ -56,7 +53,6 @@ def messenger_callback(request):
             if 'message' in messaging:
                 # Reroute quick replies
                 if 'quick_reply' in messaging['message']:
-                    print 'handle quick reply'
                     message_text = messaging['message']['text']
                     payload = json.loads(messaging['message']['quick_reply']['payload'])
 
@@ -64,15 +60,12 @@ def messenger_callback(request):
                     continue
 
                 # Is normal message received
-                print 'handling message'
                 message_text = messaging['message']['text']
                 handle_message_received(fbid, message_text)
             elif 'optin' in messaging:
-                print 'handling optin'
                 # Plugin authentication webhook
                 handle_optin(fbid)
             elif 'postback' in messaging:
-                print 'handling postback'
                 # Postback webhook
                 payload = messaging['postback']['payload']
                 handle_postback(fbid, payload)
@@ -85,26 +78,13 @@ def handle_optin(fbid):
     # Check if user exists, if it does, do nothing
     try:
         current_user = User.objects.get(fbid=fbid)
-
         return  # Do nothing
     except User.DoesNotExist:
         pass
 
     onboarding_domain.create_new_user(fbid)
 
-
-# def handle_postback(fbid, string_payload):
-#     payload = json.loads(string_payload)
-
-#     state = payload['state']
-
-#     # Get current user
-    # if helper_util.user_exists(fbid):
-    #     current_user = User.objects.get(fbid=fbid)
-    # else:
-    #     return HttpResponse(status=200)
-    #     # Should never get here
-
+# When the user responds by tapping a quick reply
 def handle_quick_reply(fbid, text, payload):
     state = payload['state']
 
@@ -114,11 +94,13 @@ def handle_quick_reply(fbid, text, payload):
         return HttpResponse(status=200)
         # Should never get here
 
+    # Switch on different quick reply states
     if state == 'habit_binary_response':
         habits_domain.handle_quick_reply(current_user, text, payload)
     else:
         misunderstood_domain.handle_misunderstood(current_user, string_payload)
 
+# When the user responds by sending any text message
 def handle_message_received(fbid, text):
     try:
         current_user = User.objects.get(fbid=fbid)
