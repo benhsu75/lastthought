@@ -20,7 +20,7 @@ def create_new_user(fbid):
     message_log.log_message('ask_for_name_message', u, ask_for_name_message, None)
     print 'in create new user - after send'
 
-def handle_onboard_flow(current_user, fbid, text):
+def handle_onboard_flow(current_user, fbid, text, processed_text):
     fbid = current_user.fbid
     
     if(current_user.state == 0):

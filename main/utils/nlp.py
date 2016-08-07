@@ -22,7 +22,6 @@ def is_habits_domain(current_user, text):
 def is_logs_domain(text):
     return text.split()[0].lower() == "log:"
 
-
 def is_todo_domain(current_user, text):
     return 'todo' in text
 

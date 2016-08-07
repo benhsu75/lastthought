@@ -2,7 +2,7 @@ from main.message_log import message_log
 from main.entrypoints.messenger import send_api_helper
 from main.models import *
 
-def handle(current_user, text):
+def handle(current_user, text, processed_text):
     # Log response from user
     message_log.log_message('help_response', current_user, text, None)
 

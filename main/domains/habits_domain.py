@@ -19,7 +19,7 @@ negative_synonyms = [
     'nah'
 ]
 
-def handle_habits_text(current_user, text):
+def handle_habits_text(current_user, text, processed_text):
 
     print 'handle_habits_text in habits_domain'
 
@@ -27,7 +27,7 @@ def handle_habits_text(current_user, text):
     fbid = current_user.fbid
 
     # Send message
-    if 'habits' in text:
+    if 'habits' in processed_text:
         # Log response
         message_log.log_message('habits_trigger_response', current_user, text, None)
 
@@ -91,7 +91,7 @@ def handle_habits_text(current_user, text):
         if(habit_entry.habit.response_type == 0): # Numeric
             # Convert to float
             try:
-                val = float(text)
+                val = float(processed_text)
             except:
                 # Log response
                 message_log.log_message('misunderstood_habit_response', current_user, text, None)
@@ -113,7 +113,6 @@ def handle_habits_text(current_user, text):
 
         elif(habit_entry.habit.response_type  == 1): # Binary
             # Convert text to 0 or 1
-            processed_text = text.strip().lower()
             if processed_text in affirmative_synonyms:
                 binary_value = 1
             elif processed_text in negative_synonyms:

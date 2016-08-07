@@ -6,7 +6,7 @@ from main.utils import helper_util
 BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
 
 
-def handle_log_entry(current_user, text):
+def handle_log_entry(current_user, text, processed_text):
     user_log = Log.find_or_create(current_user)
 
     log_entry_raw = text.split(None, 1)
