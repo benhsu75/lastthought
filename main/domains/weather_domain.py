@@ -6,3 +6,6 @@ from main.utils import nlp
 def handle_weather(current_user, text, processed_text):
     # TODO
     x = 1
+
+def get_zipcode_flow(current_user):
+    x = 1
