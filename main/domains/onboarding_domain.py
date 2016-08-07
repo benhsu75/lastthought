@@ -1,6 +1,7 @@
 from main.message_log import message_log
 from main.entrypoints.messenger import send_api_helper
 from main.models import *
+import help_domain
 
 BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
 
@@ -41,15 +42,8 @@ def handle_onboard_flow(current_user, fbid, text):
         send_api_helper.send_basic_text_message(fbid, nice_to_meet_message)
         message_log.log_message('nice_to_meet_message', current_user, nice_to_meet_message, None)
 
-        learn_more_message = "To learn more about everything I can help you with, click Learn More!"
-        send_api_helper.send_button_message(fbid, learn_more_message, [
-                {
-                    'type': 'web_url',
-                    'url': 'http://userdatagraph.herokuapp.com/learn_more',
-                    'title': 'Learn More'    
-                }
-            ])
-        message_log.log_message('learn_more_message', current_user, learn_more_message, None)
+        # Send "Learn More"
+        help_domain.send_learn_more_message(fbid)
 
         # Update user state
         current_user.state = 1

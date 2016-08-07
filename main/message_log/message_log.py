@@ -38,7 +38,8 @@ message_mapping = {
   'misunderstood_habit_message' : 18,
   'habit_creation_message' : 19,
   'existing_habits_message' : 20,
-  'habit_info_message' : 21
+  'habit_info_message' : 21,
+  'help_response' : 22
 }
 
 def log_message(message_key, user, text, data):
