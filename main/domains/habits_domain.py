@@ -95,11 +95,11 @@ def handle_habits_text(current_user, text):
             except:
                 # Log response
                 message_log.log_message('misunderstood_habit_response', current_user, text, None)
-                misunderstood_habit_response(current_user, habit_entry_in_reference.habit.response_type)
+                misunderstood_habit_response(current_user, habit_entry.habit.response_type)
                 return
 
             # Log response
-            message_log.log_message('habit_prompt_response', current_user, text, {'habit_entry':habit_entry_in_reference})
+            message_log.log_message('habit_prompt_response', current_user, text, {'habit_entry':habit_entry})
             
             # Set the data in habit_entry
             habit_entry.numeric_value = val
@@ -123,11 +123,11 @@ def handle_habits_text(current_user, text):
                 message_log.log_message('misunderstood_habit_response', current_user, text, None)
 
                 # Send message
-                misunderstood_habit_response(current_user, habit_entry_in_reference.habit.response_type)
+                misunderstood_habit_response(current_user, habit_entry.habit.response_type)
                 return
 
             # Log response
-            message_log.log_message('habit_prompt_response', current_user, text, {'habit_entry':habit_entry_in_reference})
+            message_log.log_message('habit_prompt_response', current_user, text, {'habit_entry':habit_entry})
 
             # Set the data in habit_entry
             habit_entry.binary_value = binary_value
@@ -137,9 +137,9 @@ def handle_habits_text(current_user, text):
             understood_habit_response(current_user, last_prompt_message)
 
 
-        elif(habit_entry_in_reference.habit.response_type == 2): # Text
+        elif(habit_entry.habit.response_type == 2): # Text
             # Log response
-            message_log.log_message('habit_prompt_response', current_user, text, {'habit_entry':habit_entry_in_reference})
+            message_log.log_message('habit_prompt_response', current_user, text, {'habit_entry':habit_entry})
 
             # Set the data in habit_entry
             habit_entry.text_value = text
@@ -149,7 +149,7 @@ def handle_habits_text(current_user, text):
             understood_habit_response(current_user, last_prompt_message)
 
         else:
-            misunderstood_habit_response(current_user, habit_entry_in_reference.habit.response_type)
+            misunderstood_habit_response(current_user, habit_entry.habit.response_type)
 
 def handle_quick_reply(current_user, text, payload):
 
