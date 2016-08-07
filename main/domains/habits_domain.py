@@ -1,7 +1,7 @@
 from main.message_log import message_log
 from main.entrypoints.messenger import send_api_helper
 from main.models import *
-from main.utils import helper_util
+from main.utils import helper_util, nlp
 
 BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
 
@@ -25,15 +25,7 @@ def handle_habits_text(current_user, text):
 
     # Get context
     fbid = current_user.fbid
-    
-    last_message = Message.objects.filter(user=current_user).order_by('-created_at')[0]
-    prompt_message_list = Message.objects.filter(user=current_user, message_type=6).order_by('-created_at')
-    
-    if len(prompt_message_list) > 0:
-        last_prompt_message = prompt_message_list[0]
-    else:
-        last_prompt_message = None
-    
+
     # Send message
     if 'habits' in text:
         # Log response
@@ -77,33 +69,35 @@ def handle_habits_text(current_user, text):
                     }
                 ])
         message_log.log_message('habits_trigger_message', current_user, habits_trigger_message, None)
-    elif(last_message.message_type  == 6 or (last_prompt_message != None and helper_util.same_day_as_now(last_prompt_message.created_at))):
-        print 'going to triage'
-        # Triage and store
-        habit_in_reference = last_prompt_message.habit_in_reference
-        habit_entry = HabitEntry.objects.filter(habit=habit_in_reference).order_by('-created_at')[0]
+    elif nlp.user_is_in_answer_prompt_state(current_user):
 
-        if(habit_in_reference.response_type == 0): # Numeric
+        # Triage and store
+        habit_entry = last_prompt_message.habit_entry_in_reference
+
+        if(habit_entry.habit.response_type == 0): # Numeric
             # Convert to float
             try:
                 val = float(text)
             except:
                 # Log response
                 message_log.log_message('misunderstood_habit_response', current_user, text, None)
-                misunderstood_habit_response(current_user, habit_in_reference.response_type)
+                misunderstood_habit_response(current_user, habit_entry_in_reference.habit.response_type)
                 return
 
             # Log response
-            message_log.log_message('habit_prompt_response', current_user, text, {'habit':habit_in_reference})
+            message_log.log_message('habit_prompt_response', current_user, text, {'habit_entry':habit_entry_in_reference})
             
             # Set the data in habit_entry
             habit_entry.numeric_value = val
             habit_entry.save()
 
+            # Mark message is resolved
+
+
             # Understood!
             understood_habit_response(current_user, last_prompt_message)
 
-        elif(habit_in_reference.response_type == 1): # Binary
+        elif(habit_entry.habit.response_type  == 1): # Binary
             # Convert text to 0 or 1
             processed_text = text.strip().lower()
             if processed_text in affirmative_synonyms:
@@ -115,11 +109,11 @@ def handle_habits_text(current_user, text):
                 message_log.log_message('misunderstood_habit_response', current_user, text, None)
 
                 # Send message
-                misunderstood_habit_response(current_user, habit_in_reference.response_type)
+                misunderstood_habit_response(current_user, habit_entry_in_reference.habit.response_type)
                 return
 
             # Log response
-            message_log.log_message('habit_prompt_response', current_user, text, {'habit':habit_in_reference})
+            message_log.log_message('habit_prompt_response', current_user, text, {'habit_entry':habit_entry_in_reference})
 
             # Set the data in habit_entry
             habit_entry.binary_value = binary_value
@@ -129,9 +123,9 @@ def handle_habits_text(current_user, text):
             understood_habit_response(current_user, last_prompt_message)
 
 
-        elif(habit_in_reference.response_type == 2): # Text
+        elif(habit_entry_in_reference.habit.response_type == 2): # Text
             # Log response
-            message_log.log_message('habit_prompt_response', current_user, text, {'habit':habit_in_reference})
+            message_log.log_message('habit_prompt_response', current_user, text, {'habit_entry':habit_entry_in_reference})
 
             # Set the data in habit_entry
             habit_entry.text_value = text
@@ -141,7 +135,7 @@ def handle_habits_text(current_user, text):
             understood_habit_response(current_user, last_prompt_message)
 
         else:
-            misunderstood_habit_response(current_user, habit_in_reference.response_type)
+            misunderstood_habit_response(current_user, habit_entry_in_reference.habit.response_type)
 
 def handle_quick_reply(current_user, text, payload):
 
@@ -176,8 +170,8 @@ def understood_habit_response(current_user, original_message):
     send_recorded_message(current_user)
     
     # Mark the original message as resolved
-    original_message.response_captured = True
-    original_message.save()
+    original_message.habit_entry_in_reference.response_collected = 1
+    original_message.habit_entry_in_reference.save()
 
 def send_recorded_message(current_user):
     # Send confirmation message and log

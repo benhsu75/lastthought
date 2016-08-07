@@ -14,4 +14,5 @@ class Message(models.Model):
     text = models.CharField(max_length=200, null=True)
 
     response_captured = models.BooleanField(default=False)
-    habit_in_reference = models.ForeignKey(Habit, null=True)
+    
+    habit_entry_in_reference = models.ForeignKey(HabitEntry, null=True)
