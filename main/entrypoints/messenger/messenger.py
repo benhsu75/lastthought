@@ -12,7 +12,8 @@ from main.domains import (habits_domain,
                           onboarding_domain,
                           todo_domain,
                           misunderstood_domain,
-                          help_domain)
+                          help_domain,
+                          ridesharing_domain)
 
 ######################################
 ######### MESSENGER WEBHOOK ##########
