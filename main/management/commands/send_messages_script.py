@@ -68,8 +68,3 @@ class Command(BaseCommand):
                 # File response
                 send_api_helper.send_basic_text_message(fbid, g.send_text)
                 message_log.log_message('habit_prompt_message', user, g.send_text, {'habit': g})
-
-            
-
-            user.active_habit_entry = habit_entry
-            user.save()
