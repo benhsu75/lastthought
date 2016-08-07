@@ -78,6 +78,13 @@ def handle_habits_text(current_user, text):
         message_log.log_message('habits_trigger_message', current_user, habits_trigger_message, None)
     elif nlp.user_is_in_answer_prompt_state(current_user):
 
+        # Get last prompt message
+        prompt_message_list = Message.objects.filter(
+            user=current_user,
+            message_type=6
+        ).order_by('-created_at')
+        last_prompt_message = prompt_message_list[0]
+
         # Triage and store
         habit_entry = last_prompt_message.habit_entry_in_reference
 
