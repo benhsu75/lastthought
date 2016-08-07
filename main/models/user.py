@@ -17,7 +17,3 @@ class BackgroundInformation(models.Model):
     current_zip_code = models.CharField(max_length=10, null=True)
 
     user = models.OneToOneField(User)
-
-# User States
-# 0 - Onboarding after initial messages
-# 1 - Neutral state

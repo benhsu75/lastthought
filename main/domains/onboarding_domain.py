@@ -10,6 +10,10 @@ def create_new_user(fbid):
     u = User(fbid=fbid, state=0)
     u.save()
 
+    # Create background information for user
+    background_information = BackgroundInformation(user=u)
+    background_information.save()
+
     # Send user intro message
     welcome_message = "Hey! Nice to meet you. I'm Jarvis, here to help be your better self :)."
     send_api_helper.send_basic_text_message(fbid, welcome_message)
