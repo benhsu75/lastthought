@@ -163,7 +163,7 @@ def handle_quick_reply(current_user, text, payload):
     habit_entry.save()
 
     # Log message
-    message_log.log_message('habit_prompt_response', current_user, text, {'habit_entry':habit_entry.habit})
+    message_log.log_message('habit_prompt_response', current_user, text, {'habit_entry':habit_entry})
 
     # Send confirmation message and log
     send_recorded_message(current_user)
