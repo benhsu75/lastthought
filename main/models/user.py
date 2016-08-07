@@ -9,8 +9,6 @@ class User(models.Model):
     full_name = models.CharField(max_length=200)
     first_name = models.CharField(max_length=200)
 
-    active_habit_entry = models.ForeignKey('HabitEntry', default=None, null=True)
-
 # Represents known information about the user
 class BackgroundInformation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
