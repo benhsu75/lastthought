@@ -61,7 +61,7 @@ def handle_todo(current_user, text, processed_text):
 
 def send_todo_list(current_user):
     # Send link to todo list
-    show_todo_message = generate_todo_list_string(current_user) + "\n\nReply with the corresponding number to complete a task."
+    show_todo_message = generate_todo_list_string(current_user) + "\nReply with the corresponding number to complete a task."
     send_api_helper.send_button_message(current_user.fbid, show_todo_message, [
             {
                 'type': 'web_url',
