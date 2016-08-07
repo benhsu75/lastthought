@@ -87,9 +87,6 @@ def handle_habits_text(current_user, text, processed_text):
             habit_entry.numeric_value = val
             habit_entry.save()
 
-            # Mark message is resolved
-
-
             # Understood!
             understood_habit_response(current_user, last_prompt_message)
 
