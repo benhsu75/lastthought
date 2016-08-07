@@ -58,10 +58,10 @@ def log_message(message_key, user, text, data):
 
   # Add any extra data depending on message_type
   if(message_type == 6):
-      m.habit_in_reference = data['habit']
+      m.habit_entry_in_reference = data['habit_entry']
       m.save()
   elif(message_type == 7):
-      m.habit_in_reference = data['habit']
+      m.habit_entry_in_reference = data['habit_entry']
       m.save()
 
   return True
