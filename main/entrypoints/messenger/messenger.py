@@ -53,7 +53,6 @@ def messenger_callback(request):
 
             # Handle different webhooks times
             if 'message' in messaging:
-
                 # Reroute quick replies
                 if 'quick_reply' in messaging['message']:
                     print 'handle quick reply'

@@ -21,6 +21,8 @@ negative_synonyms = [
 
 def handle_habits_text(current_user, text):
 
+    print 'handle_habits_text in habits_domain'
+
     # Get context
     fbid = current_user.fbid
     
@@ -53,6 +55,7 @@ def handle_habits_text(current_user, text):
                 ])
         message_log.log_message('habits_trigger_message', current_user, habits_trigger_message, None)
     elif(last_message.message_type  == 6 or (last_prompt_message != None and helper_util.same_day_as_now(last_prompt_message.created_at))):
+        print 'going to triage'
         # Triage and store
         habit_in_reference = last_prompt_message.habit_in_reference
         habit_entry = HabitEntry.objects.filter(habit=habit_in_reference).order_by('-created_at')[0]
