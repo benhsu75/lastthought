@@ -58,7 +58,7 @@ class Command(BaseCommand):
                         'payload': false_payload
                     })
 
-                send_api_helper.send_quick_reply_message(fbid, g.send_text, button_list)
+                send_api_helper.send_quick_reply_message(fbid, g.send_text, quick_reply_list)
                 message_log.log_message('habit_prompt_message', user, g.send_text, {'habit': g})
             elif(g.response_type == 2):
                 # Text response
