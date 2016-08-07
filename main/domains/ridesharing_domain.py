@@ -10,11 +10,9 @@ def handle(current_user, text, processed_text):
     # Send the ridesharing message and url
     ridesharing_setup_message = "Setup ridesharing:"
     send_api_helper.send_button_message(current_user.fbid, ridesharing_setup_message, [{
-            {
-                'type': 'web_url',
-                'url': constants.BASE_HEROKU_URL + '/users/'+str(current_user.fbid)+'/setup_ridesharing',
-                'title': 'Go'    
-            },
+            'type': 'web_url',
+            'url': constants.BASE_HEROKU_URL + '/users/'+str(current_user.fbid)+'/setup_ridesharing',
+            'title': 'Go'
         }])
     message_log.log_message('ridesharing_setup_message', current_user, ridesharing_setup_message, None)
     
