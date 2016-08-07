@@ -7,11 +7,11 @@ def handle(current_user, text, processed_text):
     message_log.log_message('help_response', current_user, text, None)
 
     # Send learn more message
-    send_learn_more_message(current_user.fbid)
+    send_learn_more_message(current_user)
 
-def send_learn_more_message(fbid):
+def send_learn_more_message(current_user):
     learn_more_message = "To learn more about everything I can help you with, click Learn More!"
-    send_api_helper.send_button_message(fbid, learn_more_message, [
+    send_api_helper.send_button_message(current_user.fbid, learn_more_message, [
             {
                 'type': 'web_url',
                 'url': 'http://userdatagraph.herokuapp.com/learn_more',

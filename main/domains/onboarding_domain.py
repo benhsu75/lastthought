@@ -43,7 +43,7 @@ def handle_onboard_flow(current_user, fbid, text, processed_text):
         message_log.log_message('nice_to_meet_message', current_user, nice_to_meet_message, None)
 
         # Send "Learn More"
-        help_domain.send_learn_more_message(fbid)
+        help_domain.send_learn_more_message(current_user)
 
         # Update user state
         current_user.state = 1
