@@ -39,7 +39,8 @@ message_mapping = {
   'habit_creation_message' : 19,
   'existing_habits_message' : 20,
   'habit_info_message' : 21,
-  'help_response' : 22
+  'help_response' : 22,
+  'complete_todo_response': 23, 
 }
 
 def log_message(message_key, user, text, data):

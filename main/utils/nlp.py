@@ -23,7 +23,12 @@ def is_logs_domain(text):
     return text.split()[0].lower() == "log:"
 
 def is_todo_domain(current_user, text):
-    return 'todo' in text
+    if 'todo' in text:
+        return True
+    elif user_is_in_complete_todo_state(text, current_user):
+        return True
+    else:
+        return False
 
 ##############################################
 ############### HELPER METHODS ###############
@@ -32,6 +37,9 @@ def is_todo_domain(current_user, text):
 # Returns whether or not the last message in the message log was us prompting a response
 def last_message_is_prompt(current_user):
     return Message.objects.filter(user=current_user).order_by('-id')[0].message_type == 6
+
+def last_message_is_show_todo(current_user):
+    return Message.objects.filter(user=current_user).order_by('-id')[0].message_type == 11
 
 # Looks at the message history, and returns whether or not this message is a response to a prompt
 def user_is_in_answer_prompt_state(current_user):
@@ -63,5 +71,17 @@ def user_is_in_answer_prompt_state(current_user):
             return False
 
     return True
+
+def user_is_in_complete_todo_state(processed_text, current_user):
+    try:
+        int(processed_text)
+    except ValueError:
+        return False
+
+    if last_message_is_show_todo(current_user):
+        return True
+
+    # It might be that the user has completed a todo before this, we want to allow them to complete many
+
 
 
