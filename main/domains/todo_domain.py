@@ -14,7 +14,7 @@ def handle_todo(current_user, text, processed_text):
         message_log.log_message('add_todo_response', current_user, text, None)
 
         # Create todo
-        add_todo_message = text.replace('add todo', '')
+        add_todo_message = text.replace('add todo', '').strip()
 
         todo = ToDoTask(text=add_todo_message, user=current_user)
         todo.save()
@@ -38,3 +38,4 @@ def handle_todo(current_user, text, processed_text):
                 }
             ])
         message_log.log_message('show_todo_message', current_user, show_todo_message, None)
+
