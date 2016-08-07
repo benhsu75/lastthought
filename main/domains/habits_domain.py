@@ -52,13 +52,13 @@ def handle_habits_text(current_user, text):
             # Send list of habits
             habit_info_message = "" + habit.name + " - " + habit.send_text
             # Send message
-            send_api_helper.send_button_message(fbid, existing_habits_message, {
+            send_api_helper.send_button_message(fbid, habit_info_message, [
                     {
                         'type': 'web_url',
                         'url': BASE_HEROKU_URL + '/habits/'+habit.id+'/show',
                         'title': 'View'    
                     },
-                })
+                ])
             # Log message
             message_log.log_message('habit_info_message', current_user, habit_info_message, None)
 
