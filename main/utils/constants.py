@@ -15,3 +15,7 @@ NEGATIVE_SYNONYMS = [
     'n',
     'nah'
 ]
+
+FB_PAGE_ACCESS_TOKEN = 'EAADqZAUs43F4BAM24X91sSlhAIU7UHnLyO6eNp1rGMmQncyKsz34AgvlqfJKRnn3rNfYLMZBZA914L5z9MO8G6AVsGhljVUZCZAYtNfjbt0NKX7FFHDjOPvBcsiZCNzpSdNVZC4lCsbHVevRIhzKxFzjFzAMDVWq4W8KNuqtxXt8QZDZD'
+
+FB_SEND_BASE_URL = 'https://graph.facebook.com/v2.6/me/messages?access_token='
