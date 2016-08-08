@@ -21,11 +21,11 @@ def create_new_user(fbid):
         ) = fb_profile_helper.get_user_profile_data(fbid)
 
     # Create background information for user
-    background_information = BackgroundInformation(user=u)
+    background_information = BackgroundInformation(user=u, locale=locale, profile_pic=profile_pic, timezone=timezone, gender=gender)
     background_information.save()
 
     # Send user intro message
-    welcome_message = "Hey"+ first_name +"! Nice to meet you. I'm Jarvis, here to help be your better self :)."
+    welcome_message = "Hey "+ first_name +"! Nice to meet you. I'm Jarvis, here to help be your better self :)."
     send_api_helper.send_basic_text_message(fbid, welcome_message)
     message_log.log_message('welcome_message', u, welcome_message, None)
 

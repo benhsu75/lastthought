@@ -14,6 +14,12 @@ class BackgroundInformation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    # General
+    locale = models.CharField(max_length=200)
+    profile_pic = models.CharField(max_length=200)
+    timezone = models.CharField(max_length=200)
+    gender = models.CharField(max_length=200)
+
     # For weather
     current_zip_code = models.CharField(max_length=10, null=True)
 
