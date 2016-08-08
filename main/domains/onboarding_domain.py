@@ -30,7 +30,7 @@ def create_new_user(fbid):
     message_log.log_message('welcome_message', u, welcome_message, None)
 
     # Send "Learn More"
-    help_domain.send_learn_more_message(current_user)
+    help_domain.send_learn_more_message(u)
 
 # def handle_onboard_flow(current_user, fbid, text, processed_text):
 #     fbid = current_user.fbid
