@@ -6,8 +6,8 @@ class User(models.Model):
 
     fbid = models.CharField(max_length=200)
     state = models.SmallIntegerField()
-    full_name = models.CharField(max_length=200)
     first_name = models.CharField(max_length=200)
+    last_name = models.CharField(max_length=200)
 
 # Represents known information about the user
 class BackgroundInformation(models.Model):
