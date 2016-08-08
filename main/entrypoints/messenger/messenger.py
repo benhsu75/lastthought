@@ -117,9 +117,6 @@ def handle_message_received(fbid, text):
     # Use nlp to determine which domain it goes under,
     # then triage to that domain. The domain handles the
     # sub-triaging within itself
-    
-    # if nlp.is_onboarding_domain(current_user, processed_text):
-    #     onboarding_domain.handle_onboard_flow(current_user, fbid, text, processed_text)
         
     if nlp.is_help_domain(processed_text):
         help_domain.handle(current_user, text, processed_text)

@@ -3,9 +3,6 @@ from datetime import datetime
 from main.utils import helper_util
 
 
-def is_onboarding_domain(current_user, text):
-    return current_user.state == 0
-
 def is_help_domain(text):
     return text == 'help'
 

@@ -5,7 +5,6 @@ class User(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     fbid = models.CharField(max_length=200)
-    state = models.SmallIntegerField()
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
 
