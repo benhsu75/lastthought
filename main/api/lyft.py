@@ -1,5 +1,6 @@
 import requests
 from main.utils import constants
+from requests.auth import HTTPBasicAuth
 
 OAUTH_URL = 'https://api.lyft.com/oauth/token'
 
