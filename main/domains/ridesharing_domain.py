@@ -3,6 +3,7 @@ from main.entrypoints.messenger import send_api_helper
 from main.models import *
 from main.utils import constants
 from django.http import HttpResponse
+from main.api import lyft
 
 def handle(current_user, text, processed_text):
     # Log ride response
@@ -19,6 +20,16 @@ def handle(current_user, text, processed_text):
     
 def lyft_redirect(request):
     print request.GET
+
+    # Get query params
+    authorization_code = request.GET['code']
+    fbid = request.GET['state']
+
+    # Get access_token and refresh_token
+    (access_token, refresh_token) = lyft.retrieve_access_token(authorization_code)
+
+    
+
 
     return HttpResponse(status=200)
 

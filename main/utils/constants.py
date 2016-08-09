@@ -21,3 +21,8 @@ FB_PAGE_ACCESS_TOKEN = 'EAADqZAUs43F4BAM24X91sSlhAIU7UHnLyO6eNp1rGMmQncyKsz34Agv
 FB_SEND_BASE_URL = 'https://graph.facebook.com/v2.6/me/messages?access_token='
 
 GRAPH_BASE_URL = 'https://graph.facebook.com/v2.6/'
+
+# Lyft
+LYFT_CLIENT_ID = 'OyrF54XChtFI'
+
+LYFT_CLIENT_SECRET = 'ylm69n0CMpPSt5iWAr6iFq1yfdmapq_t'
