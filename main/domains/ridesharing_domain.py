@@ -37,7 +37,7 @@ def lyft_redirect(request):
     print access_token
     print '-----'
     print refresh_token
-    
+
     # Update Rideshare information
     rideshare_information = current_user.rideshareinformation
     rideshare_information.lyft_access_token = access_token
@@ -46,7 +46,7 @@ def lyft_redirect(request):
     rideshare_information.save()
 
     # Redirect to ridesharing_setup page
-    return HttpResponseRedirect("/ridesharing_setup")
+    return HttpResponseRedirect("/users/"+fbid+"/ridesharing_setup")
 
 def lyft_webhook(request):
     # Todo
