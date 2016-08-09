@@ -25,7 +25,7 @@ def create_new_user(fbid):
     background_information.save()
 
     # Create empty rideshare information for user
-    rideshare_information = RideshareInformation()
+    rideshare_information = RideshareInformation(user=u)
     rideshare_information.save()
 
     # Send user intro message
