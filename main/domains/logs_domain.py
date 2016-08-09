@@ -99,7 +99,9 @@ def add_and_apply_new_context(curent_user, text):
     context.save()
 
     # need to deal with numeric/picture log entries later
-    recent_entry = Log.objects.filter(log=user_log).order_by('-created_at')[0]
+    recent_entry = TextLogEntry.objects.filter(
+        log=user_log
+    ).order_by('-created_at')[0]
     recent_entry.log_context = context
     recent_entry.save()
 
@@ -113,10 +115,10 @@ def apply_context_to_log(current_user, text, payload):
     )
 
     # only text for now
-    log_entry = TextLogEntry.objects.get(payload["log_entry_id"])
+    log_entry = TextLogEntry.objects.get(id=payload["log_entry_id"])
 
     if "log_context_id" in payload:
-        context = LogContext.objects.get(payload["log_context_id"])
+        context = LogContext.objects.get(id=payload["log_context_id"])
         log_entry.log_context = context
         log_entry.save()
 
