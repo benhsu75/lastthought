@@ -18,8 +18,6 @@ def handle(current_user, text, processed_text):
     
 def lyft_webhook(request):
     # Todo
-    x = 1
-
     print request.GET
 
 def uber_webhook(request):
