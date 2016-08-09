@@ -47,3 +47,5 @@ class RideshareInformation(models.Model):
 
     # True if either Lyft or Uber is connected
     connected_flag = models.BooleanField(default=False)
+
+    user = models.OneToOneField(User)
