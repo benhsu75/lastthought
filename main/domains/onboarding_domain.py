@@ -7,7 +7,7 @@ BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
 
 def create_new_user(fbid):
     # If user doesn't exist, create user
-    u = User(fbid=fbid, state=0)
+    u = User(fbid=fbid)
     u.save()
 
     # Get user profile information
