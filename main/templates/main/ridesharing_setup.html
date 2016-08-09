@@ -8,7 +8,7 @@
 </head>
 <body>
     {% if lyft_set_up_flag %}
-        <a href="#">Disconnect Lyft</a>
+        <a href="#">Disconnect Lyft</a><br>
     {% else %}
         <a href="https://www.lyft.com/oauth/authorize?client_id=OyrF54XChtFI&response_type=code&scope=public%20rides.read%20offline%20rides.request&state={{fbid}}">Click to Connect Lyft</a><br><br>
     {% endif %}
