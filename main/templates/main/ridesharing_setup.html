@@ -2,6 +2,9 @@
 <html>
 <head>
     <title>Ridesharing Setup</title>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 <body>
     {% if lyft_set_up_flag %}
@@ -34,6 +37,13 @@
             var homeAddress = $('input[name=home-address]').val();
             var preferredRideType = $('input[name=ride-type]:checked').val();
 
+            var payload = {
+                work_address: workAddress,
+                home_address: homeAddress,
+                preferred_ride_type: preferredRideType
+            }
+
+            
         });     
     </script>
 </body>
