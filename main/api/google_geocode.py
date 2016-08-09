@@ -12,5 +12,9 @@ def geocode_address(address):
     
     first_result = json_response['results'][0]
 
-    lat = 
-    # Parse response
+    # Extract response
+    lat = first_result['geometry']['location']['lat']
+    lng = first_result['geometry']['location']['lng']
+    formatted_address = first_result['formatted_address']
+
+    return (formatted_address, lat, lng)
