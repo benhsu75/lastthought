@@ -15,7 +15,7 @@ urlpatterns = [
     url(r'^messenger_callback/', messenger.messenger_callback),
 
     # Lyft webhook
-    url(r'^lyft_webhook/', ridesharing_domain.lyft_webhook),
+    url(r'^lyft_redirect/', ridesharing_domain.lyft_redirect),
 
     # Temp helper methods
     url(r'^delete_users/', general.delete_users),
