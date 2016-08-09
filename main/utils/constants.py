@@ -26,3 +26,8 @@ GRAPH_BASE_URL = 'https://graph.facebook.com/v2.6/'
 LYFT_CLIENT_ID = 'OyrF54XChtFI'
 
 LYFT_CLIENT_SECRET = 'ylm69n0CMpPSt5iWAr6iFq1yfdmapq_t'
+
+# Google Geocoding
+GOOGLE_GEOCODING_API_KEY = 'AIzaSyD3cmX2AjoIelTFsCt9AHV0uYbGjUj0FZ4'
+
+

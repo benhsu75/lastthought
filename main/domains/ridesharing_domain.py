@@ -38,7 +38,7 @@ def lyft_redirect(request):
     rideshare_information = current_user.rideshareinformation
     rideshare_information.lyft_access_token = access_token
     rideshare_information.lyft_refresh_token = refresh_token
-    rideshare_information.connected_flag = True
+    rideshare_information.lyft_connected_flag = True
     rideshare_information.save()
 
     # Redirect to ridesharing_setup page

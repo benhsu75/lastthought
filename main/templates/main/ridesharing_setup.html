@@ -4,6 +4,27 @@
     <title>Ridesharing Setup</title>
 </head>
 <body>
-    <a href="https://www.lyft.com/oauth/authorize?client_id=OyrF54XChtFI&response_type=code&scope=public%20rides.read%20offline%20rides.request&state={{fbid}}">Click to Connect Lyft</a>
+    {% if lyft_set_up_flag %}
+        <a href="#">Disconnect Lyft</a>
+    {% else %}
+        <a href="https://www.lyft.com/oauth/authorize?client_id=OyrF54XChtFI&response_type=code&scope=public%20rides.read%20offline%20rides.request&state={{fbid}}">Click to Connect Lyft</a><br><br>
+    {% endif %}
+
+    {% if uber_set_up_flag %}
+        <a href="#">Disconnect Uber</a>
+    {% else %}
+        <a href="#">Click to connect Uber</a><br><br>
+    {% endif %}
+    
+    {% if lyft_set_up_flag or uber_set_up_flag %}
+        <div>
+            <input type="text" name="work-address"><br>
+            <input type="text" name="home-address"><br>
+            <input type="radio" name="ride-type" value="0" checked>Lyft Line/UberPool<br>
+        <input type="radio" name="ride-type" value="1">Classic Lyft/Uber<br>
+        <input type="radio" name="ride-type" value="2">Lyft/Uber Plus<br>
+            <button class="update-rideshare-info">Submit</button>
+        </div>
+    {% endif %}
 </body>
 </html>

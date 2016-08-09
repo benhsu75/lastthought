@@ -45,7 +45,9 @@ class RideshareInformation(models.Model):
     work_lat = models.FloatField(null=True)
     work_long = models.FloatField(null=True)
 
-    # True if either Lyft or Uber is connected
-    connected_flag = models.BooleanField(default=False)
+    # True if either Lyft is connected
+    lyft_connected_flag = models.BooleanField(default=False)
+
+    uber_connected_flag = models.BooleanField(default=False)
 
     user = models.OneToOneField(User)
