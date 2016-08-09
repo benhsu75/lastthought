@@ -28,7 +28,8 @@ def lyft_redirect(request):
     # Get access_token and refresh_token
     (access_token, refresh_token) = lyft.retrieve_access_token(authorization_code)
 
-    
+    # Update Rideshare information
+
 
 
     return HttpResponse(status=200)
