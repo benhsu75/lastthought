@@ -16,6 +16,9 @@ def handle(current_user, text, processed_text):
         }])
     message_log.log_message('ridesharing_setup_message', current_user, ridesharing_setup_message, None)
     
+def lyft_redirect(request):
+    print request.GET
+
 def lyft_webhook(request):
     # Todo
     print request.GET
