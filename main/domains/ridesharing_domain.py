@@ -1,8 +1,8 @@
 from main.message_log import message_log
 from main.entrypoints.messenger import send_api_helper
 from main.models import *
-from main.utils import constants
-from django.http import HttpResponse
+from main.utils import constants, helper_util
+from django.http import HttpResponse, HttpResponseRedirect
 from main.api import lyft
 
 def handle(current_user, text, processed_text):
@@ -25,14 +25,24 @@ def lyft_redirect(request):
     authorization_code = request.GET['code']
     fbid = request.GET['state']
 
+    # Get current user
+    if helper_util.user_exists(fbid):
+        current_user = User.objects.get(fbid=fbid)
+    else:
+        return HttpResponse(status=404)
+
     # Get access_token and refresh_token
     (access_token, refresh_token) = lyft.retrieve_access_token(authorization_code)
 
     # Update Rideshare information
+    rideshare_information = current_user.rideshareinformation
+    rideshare_information.lyft_access_token = access_token
+    rideshare_information.lyft_refresh_token = refresh_token
+    rideshare_information.connected_flag = True
+    rideshare_information.save()
 
-
-
-    return HttpResponse(status=200)
+    # Redirect to ridesharing_setup page
+    return HttpResponseRedirect("/ridesharing_setup")
 
 def lyft_webhook(request):
     # Todo
