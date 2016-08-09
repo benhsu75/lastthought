@@ -3,11 +3,19 @@ from django.contrib import admin
 from main.views import general, habit_views, todo_views, log_views, ridesharing_views
 from main.entrypoints.messenger import messenger
 from django.conf import settings
+from main.domains import ridesharing_domain
 
 urlpatterns = [
     url(r'^$', general.index),
-    url(r'^messenger_callback/', messenger.messenger_callback),
+
+    # Static pages
     url(r'^learn_more/', general.learn_more),
+
+    # Messenger webhooks
+    url(r'^messenger_callback/', messenger.messenger_callback),
+
+    # Lyft webhook
+    url(r'^lyft_webhook/', ridesharing_domain.lyft_webhook),
 
     # Temp helper methods
     url(r'^delete_users/', general.delete_users),

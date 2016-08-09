@@ -5,7 +5,9 @@ from main.models import *
 
 
 def setup(request, fbid):
-    context = RequestContext(request, {})
+    context = RequestContext(request, {
+        'fbid' : fbid
+        })
     template = loader.get_template('main/ridesharing_setup.html')
     return HttpResponse(template.render(context))
 
