@@ -6,17 +6,20 @@ from main.utils import helper_util
 def is_help_domain(text):
     return text == 'help'
 
+
 def is_habits_domain(current_user, text):
     # NLP Stuff
     if('habits' in text):
         return True
-    elif user_is_in_answer_prompt_state(current_user):
+    elif user_is_in_habit_answer_prompt_state(current_user):
         return True
     else:
         return False
 
+
 def is_logs_domain(text):
     return text.split()[0].lower() == "log:"
+
 
 def is_todo_domain(current_user, text):
     if 'todo' in text:
@@ -26,9 +29,11 @@ def is_todo_domain(current_user, text):
     else:
         return False
 
+
 def is_weather_domain(text):
     if 'weather' in text:
         return True
+
 
 def is_ridesharing_domain(text):
     if 'ride' in text:
@@ -38,21 +43,33 @@ def is_ridesharing_domain(text):
 ############### HELPER METHODS ###############
 ##############################################
 
-# Returns whether or not the last message in the message log was us prompting a response
-def last_message_is_prompt(current_user):
-    return Message.objects.filter(user=current_user).order_by('-id')[0].message_type == 6
+
+# Returns whether or not the last message in the message log
+# was us prompting a response
+def last_message_is_habit_prompt(current_user):
+    return Message.objects.filter(
+        user=current_user
+    ).order_by('-id')[0].message_type == 6
+
 
 def last_message_is_show_todo(current_user):
-    return Message.objects.filter(user=current_user).order_by('-id')[0].message_type == 11
+    return Message.objects.filter(
+        user=current_user
+    ).order_by('-id')[0].message_type == 11
+
 
 def last_message_is_incorrect_index_message(current_user):
-    return Message.objects.filter(user=current_user).order_by('-id')[0].message_type == 24
+    return Message.objects.filter(
+        user=current_user
+    ).order_by('-id')[0].message_type == 24
 
-# Looks at the message history, and returns whether or not this message is a response to a prompt
-def user_is_in_answer_prompt_state(current_user):
-    if last_message_is_prompt(current_user):
+
+# Looks at the message history, and returns whether or not this
+# message is a response to a prompt
+def user_is_in_habit_answer_prompt_state(current_user):
+    if last_message_is_habit_prompt(current_user):
         return True
-    
+
     # Get last prompt message
     prompt_message_list = Message.objects.filter(
         user=current_user,
@@ -79,6 +96,13 @@ def user_is_in_answer_prompt_state(current_user):
 
     return True
 
+
+def user_is_in_log_prompt_state(current_user):
+    return Message.objects.filter(
+        user=current_user
+    ).order_by('-id')[0].message_type == 30
+
+
 def user_is_in_complete_todo_state(processed_text, current_user):
     try:
         int(processed_text)
@@ -92,5 +116,3 @@ def user_is_in_complete_todo_state(processed_text, current_user):
         return True
 
     return False
-
-
