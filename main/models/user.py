@@ -29,8 +29,8 @@ class RideshareInformation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    lyft_access_token = models.CharField(max_length=300, null=True)
-    lyft_refresh_token = models.CharField(max_length=300, null=True)
+    lyft_access_token = models.CharField(max_length=500, null=True)
+    lyft_refresh_token = models.CharField(max_length=500, null=True)
 
     ride_type_preference = models.CharField(max_length=100, null=True)
     # Can be lyft_line, lyft, or lyft_plus
