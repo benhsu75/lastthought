@@ -13,7 +13,7 @@
     {% if uber_set_up_flag %}
         <a href="#">Disconnect Uber</a>
     {% else %}
-        <a href="#">Click to connect Uber</a><br><br>
+        <a href="#">Click to Connect Uber</a><br><br>
     {% endif %}
     
     {% if lyft_set_up_flag or uber_set_up_flag %}
@@ -26,5 +26,15 @@
             <button class="update-rideshare-info">Submit</button>
         </div>
     {% endif %}
+
+
+    <script type="text/javascript">
+        $('.update-rideshare-info').click(function() {
+            var workAddress = $('input[name=work-address]').val();
+            var homeAddress = $('input[name=home-address]').val();
+            var preferredRideType = $('input[name=ride-type]:checked').val();
+
+        });     
+    </script>
 </body>
 </html>

@@ -41,9 +41,9 @@ class RideshareInformation(models.Model):
 
     # Home and work lat and longs
     home_lat = models.FloatField(null=True)
-    home_long = models.FloatField(null=True)
+    home_lng = models.FloatField(null=True)
     work_lat = models.FloatField(null=True)
-    work_long = models.FloatField(null=True)
+    work_lng = models.FloatField(null=True)
 
     # True if either Lyft is connected
     lyft_connected_flag = models.BooleanField(default=False)
