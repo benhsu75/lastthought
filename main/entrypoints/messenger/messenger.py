@@ -55,7 +55,9 @@ def messenger_callback(request):
                 # Reroute quick replies
                 if 'quick_reply' in messaging['message']:
                     message_text = messaging['message']['text']
-                    payload = json.loads(messaging['message']['quick_reply']['payload'])
+                    payload = json.loads(
+                        messaging['message']['quick_reply']['payload']
+                    )
 
                     handle_quick_reply(fbid, message_text, payload)
                     continue
@@ -85,6 +87,7 @@ def handle_optin(fbid):
 
     onboarding_domain.create_new_user(fbid)
 
+
 # When the user responds by tapping a quick reply
 def handle_quick_reply(fbid, text, payload):
     state = payload['state']
@@ -98,8 +101,11 @@ def handle_quick_reply(fbid, text, payload):
     # Switch on different quick reply states
     if state == 'habit_binary_response':
         habits_domain.handle_quick_reply(current_user, text, payload)
+    if state == 'log_context_response':
+        logs_domain.apply_context_to_log(current_user, text, payload)
     else:
         misunderstood_domain.handle_misunderstood(current_user, string_payload)
+
 
 # When the user responds by sending any text message
 def handle_message_received(fbid, text):
@@ -117,7 +123,6 @@ def handle_message_received(fbid, text):
     # Use nlp to determine which domain it goes under,
     # then triage to that domain. The domain handles the
     # sub-triaging within itself
-        
     if nlp.is_help_domain(processed_text):
         help_domain.handle(current_user, text, processed_text)
 
@@ -125,13 +130,17 @@ def handle_message_received(fbid, text):
         habits_domain.handle_habits_text(current_user, text, processed_text)
 
     elif nlp.is_logs_domain(processed_text):
-        logs_domain.handle_log_entry(current_user, text, processed_text)
+        logs_domain.handle_logs_text(current_user, text)
 
     elif nlp.is_todo_domain(current_user, processed_text):
         todo_domain.handle_todo(current_user, text, processed_text)
 
     elif nlp.is_ridesharing_domain(processed_text):
         ridesharing_domain.handle(current_user, text, processed_text)
-        
+
     else:
-        misunderstood_domain.handle_misunderstood(current_user, text, processed_text)
+        misunderstood_domain.handle_misunderstood(
+            current_user,
+            text,
+            processed_text
+        )

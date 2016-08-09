@@ -8,9 +8,12 @@ class Message(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     user = models.ForeignKey(User)
-    sent_to_user = models.BooleanField() # If false, then the message was sent from the user
-    message_type = models.SmallIntegerField() # Message types are enumerated in message_log.py
 
+    # If false, then the message was sent from the user
+    sent_to_user = models.BooleanField()
+
+    # Message types are enumerated in message_log.py
+    message_type = models.SmallIntegerField(null=False)
     text = models.CharField(max_length=200, null=True)
-    
+
     habit_entry_in_reference = models.ForeignKey(HabitEntry, null=True)
