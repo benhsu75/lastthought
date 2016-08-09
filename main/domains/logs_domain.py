@@ -86,7 +86,7 @@ def handle_log_entry(current_user, text):
         )
 
 
-def add_and_apply_new_context(curent_user, text):
+def add_and_apply_new_context(current_user, text):
     message_log.log_message(
         'log_new_context_response',
         current_user,
@@ -95,7 +95,7 @@ def add_and_apply_new_context(curent_user, text):
     )
 
     user_log = Log.objects.filter(user=current_user)[0]
-    context = Context(log=user_log, context_name=text)
+    context = LogContext(log=user_log, context_name=text)
     context.save()
 
     # need to deal with numeric/picture log entries later
@@ -104,6 +104,21 @@ def add_and_apply_new_context(curent_user, text):
     ).order_by('-created_at')[0]
     recent_entry.log_context = context
     recent_entry.save()
+
+    successful_context_message = (
+        "\"" + context.context_name + "\""
+        + "was applied to your log entry."
+    )
+    send_api_helper.send_basic_text_message(
+        current_user.fbid,
+        successful_context_message
+    )
+    message_log.log_message(
+        'log_successful_context_message',
+        current_user,
+        successful_context_message,
+        None
+    )
 
 
 def apply_context_to_log(current_user, text, payload):
@@ -124,7 +139,7 @@ def apply_context_to_log(current_user, text, payload):
 
         successful_context_message = (
             "\"" + context.context_name + "\""
-            + "was applied to your log entry."
+            + " was applied to your log entry."
         )
         send_api_helper.send_basic_text_message(
             current_user.fbid,
