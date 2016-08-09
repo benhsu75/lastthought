@@ -19,6 +19,8 @@ def handle(current_user, text, processed_text):
 def lyft_redirect(request):
     print request.GET
 
+    return HttpResponse(status=200)
+
 def lyft_webhook(request):
     # Todo
     print request.GET
