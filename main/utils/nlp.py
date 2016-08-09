@@ -17,8 +17,12 @@ def is_habits_domain(current_user, text):
         return False
 
 
-def is_logs_domain(text):
-    return text.split()[0].lower() == "log:"
+def is_logs_domain(current_user, text):
+    if text.split()[0].lower() == "log:":
+        return True
+    elif user_is_in_log_prompt_state(current_user):
+        return True
+    return False
 
 
 def is_todo_domain(current_user, text):
