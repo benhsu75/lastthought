@@ -16,3 +16,12 @@ def handle(current_user, text, processed_text):
         }])
     message_log.log_message('ridesharing_setup_message', current_user, ridesharing_setup_message, None)
     
+def lyft_webhook(request):
+    # Todo
+    x = 1
+
+    print request.GET
+
+def uber_webhook(request):
+    # Todo
+    x = 1
