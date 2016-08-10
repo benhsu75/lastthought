@@ -104,7 +104,7 @@ def handle_quick_reply(fbid, text, payload):
     if state == 'log_context_response':
         logs_domain.apply_context_to_log(current_user, text, payload)
     else:
-        misunderstood_domain.handle_misunderstood(current_user, string_payload)
+        misunderstood_domain.handle_misunderstood(current_user, text, text)
 
 
 # When the user responds by sending any text message
