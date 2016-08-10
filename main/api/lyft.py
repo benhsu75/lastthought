@@ -18,6 +18,11 @@ def retrieve_access_token(code):
     refresh_token = r.json()['refresh_token']
 
     return (access_token, refresh_token)
+
+# Refreshes the token
+def refresh_access_token(current_user):
+    # TODO
+    x = 1
     
 def get_eta(lat, long):
     # TODO
