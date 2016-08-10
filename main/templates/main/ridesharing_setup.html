@@ -43,10 +43,11 @@
             var payload = {
                 work_address: workAddress,
                 home_address: homeAddress,
-                preferred_ride_type: preferredRideType
+                preferred_ride_type: preferredRideType,
+                fbid: fbid
             };
 
-            var requestUrl = "http://userdatagraph.herokuapp.com/users/" + fbid + "/rideshare_information";
+            var requestUrl = "http://userdatagraph.herokuapp.com/rideshare_information";
 
             $.ajax({
                 method: 'POST',
