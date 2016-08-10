@@ -46,7 +46,7 @@ def lyft_redirect(request):
     rideshare_information.save()
 
     # Redirect to ridesharing_setup page
-    return HttpResponseRedirect("/users/"+fbid+"/ridesharing_setup")
+    return HttpResponseRedirect("/users/"+fbid+"/setup_ridesharing")
 
 def lyft_webhook(request):
     # Todo
