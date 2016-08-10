@@ -44,7 +44,8 @@
                 work_address: workAddress,
                 home_address: homeAddress,
                 preferred_ride_type: preferredRideType,
-                fbid: fbid
+                fbid: fbid,
+                csrfmiddlewaretoken: '{{csrf_token}}'
             };
 
             var requestUrl = "https://userdatagraph.herokuapp.com/rideshare_information/";
