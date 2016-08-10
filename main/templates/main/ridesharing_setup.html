@@ -21,11 +21,13 @@
     
     {% if lyft_set_up_flag or uber_set_up_flag %}
         <div>
-            <input type="text" name="work-address"><br>
-            <input type="text" name="home-address"><br>
+            <input type="hidden" name="fbid" value="{{fbid}}">
+            <input type="text" name="home-address" placeholder="Enter your home address"><br>
+            <input type="text" name="work-address" placeholder="Enter your work address"><br>
+            <span>Select your default commute ride type:</span>
             <input type="radio" name="ride-type" value="0" checked>Lyft Line/UberPool<br>
-        <input type="radio" name="ride-type" value="1">Classic Lyft/Uber<br>
-        <input type="radio" name="ride-type" value="2">Lyft/Uber Plus<br>
+            <input type="radio" name="ride-type" value="1">Classic Lyft/Uber<br>
+            <input type="radio" name="ride-type" value="2">Lyft/Uber Plus<br>
             <button class="update-rideshare-info">Submit</button>
         </div>
     {% endif %}
@@ -33,6 +35,7 @@
 
     <script type="text/javascript">
         $('.update-rideshare-info').click(function() {
+            var fbid = $('input[name=fbid]').val();
             var workAddress = $('input[name=work-address]').val();
             var homeAddress = $('input[name=home-address]').val();
             var preferredRideType = $('input[name=ride-type]:checked').val();
@@ -41,7 +44,15 @@
                 work_address: workAddress,
                 home_address: homeAddress,
                 preferred_ride_type: preferredRideType
-            }
+            };
+
+            var requestUrl = "http://userdatagraph.herokuapp.com/users/" + fbid + "/rideshare_information";
+
+            $.ajax({
+                method: 'POST',
+                url: requestUrl,
+                data: payload
+            });
 
             
         });     
