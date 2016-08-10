@@ -31,3 +31,7 @@ def cancel_ride(ride_id):
     # TODO
     x = 1
 
+def store_ride_history(current_user):
+    # TODO 
+    x = 1
+
