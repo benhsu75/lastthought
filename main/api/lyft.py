@@ -157,6 +157,8 @@ def request_ride(current_user, start_lat, start_lng, end_lat, end_lng, ride_type
     }
 
     r = requests.post(RIDE_REQUEST_URL, data=payload, headers=headers)
+
+    print r.text
     
     status = r.json()['status']
 
