@@ -6,6 +6,7 @@ API_BASE_URL = 'https://api.lyft.com'
 OAUTH_URL = API_BASE_URL + '/oauth/token'
 ETA_URL = API_BASE_URL + '/v1/eta'
 COST_URL = API_BASE_URL + '/v1/cost'
+RIDE_REQUEST_URL = API_BASE_URL + '/v1/rides'
 
 #############################################################
 ###################### AUTH METHODS #########################
@@ -134,9 +135,36 @@ def get_cost_for_ride_type(start_lat, start_lng, end_lat, end_lng, ride_type):
 ##################### USER METHODS# #########################
 #############################################################
 
-def request_ride(start_lat, start_long, end_lat, end_long, ride_type):
-    # TODO
-    return False
+def request_ride(current_user, start_lat, start_long, end_lat, end_long, ride_type):
+    # Get bearer token
+    bearer_token = refresh_bearer_token(current_user)
+
+    # Make request to /ride
+    headers = {
+        'Authorization' : 'Bearer ' + bearer_token
+    }
+
+    payload = {
+        'ride_type' : ride_type,
+        'origin' : {
+            'lat' : start_lat,
+            'lng' : start_lng
+        },
+        'destination' : {
+            'lat' : end_lat,
+            'lng' : end_lng
+        }
+    }
+
+    r = requests.post(RIDE_REQUEST_URL, data=payload, headers=headers)
+    
+    status = r.json()['status']
+
+    # Return whether or not the ride was successfully requested
+    if status == 'pending':
+        return True
+    else:
+        return False
 
 def cancel_ride(ride_id):
     # TODO

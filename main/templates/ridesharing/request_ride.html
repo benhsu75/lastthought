@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Request Ride</title>
+    {% if success %}
     <script>
         window.onload = function() {
             window.location = 'lyft://';
@@ -9,8 +10,17 @@
             // setTimeout("window.location = 'http://hastrk.com/serve?action=click&publisher_id=1&site_id=2';", 1000);
         }
     </script>
+    {% endif %}
 </head>
 <body> 
-    Request a ride
+    {% if not success %}
+    Something went wrong and we weren't able to request a ride. Click the button go to to the lyft app and request one from there.<br>
+    <button>Open Lyft App</button>
+    <script type="text/javascript">
+        $('button').click(function() {
+            window.location = 'lyft://';
+        });
+    </script>
+    {%  %}
 </body>
 </html>

@@ -111,7 +111,7 @@ def request_ride(request, fbid):
         return HttpResponse(status=200)
 
     # Request ride
-    success = lyft.request_ride(start_lat, start_lng, end_lat, end_lng, ride_type)
+    success = lyft.request_ride(current_user, start_lat, start_lng, end_lat, end_lng, ride_type)
 
     # Load page 
     context = RequestContext(request, {
