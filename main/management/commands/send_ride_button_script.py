@@ -4,6 +4,7 @@ from main.entrypoints.messenger import send_api_helper
 from datetime import datetime
 from main.message_log import message_log
 import json
+from main.utils import helper_util
 
 class Command(BaseCommand):
     
@@ -14,6 +15,10 @@ class Command(BaseCommand):
         for r in rideshare_information_list:
             fbid = r.user.fbid
 
+            if helper_util.user_exists(fbid):
+                current_user = User.objects.get(fbid=fbid)
+            except:
+                continue
 
             # Set parameters of ride request
             start_address = r.current_home_address
