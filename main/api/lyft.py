@@ -2,7 +2,14 @@ import requests
 from main.utils import constants
 from requests.auth import HTTPBasicAuth
 
-OAUTH_URL = 'https://api.lyft.com/oauth/token'
+API_BASE_URL = 'https://api.lyft.com'
+OAUTH_URL = API_BASE_URL + '/oauth/token'
+ETA_URL = API_BASE_URL + '/v1/eta'
+COST_URL = API_BASE_URL + '/v1/cost'
+
+#############################################################
+###################### AUTH METHODS #########################
+#############################################################
 
 # Get's the access_token for public scope requests
 def get_access_token():
@@ -44,6 +51,9 @@ def refresh_bearer_token(current_user):
         'refresh_token' : refresh_token
     }
 
+    print 'Refresh token:'
+    print refresh_token
+
     r = requests.post(OAUTH_URL, data=payload, auth=HTTPBasicAuth(constants.LYFT_CLIENT_ID, constants.LYFT_CLIENT_SECRET));
 
     print r.text
@@ -52,9 +62,77 @@ def refresh_bearer_token(current_user):
 
     return bearer_token
     
-def get_eta(lat, long):
-    # TODO
-    x = 1
+#############################################################
+################### PUBLIC SCOPE METHODS ####################
+#############################################################
+
+def get_eta(lat, lng):
+    # Get access_token
+    access_token = get_access_token()
+
+    # Make request to eta endpoint
+    headers = {
+        "Authorization" : "Bearer " + access_token
+    }
+    url_to_get = ETA_URL + '?lat=' + str(lat) + '&lng=' + str(lng)
+
+    r = requests.get(url_to_get, headers=headers)
+
+    response = r.json()
+
+    return response
+
+def get_eta_for_ride_type(lat, lng, ride_type):
+    # Get access_token
+    access_token = get_access_token()
+
+    # Make request to eta endpoint
+    headers = {
+        "Authorization" : "Bearer " + access_token
+    }
+    url_to_get = ETA_URL + '?lat=' + str(lat) + '&lng=' + str(lng) + '&ride_type=' + ride_type
+
+    r = requests.get(url_to_get, headers=headers)
+
+    response = r.json()
+
+    return response
+
+def get_cost(start_lat, start_lng, end_lat, end_lng):
+    # Get access_token
+    access_token = get_access_token()
+
+    # Make request to eta endpoint
+    headers = {
+        "Authorization" : "Bearer " + access_token
+    }
+    url_to_get = COST_URL + '?start_lat=' + str(start_lat) + '&start_lng=' + str(start_lng) + '&end_lat=' + str(end_lat) + '&end_lng=' + str(end_lng)
+
+    r = requests.get(url_to_get, headers=headers)
+
+    response = r.json()
+
+    return response
+
+def get_cost_for_ride_type(start_lat, start_lng, end_lat, end_lng, ride_type):
+    # Get access_token
+    access_token = get_access_token()
+
+    # Make request to eta endpoint
+    headers = {
+        "Authorization" : "Bearer " + access_token
+    }
+    url_to_get = COST_URL + '?start_lat=' + str(start_lat) + '&start_lng=' + str(start_lng) + '&end_lat=' + str(end_lat) + '&end_lng=' + str(end_lng) + '&ride_type=' + ride_type
+
+    r = requests.get(url_to_get, headers=headers)
+
+    response = r.json()
+
+    return response
+
+#############################################################
+##################### USER METHODS# #########################
+#############################################################
 
 def request_ride(start_lat, start_long, end_lat, end_long, ride_type):
     # TODO
