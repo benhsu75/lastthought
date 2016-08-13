@@ -14,33 +14,44 @@ class Command(BaseCommand):
         for r in rideshare_information_list:
             fbid = r.user.fbid
 
-            # Create message
-            quick_reply_list = []
 
-            true_payload = json.dumps({
-                    'state' : 'habit_binary_response',
-                    'habit_entry_id' : habit_entry.id,
-                    'value' : 1
-                })
-            false_payload = json.dumps({
-                    'state' : 'habit_binary_response',
-                    'habit_entry_id' : habit_entry.id,
-                    'value' : 0
-                })
+            # Set parameters of ride request
+            start_address = r.current_home_address
+            end_address = r.current_work_address
 
-            quick_reply_list.append({
-                    'content_type': 'text',
-                    'title': 'Yes',
-                    'payload': true_payload
-                })
-            quick_reply_list.append({
-                    'content_type': 'text',
-                    'title': 'No',
-                    'payload': false_payload
-                })
+            start_lat = r.home_lat
+            start_lng = r.home_lng
+            end_lat = r.work_lat
+            end_lng = r.work_lng
 
-            # Send message and log
-            send_api_helper.send_quick_reply_message(fbid, h.send_text, quick_reply_list)
-            message_log.log_message('habit_prompt_message', user, h.send_text, {'habit_entry': habit_entry})
+            ride_type = r.ride_type_preference
+
+            # Send message
+            ride_request_message = "Click the button to request a ride from " + start_address + " to " + end_address
+            ride_request_url = generate_ride_request_url(start_lat, start_lng, end_lat, end_lng, ride_type)
+            send_api_helper.send_button_message(current_user.fbid, ride_request_message, [
+                    {
+                        'type': 'web_url',
+                        'url': ride_request_url,
+                        'title': 'Request Ride'    
+                    }
+                ])
+            message_log.log_message('ride_request_message', current_user, ride_request_message, None)
+
+
+# Helper methods
+
+# Generate a ride request url
+def generate_ride_request_url(start_lat, start_lng, end_lat, end_lng, ride_type):
+    base_url = 'http://userdatagraph.herokuapp.com/users/' + fbid + '/request_ride?'
+
+    base_url += 'start_lat=' + str(start_lat)
+    base_url += '&start_lng=' + str(start_lng)
+    base_url += '&end_lat=' + str(end_lat)
+    base_url += '&end_lng=' + str(end_lng)
+    base_url += '&ride_type=' + ride_type
+
+    return base_url
+
 
 

@@ -39,6 +39,7 @@ message_mapping = {
     'log_new_context_message': 30,
     'log_new_context_response': 31,
     'log_successful_context_message': 32,
+    'ride_request_message': 33
 }
 
 
