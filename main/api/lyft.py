@@ -6,7 +6,7 @@ API_BASE_URL = 'https://api.lyft.com'
 OAUTH_URL = API_BASE_URL + '/oauth/token'
 ETA_URL = API_BASE_URL + '/v1/eta'
 COST_URL = API_BASE_URL + '/v1/cost'
-RIDE_REQUEST_URL = API_BASE_URL + '/v1/rides'
+RIDES_URL = API_BASE_URL + '/v1/rides'
 
 #############################################################
 ###################### AUTH METHODS #########################
@@ -153,7 +153,7 @@ def request_ride(current_user, start_lat, start_lng, end_lat, end_lng, ride_type
     }
 
     print payload
-    r = requests.post(RIDE_REQUEST_URL, data=payload, headers=headers)
+    r = requests.post(RIDES_URL, data=payload, headers=headers)
 
     print r.text
     
@@ -173,6 +173,25 @@ def cancel_ride(ride_id):
     x = 1
 
 def refresh_ride_history(current_user):
-    # TODO 
-    x = 1
+    # Get bearer token
+    bearer_token = refresh_bearer_token(current_user)
+
+    # Make request to /ride
+    headers = {
+        'Authorization' : 'Bearer ' + bearer_token
+    }
+
+    # Query parameters
+    start_time = ''
+    end_time = ''
+    limit = 50
+
+    url_to_get = RIDES_URL + '?start_time=' + start_time + '&end_time=' + end_time + '&limit=' + str(limit)
+
+    print url_to_get
+    r = requests.get(url_to_get, headers=headers)
+
+    print r.text
+
+    # Parse response and put into database
 

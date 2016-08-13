@@ -57,5 +57,58 @@ class RideshareInformation(models.Model):
     # 0 - Lyft
     # 1 - Uber
 
-
     user = models.OneToOneField(User)
+
+# Represents a user's ridesharing rides
+class RideHistoryItem(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    requested_at = models.DateTimeField()
+
+    rideshare_information = models.ForeignKey(RideshareInformation)
+
+    rideshare_service = models.SmallIntegerField()
+    # 0 - lyft
+    # 1 - uber
+
+    # Ride info
+    ride_id = models.CharField(max_length=200)
+    ride_type = models.CharField(max_length=200)
+
+    driver_first_name = models.CharField(max_length=200, null=True)
+
+    # Route info
+    origin_address = models.CharField(max_length=200, null=True)
+    origin_lat = models.FloatField()
+    origin_lng = models.FloatField()
+
+    dest_address = models.CharField(max_length=200, null=True)
+    dest_lat = models.FloatField()
+    dest_lng = models.FloatField()
+
+    pickup_address = models.CharField(max_length=200, null=True)
+    pickup_lat = models.FloatField()
+    pickup_lng = models.FloatField()
+
+    dropoff_address = models.CharField(max_length=200, null=True)
+    dropoff_lat = models.FloatField()
+    dropoff_lng = models.FloatField()
+
+    # Price info
+    price = models.FloatField()
+    primetime_percentage = models.IntegerField(null=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
