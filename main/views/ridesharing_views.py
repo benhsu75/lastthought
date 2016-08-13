@@ -79,7 +79,7 @@ def rideshare_information(request):
         rideshare_information = current_user.rideshareinformation
 
         # Convert preferred_ride_type
-        rideshareinformation.ride_type = 'lyft_line'
+        rideshare_information.ride_type = 'lyft_line'
 
         # Update rideshare information
         rideshare_information.home_lat = home_lat
@@ -88,8 +88,6 @@ def rideshare_information(request):
         rideshare_information.work_lng = work_lng
         rideshare_information.current_home_address = home_formatted_address
         rideshare_information.current_work_address = work_formatted_address
-
-
 
         rideshare_information.save()
 
