@@ -146,20 +146,28 @@ def request_ride(current_user, start_lat, start_lng, end_lat, end_lng, ride_type
 
     payload = {
         'ride_type' : ride_type,
-        'origin' : {
-            'lat' : start_lat,
-            'lng' : start_lng
-        },
-        'destination' : {
-            'lat' : end_lat,
-            'lng' : end_lng
-        }
+        # 'origin' : {
+        #     'lat' : start_lat,
+        #     'lng' : start_lng
+        # },
+        # 'destination' : {
+        #     'lat' : end_lat,
+        #     'lng' : end_lng
+        # },
+        'origin.lat' : start_lat,
+        'origin.lng' : start_lng,
+        'destination.lat' : end_lat,
+        'destination.lng' : end_lng
     }
 
+    print payload
     r = requests.post(RIDE_REQUEST_URL, data=payload, headers=headers)
 
     print r.text
     
+    if 'status' not in r.json():
+        return False
+
     status = r.json()['status']
 
     # Return whether or not the ride was successfully requested
