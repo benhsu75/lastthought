@@ -19,6 +19,9 @@
         <a href="#">Click to Connect Uber</a><br><br>
     {% endif %}
     
+    <br>
+    <a href="/users/{{fbid}}/ride_history">See your ride history</a>
+
     {% if lyft_set_up_flag or uber_set_up_flag %}
         <div>
             <input type="hidden" name="fbid" value="{{fbid}}">

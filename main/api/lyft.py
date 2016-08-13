@@ -146,14 +146,6 @@ def request_ride(current_user, start_lat, start_lng, end_lat, end_lng, ride_type
 
     payload = {
         'ride_type' : ride_type,
-        # 'origin' : {
-        #     'lat' : start_lat,
-        #     'lng' : start_lng
-        # },
-        # 'destination' : {
-        #     'lat' : end_lat,
-        #     'lng' : end_lng
-        # },
         'origin.lat' : start_lat,
         'origin.lng' : start_lng,
         'destination.lat' : end_lat,

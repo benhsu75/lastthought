@@ -55,6 +55,14 @@ def setup(request, fbid):
     template = loader.get_template('main/ridesharing_setup.html')
     return HttpResponse(template.render(context))
 
+def ride_history(request, fbid):
+    # Get ride history
+
+    # Load page 
+    context = RequestContext(request, {
+    })
+    template = loader.get_template('ridesharing/ride_history.html')
+    return HttpResponse(template.render(context))
 
 # REST Endpoints
 def rideshare_information(request):
@@ -111,7 +119,10 @@ def request_ride(request, fbid):
         return HttpResponse(status=200)
 
     # Request ride
-    success = lyft.request_ride(current_user, start_lat, start_lng, end_lat, end_lng, ride_type)
+    if current_user.rideshareinformation.rideshare_service_preference == 0: # Lyft
+        success = lyft.request_ride(current_user, start_lat, start_lng, end_lat, end_lng, ride_type)
+    else: # Uber
+        success = False
 
     # Load page 
     context = RequestContext(request, {
