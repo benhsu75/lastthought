@@ -135,7 +135,7 @@ def get_cost_for_ride_type(start_lat, start_lng, end_lat, end_lng, ride_type):
 ##################### USER METHODS# #########################
 #############################################################
 
-def request_ride(current_user, start_lat, start_long, end_lat, end_long, ride_type):
+def request_ride(current_user, start_lat, start_lng, end_lat, end_lng, ride_type):
     # Get bearer token
     bearer_token = refresh_bearer_token(current_user)
 
