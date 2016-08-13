@@ -32,7 +32,7 @@ def lyft_redirect(request):
         return HttpResponse(status=404)
 
     # Get access_token and refresh_token
-    (access_token, refresh_token) = lyft.retrieve_access_token(authorization_code)
+    (access_token, refresh_token) = lyft.get_bearer_token_and_refresh_token(authorization_code)
 
     print access_token
     print '-----'
@@ -40,7 +40,6 @@ def lyft_redirect(request):
 
     # Update Rideshare information
     rideshare_information = current_user.rideshareinformation
-    rideshare_information.lyft_access_token = access_token
     rideshare_information.lyft_refresh_token = refresh_token
     rideshare_information.lyft_connected_flag = True
     rideshare_information.save()
