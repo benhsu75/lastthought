@@ -97,7 +97,15 @@ def rideshare_information(request):
         return HttpResponse(status=404)
 
 def request_ride(request, fbid):
-    return HttpResponse('request ride')
+    # Get params
+
+    # Request ride
+
+    # Load page 
+    context = RequestContext(request, {
+    })
+    template = loader.get_template('ridesharing/request_ride.html')
+    return HttpResponse(template.render(context))
 
 
 
