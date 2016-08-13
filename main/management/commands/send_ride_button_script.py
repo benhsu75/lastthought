@@ -17,7 +17,7 @@ class Command(BaseCommand):
 
             if helper_util.user_exists(fbid):
                 current_user = User.objects.get(fbid=fbid)
-            except:
+            else:
                 continue
 
             # Set parameters of ride request
