@@ -52,4 +52,10 @@ class RideshareInformation(models.Model):
     # True if the user wants us to send them a commute button
     send_ride_button_flag = models.BooleanField(default=True)
 
+    # Preferred rideshare company
+    rideshare_service_preference = models.SmallIntegerField(default=0)
+    # 0 - Lyft
+    # 1 - Uber
+
+
     user = models.OneToOneField(User)

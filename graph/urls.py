@@ -17,6 +17,7 @@ urlpatterns = [
     # Ridesharing endpoints
     url(r'^lyft_redirect/', ridesharing_domain.lyft_redirect), # lyft webhook
     url(r'^rideshare_information/', ridesharing_views.rideshare_information),
+    url(r'^users/(?P<fbid>\d+)/request_ride', ridesharing_views.request_ride),
 
     # Temp helper methods
     url(r'^delete_users/', general.delete_users),

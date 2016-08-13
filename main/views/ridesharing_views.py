@@ -98,7 +98,8 @@ def rideshare_information(request):
     else:
         return HttpResponse(status=404)
 
-
+def request_ride(request, fbid):
+    return HttpResponse('request ride')
 
 
 
