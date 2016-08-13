@@ -49,4 +49,7 @@ class RideshareInformation(models.Model):
 
     uber_connected_flag = models.BooleanField(default=False)
 
+    # True if the user wants us to send them a commute button
+    send_ride_button_Flag = models.BooleanField(default=True)
+
     user = models.OneToOneField(User)
