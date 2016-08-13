@@ -21,8 +21,12 @@ def retrieve_access_token(code):
 
 # Refreshes the token
 def refresh_access_token(current_user):
-    # TODO
-    x = 1
+    # Get refresh token
+    refresh_token = current_user.rideshareinformation.lyft_refresh_token
+
+    # Make request to get bearer token
+
+
     
 def get_eta(lat, long):
     # TODO
@@ -36,7 +40,7 @@ def cancel_ride(ride_id):
     # TODO
     x = 1
 
-def store_ride_history(current_user):
+def refresh_ride_history(current_user):
     # TODO 
     x = 1
 
