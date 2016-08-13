@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.template import RequestContext, loader
 from main.models import *
 from main.utils import helper_util
-from main.api import google_geocode
+from main.api import google_geocode, lyft
 
 def lyft_set_up(fbid):
     # Get current user
@@ -98,11 +98,24 @@ def rideshare_information(request):
 
 def request_ride(request, fbid):
     # Get params
+    start_lat = request.GET['start_lat']
+    start_lng = request.GET['start_lng']
+    end_lat = request.GET['end_lat']
+    end_lng = request.GET['end_lng']
+    ride_type = request.GET['ride_type']
+
+    # Get current user
+    if helper_util.user_exists(fbid):
+        current_user = User.objects.get(fbid=fbid)
+    else:
+        return HttpResponse(status=200)
 
     # Request ride
+    success = lyft.request_ride(start_lat, start_lng, end_lat, end_lng, ride_type)
 
     # Load page 
     context = RequestContext(request, {
+        'success' : success
     })
     template = loader.get_template('ridesharing/request_ride.html')
     return HttpResponse(template.render(context))

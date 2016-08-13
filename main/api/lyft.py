@@ -136,7 +136,7 @@ def get_cost_for_ride_type(start_lat, start_lng, end_lat, end_lng, ride_type):
 
 def request_ride(start_lat, start_long, end_lat, end_long, ride_type):
     # TODO
-    x = 1
+    return False
 
 def cancel_ride(ride_id):
     # TODO
