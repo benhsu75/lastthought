@@ -28,8 +28,8 @@ class Command(BaseCommand):
 
             # Send message
             ride_request_message = "Click the button to request a ride from " + start_address + " to " + end_address
-            ride_request_url = generate_ride_request_url(start_lat, start_lng, end_lat, end_lng, ride_type)
-            send_api_helper.send_button_message(current_user.fbid, ride_request_message, [
+            ride_request_url = generate_ride_request_url(fbid, start_lat, start_lng, end_lat, end_lng, ride_type)
+            send_api_helper.send_button_message(fbid, ride_request_message, [
                     {
                         'type': 'web_url',
                         'url': ride_request_url,
@@ -42,7 +42,7 @@ class Command(BaseCommand):
 # Helper methods
 
 # Generate a ride request url
-def generate_ride_request_url(start_lat, start_lng, end_lat, end_lng, ride_type):
+def generate_ride_request_url(fbid, start_lat, start_lng, end_lat, end_lng, ride_type):
     base_url = 'http://userdatagraph.herokuapp.com/users/' + fbid + '/request_ride?'
 
     base_url += 'start_lat=' + str(start_lat)

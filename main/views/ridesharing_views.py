@@ -61,7 +61,9 @@ def rideshare_information(request):
     if request.method == 'POST':
         home_address = request.POST['home_address']
         work_address = request.POST['work_address']
+        preferred_ride_type = request.POST['preferred_ride_type']
         fbid = request.POST['fbid']
+
 
         # Geocode
         (home_formatted_address, home_lat, home_lng) = google_geocode.geocode_address(home_address)
@@ -76,6 +78,9 @@ def rideshare_information(request):
 
         rideshare_information = current_user.rideshareinformation
 
+        # Convert preferred_ride_type
+        rideshareinformation.ride_type = 'lyft_line'
+
         # Update rideshare information
         rideshare_information.home_lat = home_lat
         rideshare_information.work_lat = work_lat
@@ -83,6 +88,8 @@ def rideshare_information(request):
         rideshare_information.work_lng = work_lng
         rideshare_information.current_home_address = home_formatted_address
         rideshare_information.current_work_address = work_formatted_address
+
+
 
         rideshare_information.save()
 
