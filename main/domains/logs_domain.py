@@ -169,8 +169,55 @@ def handle_numeric_log_entry(current_user, numeric_value):
 
 # Handles an image entry
 def handle_image_log_entry(current_user, entry_text):
-    # TODO
-    x = 1
+    user_log = Log.find_or_create(current_user)
+
+    image_log_entry = ImageLogEntry(log=user_log, image_value=image_value)
+    image_log_entry.save()
+
+    log_contexts = LogContext.objects.filter(log=user_log)
+
+    quick_replies = [{
+        "content_type": "text",
+        "title": "None",
+        "payload": json.dumps({
+            "state": "log_context_response",
+            "log_entry_id": text_log_entry.id
+        })
+    }]
+
+    for context in log_contexts:
+        payload = json.dumps({
+            "state": "log_context_response",
+            "log_context_id": context.id,
+            "log_entry_id": text_log_entry.id
+        })
+        quick_replies.append({
+            "content_type": "text",
+            "title": context.context_name,
+            "payload": payload
+        })
+
+    quick_replies.append({
+        "content_type": "text",
+        "title": "Add a new context",
+        "payload": json.dumps({
+            "state": "log_context_response",
+            "log_entry_id": text_log_entry.id
+        })
+    })
+
+    add_context_message = "Add a context to your log entry:"
+    send_api_helper.send_quick_reply_message(
+        current_user.fbid,
+        add_context_message,
+        quick_replies
+    )
+    message_log.log_message(
+        'log_add_context_message',
+        current_user,
+        add_context_message,
+        None
+    )
 
 # Handles the case where user says "log"
 def handle_log_listening(current_user, text, processed_text):
