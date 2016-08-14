@@ -3,13 +3,13 @@ from datetime import datetime
 from main.utils import helper_util
 
 
-def is_help_domain(text):
-    return text == 'help'
+def is_help_domain(processed_text):
+    return processed_text == 'help'
 
 
-def is_habits_domain(current_user, text):
+def is_habits_domain(current_user, processed_text):
     # NLP Stuff
-    if('habits' in text):
+    if('habits' in processed_text):
         return True
     elif user_is_in_habit_answer_prompt_state(current_user):
         return True
@@ -17,30 +17,30 @@ def is_habits_domain(current_user, text):
         return False
 
 
-def is_logs_domain(current_user, text):
-    if text.split()[0].lower() == "log:":
+def is_logs_domain(current_user, processed_text):
+    if processed_text.starts_with('log'):
         return True
-    elif user_is_in_log_prompt_state(current_user):
+    elif user_is_in_log_context_prompt_state(current_user):
         return True
     return False
 
 
-def is_todo_domain(current_user, text):
-    if 'todo' in text:
+def is_todo_domain(current_user, processed_text):
+    if 'todo' in processed_text:
         return True
-    elif user_is_in_complete_todo_state(text, current_user):
+    elif user_is_in_complete_todo_state(processed_text, current_user):
         return True
     else:
         return False
 
 
-def is_weather_domain(text):
-    if 'weather' in text:
+def is_weather_domain(processed_text):
+    if 'weather' in processed_text:
         return True
 
 
-def is_ridesharing_domain(text):
-    if 'ride' in text:
+def is_ridesharing_domain(processed_text):
+    if 'ride' in processed_text:
         return True
 
 ##############################################
@@ -101,10 +101,11 @@ def user_is_in_habit_answer_prompt_state(current_user):
     return True
 
 
-def user_is_in_log_prompt_state(current_user):
+def user_is_in_log_context_prompt_state(current_user):
     return Message.objects.filter(
         user=current_user
     ).order_by('-id')[0].message_type == 30
+
 
 
 def user_is_in_complete_todo_state(processed_text, current_user):
