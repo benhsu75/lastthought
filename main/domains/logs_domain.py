@@ -266,7 +266,7 @@ def add_and_apply_new_context(current_user, text):
 
     successful_context_message = (
         "\"" + context.context_name + "\""
-        + "was applied to your log entry."
+        + " was applied to your log entry."
     )
     send_api_helper.send_basic_text_message(
         current_user.fbid,
