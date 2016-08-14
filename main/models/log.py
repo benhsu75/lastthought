@@ -45,7 +45,7 @@ class NumericLogEntry(models.Model):
 
     log = models.ForeignKey(Log)
     # doesn't make sense for numeric log to not have a context
-    log_context = models.ForeignKey(LogContext, blank=False, null=False)
+    log_context = models.ForeignKey(LogContext, blank=False, null=True)
 
     numeric_value = models.FloatField(default=0)
 
@@ -55,7 +55,7 @@ class ImageLogEntry(models.Model):
 
     log = models.ForeignKey(Log)
     # doesn't make sense for numeric log to not have a context
-    log_context = models.ForeignKey(LogContext, blank=False, null=False)
+    log_context = models.ForeignKey(LogContext, blank=False, null=True)
 
     image_url = models.CharField(max_length=1000)
 
