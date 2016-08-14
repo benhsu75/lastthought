@@ -128,7 +128,7 @@ def user_is_in_complete_todo_state(processed_text, current_user):
 
     return False
 
-def user_is_in_log_entry_state(processed_text, current_user):
+def user_is_in_log_entry_state(current_user):
     if last_message_is_listening_message(current_user):
         return True
     else:

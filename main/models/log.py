@@ -47,4 +47,15 @@ class NumericLogEntry(models.Model):
     # doesn't make sense for numeric log to not have a context
     log_context = models.ForeignKey(LogContext, blank=False, null=False)
 
-    text_value = models.FloatField(default=0)
+    numeric_value = models.FloatField(default=0)
+
+class ImageLogEntry(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    log = models.ForeignKey(Log)
+    # doesn't make sense for numeric log to not have a context
+    log_context = models.ForeignKey(LogContext, blank=False, null=False)
+
+    image_url = models.CharField(max_length=1000)
+

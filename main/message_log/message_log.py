@@ -41,7 +41,8 @@ message_mapping = {
     'log_successful_context_message': 32,
     'ride_request_message': 33,
     'log_trigger_listening_response' : 34,
-    'log_listening_message' : 35
+    'log_listening_message' : 35,
+    'log_invalid_trigger_message' : 36
 }
 
 
