@@ -3,6 +3,7 @@ from main.entrypoints.messenger import send_api_helper
 from main.models import *
 from main.utils import helper_util
 import json
+from main.utils import nlp
 
 BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
 
