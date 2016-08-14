@@ -6,14 +6,18 @@ import json
 
 BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
 
-
-def handle_logs_text(current_user, text):
-    if text.split()[0].lower() == "log:":
+# Global handler for anything logs related
+def handle_logs_text(current_user, text, processed_text):
+    # Triggers asking what they want to log
+    if processed_text == 'log':
+        handle_log_listening(current_user, text, processed_text)
+    # Triggers asking what context
+    elif processed_text.startswith('log'):
         handle_log_entry(current_user, text)
     else:
         add_and_apply_new_context(current_user, text)
 
-
+# Handles a log entry e.g. "log I feel great today"
 def handle_log_entry(current_user, text):
     user_log = Log.find_or_create(current_user)
 
@@ -85,7 +89,30 @@ def handle_log_entry(current_user, text):
             None
         )
 
+# Handles the case where user says "log"
+def handle_log_listening(current_user, text, processed_text):
+    # Log response
+    message_log.log_message(
+            'log_trigger_listening_response',
+            current_user,
+            processed_text,
+            None
+        )
 
+    # Send and log message
+    log_listening_message = "I'm listening - reply with a number, text, or image!"
+    send_api_helper.send_basic_text_message(
+            current_user.fbid,
+            log_listening_message
+        )
+
+    message_log.log_message(
+            'log_listening_message',
+            current_user,
+            log_listening_message,
+            None
+        )
+# Adds a new context based on the user response and applies that context to the log
 def add_and_apply_new_context(current_user, text):
     message_log.log_message(
         'log_new_context_response',
@@ -121,6 +148,7 @@ def add_and_apply_new_context(current_user, text):
     )
 
 
+# Applies an existing context to the log
 def apply_context_to_log(current_user, text, payload):
     message_log.log_message(
         'log_context_response',
