@@ -20,6 +20,8 @@ def is_habits_domain(current_user, processed_text):
 def is_logs_domain(current_user, processed_text):
     if processed_text.startswith('log'):
         return True
+    elif user_is_in_log_entry_state(current_user):
+        return True
     elif user_is_in_log_context_prompt_state(current_user):
         return True
     return False
@@ -67,6 +69,10 @@ def last_message_is_incorrect_index_message(current_user):
         user=current_user
     ).order_by('-id')[0].message_type == 24
 
+def last_message_is_listening_message(current_user):
+    return Message.objects.filter(
+        user=current_user
+    ).order_by('-id')[0].message_type == 35
 
 # Looks at the message history, and returns whether or not this
 # message is a response to a prompt
@@ -121,3 +127,9 @@ def user_is_in_complete_todo_state(processed_text, current_user):
         return True
 
     return False
+
+def user_is_in_log_entry_state(processed_text, current_user):
+    if last_message_is_listening_message(current_user):
+        return True
+    else:
+        return False

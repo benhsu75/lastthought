@@ -8,6 +8,9 @@ BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
 
 # Global handler for anything logs related
 def handle_logs_text(current_user, text, processed_text):
+    print 'in handle_logs_text'
+    print 'processed_text: ' + processed_text
+
     # Triggers asking what they want to log
     if processed_text == 'log':
         handle_log_listening(current_user, text, processed_text)
@@ -19,6 +22,8 @@ def handle_logs_text(current_user, text, processed_text):
 
 # Handles a log entry e.g. "log I feel great today"
 def handle_log_entry(current_user, text):
+    print 'in handle_log_entry'
+
     user_log = Log.find_or_create(current_user)
 
     log_entry_raw = text.split(None, 1)
@@ -91,6 +96,7 @@ def handle_log_entry(current_user, text):
 
 # Handles the case where user says "log"
 def handle_log_listening(current_user, text, processed_text):
+    print 'in handle_log_listening'
     # Log response
     message_log.log_message(
             'log_trigger_listening_response',
