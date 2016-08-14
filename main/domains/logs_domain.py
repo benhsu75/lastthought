@@ -51,7 +51,7 @@ def handle_logs_text(current_user, text, processed_text):
         else:
             handle_text_log_entry(current_user, entry_raw_text)
     # User responded to listening_message
-    elif nlp.user_is_in_log_entry_state(processed_text, current_user):
+    elif nlp.user_is_in_log_entry_state(current_user):
         # Log the entry
         entry_raw_text = text
 
