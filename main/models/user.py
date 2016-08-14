@@ -75,28 +75,29 @@ class RideHistoryItem(models.Model):
     # Ride info
     ride_id = models.CharField(max_length=200)
     ride_type = models.CharField(max_length=200)
+    status = models.CharField(max_length=200)
 
     driver_first_name = models.CharField(max_length=200, null=True)
 
     # Route info
     origin_address = models.CharField(max_length=200, null=True)
-    origin_lat = models.FloatField()
-    origin_lng = models.FloatField()
+    origin_lat = models.FloatField(null=True)
+    origin_lng = models.FloatField(null=True)
 
     dest_address = models.CharField(max_length=200, null=True)
-    dest_lat = models.FloatField()
-    dest_lng = models.FloatField()
+    dest_lat = models.FloatField(null=True)
+    dest_lng = models.FloatField(null=True)
 
     pickup_address = models.CharField(max_length=200, null=True)
-    pickup_lat = models.FloatField()
-    pickup_lng = models.FloatField()
+    pickup_lat = models.FloatField(null=True)
+    pickup_lng = models.FloatField(null=True)
 
     dropoff_address = models.CharField(max_length=200, null=True)
-    dropoff_lat = models.FloatField()
-    dropoff_lng = models.FloatField()
+    dropoff_lat = models.FloatField(null=True)
+    dropoff_lng = models.FloatField(null=True)
 
     # Price info
-    price = models.FloatField()
+    price = models.FloatField(null=True)
     primetime_percentage = models.IntegerField(null=True)
 
 

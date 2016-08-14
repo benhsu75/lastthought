@@ -182,8 +182,8 @@ def refresh_ride_history(current_user):
     }
 
     # Query parameters
-    start_time = ''
-    end_time = ''
+    start_time = '2015-01-01T00:00:00Z'
+    end_time = '2016-06-01T00:00:00Z'
     limit = 50
 
     url_to_get = RIDES_URL + '?start_time=' + start_time + '&end_time=' + end_time + '&limit=' + str(limit)
@@ -191,7 +191,65 @@ def refresh_ride_history(current_user):
     print url_to_get
     r = requests.get(url_to_get, headers=headers)
 
-    print r.text
+    ride_history = r.json()['ride_history']
+
+    # Loop through all rides
+    for ride in ride_history:
+        print '--------RIDE--------'
+        print ride
+        print '--------------------'
+        print '\n'
+
+        ride_id = ride['ride_id']
+        status = ride['status']
+        ride_type = ride['ride_type']
+        pax_first_name = ride['passenger']['first_name']
+
+        if status == 'canceled':
+            # Do something
+            x = 1
+        else:
+            driver_first_name = ride['driver']['first_name']
+            driver_rating = ride['driver']['rating']
+
+            # Origin
+            origin_lat = ride['origin']['lat']
+            origin_lng = ride['origin']['lng']
+            origin_address = ride['origin']['address']
+            origin_eta_seconds = ride['origin']['eta_seconds']
+
+            # Destination
+            if 'destination' in ride:
+                destination_lat = ride['destination']['lat']
+                destination_lng = ride['destination']['lng']
+                destination_address = ride['destination']['address']
+                destination_eta_seconds = ride['destination']['eta_seconds']
+
+            # Pickup
+            if 'pickup' in ride:
+                pickup_lat = ride['pickup']['lat']
+                pickup_lng = ride['pickup']['lng']
+                pickup_address = ride['pickup']['address']
+                pickup_time = ride['pickup']['time']
+
+            # Dropoff 
+            if 'dropoff' in ride:
+                dropoff_lat = ride['dropoff']['lat']
+                dropoff_lng = ride['dropoff']['lng']
+                dropoff_address = ride['dropoff']['address']
+                dropoff_time = ride['dropoff']['time']
+
+            # Location
+            if 'location' in ride:
+                location_lat = ride['location']['lat']
+                location_lng = ride['location']['lng']
+                location_address = ride['location']['address']
+
+            primetime_percentage = ride['primetime_percentage']
+            price = ride['price']['amount']
+
+            eta_seconds = ride['eta_seconds']
+            requested_at = ride['requested_at']
 
     # Parse response and put into database
 
