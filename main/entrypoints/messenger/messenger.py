@@ -62,6 +62,13 @@ def messenger_callback(request):
                     handle_quick_reply(fbid, message_text, payload)
                     continue
 
+                # Reroute images
+                elif 'attachments' in messaging['message'] and messaging['message']['type'] == 'image':
+                    image_url = messaging['message']['attachments']['payload']['url']
+
+                    handle_image_received(fbid, image_url)
+                    continue
+
                 # Is normal message received
                 message_text = messaging['message']['text']
                 handle_message_received(fbid, message_text)
@@ -144,3 +151,15 @@ def handle_message_received(fbid, text):
             text,
             processed_text
         )
+
+def handle_image_received(fbid, image_url):
+    try:
+        current_user = User.objects.get(fbid=fbid)
+    except User.DoesNotExist:
+        send_api_helper.send_basic_text_message(
+            fbid, "Something went wrong :("
+        )
+        return
+
+    if nlp.user_is_in_log_entry_state(current_user):
+        logs_domain.handle_image_log_entry(current_user, image_url)
