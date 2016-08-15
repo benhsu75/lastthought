@@ -41,7 +41,7 @@
                 data: payload,
                 url: '/todo/',
                 success: function(response) {
-                    console.log(response);
+                    window.location.href = "/users/{{fbid}}/todo";
                 }
             });
 
