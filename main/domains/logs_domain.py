@@ -79,6 +79,7 @@ def handle_text_log_entry(current_user, entry_text):
         "payload": json.dumps({
             "state": "log_context_response",
             "entry_type": "text",
+            "no_context_flag" : 1,
             "log_entry_id": text_log_entry.id
         })
     }]
@@ -102,6 +103,7 @@ def handle_text_log_entry(current_user, entry_text):
         "payload": json.dumps({
             "state": "log_context_response",
             "entry_type": "text",
+            "add_new_context_flag": 1,
             "log_entry_id": text_log_entry.id
         })
     })
@@ -134,6 +136,7 @@ def handle_numeric_log_entry(current_user, numeric_value):
         "payload": json.dumps({
             "state": "log_context_response",
             "entry_type": "numeric",
+            "no_context_flag" : 1,
             "log_entry_id": numeric_log_entry.id
         })
     }]
@@ -156,6 +159,7 @@ def handle_numeric_log_entry(current_user, numeric_value):
         "title": "Add a new context",
         "payload": json.dumps({
             "state": "log_context_response",
+            "add_new_context_flag": 1,
             "entry_type": "numeric",
             "log_entry_id": numeric_log_entry.id
         })
@@ -189,6 +193,7 @@ def handle_image_log_entry(current_user, entry_text):
         "payload": json.dumps({
             "state": "log_context_response",
             "entry_type": "image",
+            "no_context_flag" : 1,
             "log_entry_id": image_log_entry.id
         })
     }]
@@ -212,6 +217,7 @@ def handle_image_log_entry(current_user, entry_text):
         "payload": json.dumps({
             "state": "log_context_response",
             "entry_type": "image",
+            "add_new_context_flag": 1,
             "log_entry_id": image_log_entry.id
         })
     })
@@ -332,32 +338,32 @@ def apply_context_to_log(current_user, text, payload):
             successful_context_message,
             None
         )
-    else:
-        if text.strip().lower() == "none":
-            log_confirm_message = (
-                "I logged this for you!"
-            )
-            send_api_helper.send_basic_text_message(
-                current_user.fbid,
-                log_confirm_message
-            )
-            message_log.log_message(
-                'log_confirm_message',
-                current_user,
-                log_confirm_message,
-                None
-            )
-        elif text.strip().lower() == "add context":
-            new_context_message = (
-                "What is the name of the context you want to add?"
-            )
-            send_api_helper.send_basic_text_message(
-                current_user.fbid,
-                new_context_message
-            )
-            message_log.log_message(
-                'log_new_context_message',
-                current_user,
-                new_context_message,
-                None
-            )
+    elif "add_new_context_flag" in payload:
+        new_context_message = (
+            "What is the name of the context you want to add?"
+        )
+        send_api_helper.send_basic_text_message(
+            current_user.fbid,
+            new_context_message
+        )
+        message_log.log_message(
+            'log_new_context_message',
+            current_user,
+            new_context_message,
+            None
+        )
+    elif "no_context_flag" in payload:
+        log_confirm_message = (
+            "I logged this for you!"
+        )
+        send_api_helper.send_basic_text_message(
+            current_user.fbid,
+            log_confirm_message
+        )
+        message_log.log_message(
+            'log_confirm_message',
+            current_user,
+            log_confirm_message,
+            None
+        )
+            
