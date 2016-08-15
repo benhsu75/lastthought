@@ -14,6 +14,7 @@ from main.domains import (habits_domain,
                           misunderstood_domain,
                           help_domain,
                           ridesharing_domain)
+import json
 
 ######################################
 ######### MESSENGER WEBHOOK ##########
@@ -125,10 +126,10 @@ def handle_postback(fbid, payload):
         )
         return
 
-    json = json.loads(payload)
-    print json
+    json_payload = json.loads(payload)
+    print json_payload
 
-    state = json['state']
+    state = json_payload['state']
 
     if state == 'persistent_menu_log':
         logs_domain.handle_log_listening(current_user, 'log', 'log')
