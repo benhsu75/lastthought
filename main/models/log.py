@@ -28,34 +28,19 @@ class LogContext(models.Model):
 
     context_name = models.CharField(max_length=200)
 
-
-class TextLogEntry(models.Model):
+class LogEntry(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     log = models.ForeignKey(Log)
     log_context = models.ForeignKey(LogContext, blank=True, null=True)
 
+class TextLogEntry(LogEntry):
     text_value = models.CharField(max_length=1000)
 
-
-class NumericLogEntry(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    log = models.ForeignKey(Log)
-    # doesn't make sense for numeric log to not have a context
-    log_context = models.ForeignKey(LogContext, blank=False, null=True)
-
+class NumericLogEntry(LogEntry):
     numeric_value = models.FloatField(default=0)
 
-class ImageLogEntry(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    log = models.ForeignKey(Log)
-    # doesn't make sense for numeric log to not have a context
-    log_context = models.ForeignKey(LogContext, blank=False, null=True)
-
+class ImageLogEntry(LogEntry):
     image_url = models.CharField(max_length=1000)
 
