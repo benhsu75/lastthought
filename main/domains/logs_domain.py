@@ -134,7 +134,7 @@ def handle_numeric_log_entry(current_user, numeric_value):
         "payload": json.dumps({
             "state": "log_context_response",
             "entry_type": "numeric",
-            "log_entry_id": text_log_entry.id
+            "log_entry_id": numeric_log_entry.id
         })
     }]
 
@@ -143,7 +143,7 @@ def handle_numeric_log_entry(current_user, numeric_value):
             "state": "log_context_response",
             "log_context_id": context.id,
             "entry_type": "numeric",
-            "log_entry_id": text_log_entry.id
+            "log_entry_id": numeric_log_entry.id
         })
         quick_replies.append({
             "content_type": "text",
@@ -157,7 +157,7 @@ def handle_numeric_log_entry(current_user, numeric_value):
         "payload": json.dumps({
             "state": "log_context_response",
             "entry_type": "numeric",
-            "log_entry_id": text_log_entry.id
+            "log_entry_id": numeric_log_entry.id
         })
     })
 
@@ -189,7 +189,7 @@ def handle_image_log_entry(current_user, entry_text):
         "payload": json.dumps({
             "state": "log_context_response",
             "entry_type": "image",
-            "log_entry_id": text_log_entry.id
+            "log_entry_id": image_log_entry.id
         })
     }]
 
@@ -198,7 +198,7 @@ def handle_image_log_entry(current_user, entry_text):
             "state": "log_context_response",
             "log_context_id": context.id,
             "entry_type": "image",
-            "log_entry_id": text_log_entry.id
+            "log_entry_id": image_log_entry.id
         })
         quick_replies.append({
             "content_type": "text",
@@ -212,7 +212,7 @@ def handle_image_log_entry(current_user, entry_text):
         "payload": json.dumps({
             "state": "log_context_response",
             "entry_type": "image",
-            "log_entry_id": text_log_entry.id
+            "log_entry_id": image_log_entry.id
         })
     })
 
