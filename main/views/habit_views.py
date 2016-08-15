@@ -7,6 +7,7 @@ import json
 from django.core import serializers
 from main.utils import helper_util
 from main.message_log import message_log
+from django.views.decorators.csrf import csrf_exempt
 
 ###############################################
 ############### HELPER METHODS ################
@@ -24,7 +25,7 @@ def get_habit(habit_id):
 #################################################
 ############# REST API ENDPOINT #################
 #################################################
-
+@csrf_exempt
 def habits(request, habit_id=None):
     habit = get_habit(habit_id)
 
@@ -47,6 +48,7 @@ def habits(request, habit_id=None):
             return HttpResponse(status=403)
 
         habit.delete()
+        
         return HttpResponse(status=200)
 
     elif request.method == 'POST':

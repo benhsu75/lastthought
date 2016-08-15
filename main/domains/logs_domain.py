@@ -91,7 +91,7 @@ def handle_text_log_entry(current_user, entry_text):
     text_log_entry = TextLogEntry(log=user_log, text_value=entry_text, entry_type=0)
     text_log_entry.save()
 
-    log_contexts = LogContext.objects.filter(log=user_log)
+    log_contexts = LogContext.objects.filter(log=user_log).order_by('context_name')
 
     quick_replies = [{
         "content_type": "text",

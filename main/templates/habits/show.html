@@ -2,10 +2,14 @@
 <html>
 <head>
     <title>Show Habit</title>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 <body>
     <div>
-        <a href="/users/{{fbid}}/habits">Habits Home</a>
+        <a href="/users/{{fbid}}/habits">Habits Home</a><br><br>
+        <input type="hidden" name="habit_id" value="{{habit.id}}">
+        <button class="delete-habit-button">Delete</button>
     </div>
     <div>
         <h3>{{ habit.name }}</h3>
@@ -31,5 +35,21 @@
             </div>
         {% endfor %}
     </div>
+    <script type="text/javascript">
+        $('.delete-habit-button').click(function() {
+            var habitId = $('input[name=habit_id]').val();
+
+             // DELETE to /habits
+            $.ajax({
+                method: 'DELETE',
+                url: '/habits/' + habitId,
+                success: function() {
+                    
+                    // Go to habits home
+                    window.location.href = "/users/{{fbid}}/habits";
+                }
+            })
+        });
+    </script>
 </body>
 </html>
