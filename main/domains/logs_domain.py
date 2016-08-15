@@ -198,10 +198,10 @@ def handle_numeric_log_entry(current_user, numeric_value):
     )
 
 # Handles an image entry
-def handle_image_log_entry(current_user, entry_text):
+def handle_image_log_entry(current_user, image_url):
     user_log = Log.find_or_create(current_user)
 
-    image_log_entry = ImageLogEntry(log=user_log, image_value=image_value)
+    image_log_entry = ImageLogEntry(log=user_log, image_url=image_url)
     image_log_entry.save()
 
     log_contexts = LogContext.objects.filter(log=user_log)
