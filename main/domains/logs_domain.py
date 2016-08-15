@@ -78,6 +78,7 @@ def handle_text_log_entry(current_user, entry_text):
         "title": "None",
         "payload": json.dumps({
             "state": "log_context_response",
+            "entry_type": "text",
             "log_entry_id": text_log_entry.id
         })
     }]
@@ -86,6 +87,7 @@ def handle_text_log_entry(current_user, entry_text):
         payload = json.dumps({
             "state": "log_context_response",
             "log_context_id": context.id,
+            "entry_type": "text",
             "log_entry_id": text_log_entry.id
         })
         quick_replies.append({
@@ -99,6 +101,7 @@ def handle_text_log_entry(current_user, entry_text):
         "title": "Add a new context",
         "payload": json.dumps({
             "state": "log_context_response",
+            "entry_type": "text",
             "log_entry_id": text_log_entry.id
         })
     })
@@ -130,7 +133,8 @@ def handle_numeric_log_entry(current_user, numeric_value):
         "title": "None",
         "payload": json.dumps({
             "state": "log_context_response",
-            "log_entry_id": text_log_entry.id
+            "entry_type": "numeric",
+            "log_entry_id": numeric_log_entry.id
         })
     }]
 
@@ -138,7 +142,8 @@ def handle_numeric_log_entry(current_user, numeric_value):
         payload = json.dumps({
             "state": "log_context_response",
             "log_context_id": context.id,
-            "log_entry_id": text_log_entry.id
+            "entry_type": "numeric",
+            "log_entry_id": numeric_log_entry.id
         })
         quick_replies.append({
             "content_type": "text",
@@ -151,7 +156,8 @@ def handle_numeric_log_entry(current_user, numeric_value):
         "title": "Add a new context",
         "payload": json.dumps({
             "state": "log_context_response",
-            "log_entry_id": text_log_entry.id
+            "entry_type": "numeric",
+            "log_entry_id": numeric_log_entry.id
         })
     })
 
@@ -182,7 +188,8 @@ def handle_image_log_entry(current_user, entry_text):
         "title": "None",
         "payload": json.dumps({
             "state": "log_context_response",
-            "log_entry_id": text_log_entry.id
+            "entry_type": "image",
+            "log_entry_id": image_log_entry.id
         })
     }]
 
@@ -190,7 +197,8 @@ def handle_image_log_entry(current_user, entry_text):
         payload = json.dumps({
             "state": "log_context_response",
             "log_context_id": context.id,
-            "log_entry_id": text_log_entry.id
+            "entry_type": "image",
+            "log_entry_id": image_log_entry.id
         })
         quick_replies.append({
             "content_type": "text",
@@ -203,7 +211,8 @@ def handle_image_log_entry(current_user, entry_text):
         "title": "Add a new context",
         "payload": json.dumps({
             "state": "log_context_response",
-            "log_entry_id": text_log_entry.id
+            "entry_type": "image",
+            "log_entry_id": image_log_entry.id
         })
     })
 
@@ -257,7 +266,7 @@ def add_and_apply_new_context(current_user, text):
     context = LogContext(log=user_log, context_name=text)
     context.save()
 
-    # need to deal with numeric/picture log entries later
+    # Get the right type of log entry
     recent_entry = TextLogEntry.objects.filter(
         log=user_log
     ).order_by('-created_at')[0]
@@ -289,10 +298,22 @@ def apply_context_to_log(current_user, text, payload):
         None
     )
 
-    # only text for now
-    log_entry = TextLogEntry.objects.get(id=payload["log_entry_id"])
-
     if "log_context_id" in payload:
+        # Get log entry
+        entry_type = payload['entry_type']
+        entry_id = payload['log_entry_id']
+
+        if entry_type == 'text':
+            log_entry = TextLogEntry.objects.get(id=entry_id)
+        elif entry_type == 'numeric':   
+            log_entry = NumericLogEntry.objects.get(id=entry_id)
+        elif entry_type == 'image':
+            log_entry = ImageLogEntry.objects.get(id=entry_id)
+        else:
+            # error
+            return
+
+        # Get context
         context = LogContext.objects.get(id=payload["log_context_id"])
         log_entry.log_context = context
         log_entry.save()
@@ -312,7 +333,21 @@ def apply_context_to_log(current_user, text, payload):
             None
         )
     else:
-        if text.strip().lower() != "none":
+        if text.strip().lower() == "none":
+            log_confirm_message = (
+                "I logged this for you!"
+            )
+            send_api_helper.send_basic_text_message(
+                current_user.fbid,
+                log_confirm_message
+            )
+            message_log.log_message(
+                'log_confirm_message',
+                current_user,
+                log_confirm_message,
+                None
+            )
+        elif text.strip().lower() == "add context":
             new_context_message = (
                 "What is the name of the context you want to add?"
             )
