@@ -31,7 +31,7 @@ def handle_todo(current_user, text, processed_text):
 
             # Send message and log it
             send_todo_list(current_user)
-    elif user_is_in_todo_listening_state(current_user):
+    elif nlp.user_is_in_todo_listening_state(current_user):
         # Log response
         message_log.log_message('add_todo_response', current_user, text, None)
 
