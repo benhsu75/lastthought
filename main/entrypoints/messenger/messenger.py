@@ -110,6 +110,8 @@ def handle_quick_reply(fbid, text, payload):
         habits_domain.handle_quick_reply(current_user, text, payload)
     elif state == 'log_context_response':
         logs_domain.apply_context_to_log(current_user, text, payload)
+    elif state == 'cancel_log':
+        logs_domain.handle_cancel_log(current_user, text, payload)
     else:
         misunderstood_domain.handle_misunderstood(current_user, text, text)
 

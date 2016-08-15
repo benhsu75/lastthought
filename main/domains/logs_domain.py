@@ -257,7 +257,6 @@ def handle_image_log_entry(current_user, image_url):
 
 # Handles the case where user says "log"
 def handle_log_listening(current_user, text, processed_text):
-    print 'in handle_log_listening'
     # Log response
     message_log.log_message(
             'log_trigger_listening_response',
@@ -268,11 +267,19 @@ def handle_log_listening(current_user, text, processed_text):
 
     # Send and log message
     log_listening_message = "I'm listening - reply with a number, text, or image!"
-    send_api_helper.send_basic_text_message(
-            current_user.fbid,
-            log_listening_message
-        )
+    quick_replies = [{
+        "content_type": "text",
+        "title": "Cancel",
+        "payload": json.dumps({
+            "state": "cancel_log"
+        })
+    }]
 
+    send_api_helper.send_quick_reply_message(
+        current_user.fbid,
+        log_listening_message,
+        quick_replies
+    )
     message_log.log_message(
             'log_listening_message',
             current_user,
@@ -387,4 +394,23 @@ def apply_context_to_log(current_user, text, payload):
             log_confirm_message,
             None
         )
-            
+
+def handle_cancel_log(current_user, text, payload):
+    message_log.log_message(
+        'cancel_log_response',
+        current_user,
+        text,
+        None
+    )
+
+    cancel_log_message = 'k!'
+    send_api_helper.send_basic_text_message(
+        current_user.fbid,
+        cancel_log_message
+    )
+    message_log.log_message(
+        'cancel_log_message',
+        current_user,
+        cancel_log_message,
+        None
+    )
