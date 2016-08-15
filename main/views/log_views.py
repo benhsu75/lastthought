@@ -37,10 +37,13 @@ def index(request, fbid):
     user_log = Log.find_or_create(current_user)
 
     log_context_list = LogContext.objects.filter(log=user_log)
+
+    log_entry_list = LogEntry.objects.filter(log=user_log)
     
     context = RequestContext(request, {
         'fbid': fbid,
-        'log_context_list' : log_context_list
+        'log_context_list' : log_context_list,
+        'log_entry_list' : log_entry_list
     })
     template = loader.get_template('log/index.html')
     return HttpResponse(template.render(context))
@@ -49,9 +52,12 @@ def log_context(request, fbid, log_context_id):
     # Get objects
     log_context = LogContext.objects.get(log_context_id)
 
+    log_entry_list = LogEntry.objects.filter(log=user_log, log_context=log_context)
+
     context = RequestContext(request, {
         'fbid': fbid,
-        'log_context' : log_context
+        'log_context' : log_context,
+        'log_entry_list' : log_entry_list
     })
     template = loader.get_template('log/log_context.html')
     return HttpResponse(template.render(context))
