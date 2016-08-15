@@ -5,6 +5,7 @@ from main.models import *
 import json
 from django.core import serializers
 from main.utils import helper_util
+from django.views.decorators.csrf import csrf_exempt
 
 ################################################
 ################# VIEW METHODS #################
@@ -29,7 +30,7 @@ def list(request, fbid):
 ############### REST ENDPOINT #$################
 ################################################
 
-
+@csrf_exempt
 def todo(request, todo_id=None):
 
     # Get list of all todo's

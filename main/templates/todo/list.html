@@ -12,7 +12,9 @@
     {% endif %}
     {% for todo in todo_list %}
         <li>
-            <span>{{ todo.text }}</span>
+            <span>{{ todo.text }}</span>-
+            <input type="hidden" name="todo_id" value="{{todo.id}}">
+            <button class="delete-todo-button">Complete</button>
         </li>
     {% endfor %}
     <br>
@@ -45,6 +47,21 @@
                 }
             });
 
+        });
+
+        $('.delete-todo-button').click(function() {
+            var todoId = $('input[name=todo_id]').val();
+
+             // DELETE to /habits
+            $.ajax({
+                method: 'DELETE',
+                url: '/todo/' + todoId,
+                success: function() {
+                    
+                    // Go to habits home
+                    window.location.href = "/users/{{fbid}}/todo";
+                }
+            })
         });
                 
     </script>
