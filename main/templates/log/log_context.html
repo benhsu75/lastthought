@@ -6,6 +6,20 @@
 <body>
     <h2>{{ log_context.context_name }}</h2>
     <br><br>
-    {{ log_entry_list }}
+    <div>
+        {% for log_entry in log_entry_list %}
+
+            {% if log_entry.entry_type == 0 %}
+            <li>{{log_entry.textlogentry.text_value}}</li>
+            {% elif log_entry.entry_type == 1 %}
+            <li>{{log_entry.numericlogentry.numeric_value}}</li>
+            {% elif log_entry.entry_type == 2 %}
+            <a href="{{ log_entry.imagelogentry.image_url }}">
+                <img src="{{ log_entry.imagelogentry.image_url }}" style="width:100px;"><br>
+            </a>
+            {% endif %}
+
+        {% endfor %}
+    </div>
 </body>
 </html>
