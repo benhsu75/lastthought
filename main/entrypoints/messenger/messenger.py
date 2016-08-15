@@ -63,7 +63,7 @@ def messenger_callback(request):
                     continue
 
                 # Reroute images
-                elif 'attachments' in messaging['message'] and messaging['message']['type'] == 'image':
+                elif 'attachments' in messaging['message'] and messaging['message']['attachments']['type'] == 'image':
                     image_url = messaging['message']['attachments']['payload']['url']
 
                     handle_image_received(fbid, image_url)
