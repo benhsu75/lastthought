@@ -288,12 +288,13 @@ def add_and_apply_new_context(current_user, text):
         None
     )
 
+
     user_log = Log.objects.filter(user=current_user)[0]
     context = LogContext(log=user_log, context_name=text)
     context.save()
 
     # Get the right type of log entry
-    recent_entry = TextLogEntry.objects.filter(
+    recent_entry = LogEntry.objects.filter(
         log=user_log
     ).order_by('-created_at')[0]
     recent_entry.log_context = context
