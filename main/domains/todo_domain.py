@@ -20,7 +20,7 @@ def handle_todo(current_user, text, processed_text):
         todo.save()
 
         # Send message telling them that we created the todo
-        add_todo_message = '"'+add_todo_message+'" added to your to do list!'
+        add_todo_message = 'Your todos:\n' + generate_todo_list_string(current_user)
         send_api_helper.send_basic_text_message(fbid,add_todo_message)
         message_log.log_message('add_todo_message', current_user, add_todo_message, None)
 
