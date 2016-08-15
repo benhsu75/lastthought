@@ -38,7 +38,7 @@ def index(request, fbid):
 
     log_context_list = LogContext.objects.filter(log=user_log)
 
-    log_entry_list = LogEntry.objects.filter(log=user_log)
+    log_entry_list = LogEntry.objects.filter(log=user_log).order_by('-created_at')
     
     context = RequestContext(request, {
         'fbid': fbid,
@@ -54,14 +54,14 @@ def log_context(request, fbid, log_context_id):
         current_user = User.objects.get(fbid=fbid)
     else:
         return HttpResponse(status=200)
-        
+
     # Get log for this user
     user_log = Log.find_or_create(current_user)
 
     # Get objects
     log_context = LogContext.objects.get(id=log_context_id)
 
-    log_entry_list = LogEntry.objects.filter(log=user_log, log_context=log_context)
+    log_entry_list = LogEntry.objects.filter(log=user_log, log_context=log_context).order_by('-created_at')
 
     context = RequestContext(request, {
         'fbid': fbid,
