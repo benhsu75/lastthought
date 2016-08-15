@@ -16,13 +16,25 @@
         {% for log_entry in log_entry_list %}
 
             {% if log_entry.entry_type == 0 %}
-            <li>{{log_entry.textlogentry.text_value}}</li>
+                <dir>
+                    <span>{{log_entry.textlogentry.text_value}}</span>-
+                    <span>{{log_entry.created_at}}</span>
+                </dir>
+                
             {% elif log_entry.entry_type == 1 %}
-            <li>{{log_entry.numericlogentry.numeric_value}}</li>
+                <div>
+                    <span>{{log_entry.numericlogentry.numeric_value}}</span>-
+                    <span>{{log_entry.created_at}}</span>
+                </div>
+                
             {% elif log_entry.entry_type == 2 %}
-            <a href="{{ log_entry.imagelogentry.image_url }}">
-                <img src="{{ log_entry.imagelogentry.image_url }}" style="width:100px;"><br>
-            </a>
+                <div>
+                    <a href="{{ log_entry.imagelogentry.image_url }}">
+                        <img src="{{ log_entry.imagelogentry.image_url }}" style="width:100px;"><br>
+                    </a>   
+                    <span>{{log_entry.created_at}}</span>
+                </div>
+                
             {% endif %}
 
         {% endfor %}
