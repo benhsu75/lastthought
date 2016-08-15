@@ -39,9 +39,9 @@ urlpatterns = [
     # Display endpoints
     url(r'^users/(?P<fbid>\d+)/$', general.dashboard),
     url(r'^users/(?P<fbid>\d+)/todo', todo_views.list),
-    url(r'^users/(?P<fbid>\d+)/habits', habit_views.list),
+    url(r'^users/(?P<fbid>\d+)/habits$', habit_views.list),
     url(r'^users/(?P<fbid>\d+)/add_habit', habit_views.add_habit_page),
-    url(r'^habits/(?P<habit_id>\d+)/show', habit_views.show),
+    url(r'^users/(?P<fbid>\d+)/habits/(?P<habit_id>\d+)/show', habit_views.show),
     url(r'^users/(?P<fbid>\d+)/setup_ridesharing', ridesharing_views.setup),
     url(r'^users/(?P<fbid>\d+)/logs', log_views.index),
     url(r'^users/(?P<fbid>\d+)/log_context/(?P<log_context_id>\d+)', log_views.log_context),

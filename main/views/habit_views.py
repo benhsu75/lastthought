@@ -106,7 +106,7 @@ def list(request, fbid):
 
 
 # Allow users to see entries for a given habit
-def show(request, habit_id):
+def show(request, fbid, habit_id):
     habit = get_habit(habit_id)
 
     if not habit:
@@ -115,6 +115,7 @@ def show(request, habit_id):
     habit_entries = HabitEntry.objects.filter(habit=habit).order_by('id')
 
     context = RequestContext(request, {
+        'fbid': fbid,
         'habit': habit,
         'habit_entries': habit_entries
     })
