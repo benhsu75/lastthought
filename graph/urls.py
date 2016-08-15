@@ -43,7 +43,8 @@ urlpatterns = [
     url(r'^users/(?P<fbid>\d+)/add_habit', habit_views.add_habit_page),
     url(r'^habits/(?P<habit_id>\d+)/show', habit_views.show),
     url(r'^users/(?P<fbid>\d+)/setup_ridesharing', ridesharing_views.setup),
-
+    url(r'^users/(?P<fbid>\d+)/logs', log_views.index),
+    url(r'^users/(?P<fbid>\d+)/logs/(?P<log_context_id>\d+)', log_views.log_context),
 ]
 
 # Ensure static files are accessible
