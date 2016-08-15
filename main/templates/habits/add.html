@@ -11,7 +11,9 @@
     <script src="{% static 'js/jquery.timepicker.min.js' %}"></script>
 </head>
 <body>
-
+    <div>
+        <a href="/users/{{fbid}}/habits">Habits home</a>
+    </div>
     <div>
         <h3>Create Habit</h3>
         <input type="hidden" name="fbid" value="{{ fbid }}"><br>
