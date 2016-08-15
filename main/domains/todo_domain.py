@@ -9,7 +9,17 @@ def handle_todo(current_user, text, processed_text):
 
     fbid = current_user.fbid
     
-    if 'add todo' in processed_text:
+    if processed_text == 'add todo':
+         # Log response
+        message_log.log_message('add_todo_trigger_response', current_user, text, None)
+
+        # Send message telling them that we are listening (and log)
+        add_todo_trigger_message = 'Tell me what you want to add to your todo list:'
+        send_api_helper.send_basic_text_message(current_user.fbid,add_todo_trigger_message)
+
+        message_log.log_message('add_todo_trigger_message', current_user, add_todo_trigger_message, None)
+
+    elif 'add todo' in processed_text:
         # Log response
         message_log.log_message('add_todo_response', current_user, text, None)
 
@@ -58,6 +68,20 @@ def handle_todo(current_user, text, processed_text):
 
             # Send message and log it
             send_todo_list(current_user)
+    elif user_is_in_todo_listening_state(current_user):
+        # Log response
+        message_log.log_message('add_todo_response', current_user, text, None)
+
+        # Create todo
+        add_todo_message = text
+
+        todo = ToDoTask(text=add_todo_message, user=current_user)
+        todo.save()
+
+        # Send message telling them that we created the todo
+        add_todo_message = 'Your todos:\n' + generate_todo_list_string(current_user)
+        send_api_helper.send_basic_text_message(fbid,add_todo_message)
+        message_log.log_message('add_todo_message', current_user, add_todo_message, None)
 
 def send_todo_list(current_user):
     # Send link to todo list

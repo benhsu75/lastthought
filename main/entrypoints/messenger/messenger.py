@@ -139,6 +139,8 @@ def handle_postback(fbid, payload):
         habits_domain.handle_habits_text(current_user, 'habits', 'habits')
     elif state == 'persistent_menu_open_todo':
         todo_domain.handle_todo(current_user, 'todo', 'todo')
+    elif state == 'persistent_menu_add_todo':
+        todo_domain.handle_todo(current_user, 'add todo', 'add todo')
     else:
         # Error
         return

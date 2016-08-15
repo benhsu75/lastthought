@@ -34,6 +34,8 @@ def is_todo_domain(current_user, processed_text):
         return True
     elif user_is_in_complete_todo_state(processed_text, current_user):
         return True
+    elif user_is_in_todo_listening_state(current_user):
+        return True
     else:
         return False
 
@@ -75,6 +77,11 @@ def last_message_is_listening_message(current_user):
     return Message.objects.filter(
         user=current_user
     ).order_by('-id')[0].message_type == 35
+
+def last_message_is_todo_prompt(current_user):
+    return Message.objects.filter(
+        user=current_user
+    ).order_by('-id')[0].message_type == 42
 
 # Looks at the message history, and returns whether or not this
 # message is a response to a prompt
@@ -132,6 +139,12 @@ def user_is_in_complete_todo_state(processed_text, current_user):
 
 def user_is_in_log_entry_state(current_user):
     if last_message_is_listening_message(current_user):
+        return True
+    else:
+        return False
+
+def user_is_in_todo_listening_state(current_user):
+    if last_message_is_todo_prompt(current_user):
         return True
     else:
         return False

@@ -46,7 +46,9 @@ message_mapping = {
     'log_confirm_message' : 37,
     'log_view_message' : 38,
     'cancel_log_response' : 39,
-    'cancel_log_message' : 40
+    'cancel_log_message' : 40,
+    'add_todo_trigger_response' : 41,
+    'add_todo_trigger_message' : 42
 }
 
 
