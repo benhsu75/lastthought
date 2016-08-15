@@ -17,7 +17,7 @@ def list(request, fbid):
         return HttpResponse(status=404)
 
     current_user = User.objects.get(fbid=fbid)
-    todo_list = ToDoTask.objects.filter(user=current_user).order_by('created_at')
+    todo_list = ToDoTask.objects.filter(user=current_user, completed=False).order_by('created_at')
 
     context = RequestContext(request, {
         'todo_list': todo_list,
