@@ -20,6 +20,8 @@ def is_habits_domain(current_user, processed_text):
 def is_logs_domain(current_user, processed_text):
     if processed_text.startswith('log'):
         return True
+    elif processed_text == 'see logs':
+        return True
     elif user_is_in_log_entry_state(current_user):
         return True
     elif user_is_in_log_context_prompt_state(current_user):

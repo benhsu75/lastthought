@@ -15,6 +15,25 @@ def handle_logs_text(current_user, text, processed_text):
     # Triggers asking what they want to log
     if processed_text == 'log':
         handle_log_listening(current_user, text, processed_text)
+    elif processed_text == 'see logs':
+        # Send user message linking to log
+        log_view_message = (
+            "Click to view your logs"
+        )
+        send_api_helper.send_button_message(current_user.fbid, log_view_message, [
+            {
+                'type': 'web_url',
+                'url': constants.BASE_HEROKU_URL + '/users/'+fbid+'/logs',
+                'title': 'See Logs'    
+            }
+        ])
+        message_log.log_message(
+            'log_view_message',
+            current_user,
+            log_view_message,
+            None
+        )
+
     # Triggers asking what context
     elif processed_text.startswith('log:'):
         # Log response
