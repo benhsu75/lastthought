@@ -61,6 +61,7 @@ def handle_logs_text(current_user, text, processed_text):
                 log_invalid_trigger_message,
                 None
             )
+            return
 
         # Log the entry
         entry_raw_text = log_entry_raw[1]
