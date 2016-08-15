@@ -6,6 +6,10 @@
 <body>
     <div>
         <h2>Your Contexts</h2>
+        {% if log_context_list|length == 0 %}
+            No contexts yet
+        {% endif %}
+
         {% for log_context in log_context_list %}
         <a href="/users/{{fbid}}/log_context/{{log_context.id}}">{{log_context.context_name}}</a><br>
         {% endfor %}
