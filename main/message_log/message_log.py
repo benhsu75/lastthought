@@ -43,7 +43,8 @@ message_mapping = {
     'log_trigger_listening_response' : 34,
     'log_listening_message' : 35,
     'log_invalid_trigger_message' : 36,
-    'log_confirm_message' : 37
+    'log_confirm_message' : 37,
+    'log_view_message' : 38
 }
 
 
