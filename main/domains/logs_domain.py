@@ -87,7 +87,7 @@ def handle_logs_text(current_user, text, processed_text):
 def handle_text_log_entry(current_user, entry_text):
     user_log = Log.find_or_create(current_user)
 
-    text_log_entry = TextLogEntry(log=user_log, text_value=entry_text)
+    text_log_entry = TextLogEntry(log=user_log, text_value=entry_text, entry_type=0)
     text_log_entry.save()
 
     log_contexts = LogContext.objects.filter(log=user_log)
@@ -144,7 +144,7 @@ def handle_text_log_entry(current_user, entry_text):
 def handle_numeric_log_entry(current_user, numeric_value):
     user_log = Log.find_or_create(current_user)
 
-    numeric_log_entry = NumericLogEntry(log=user_log, numeric_value=numeric_value)
+    numeric_log_entry = NumericLogEntry(log=user_log, numeric_value=numeric_value, entry_type=1)
     numeric_log_entry.save()
 
     log_contexts = LogContext.objects.filter(log=user_log)
@@ -201,7 +201,7 @@ def handle_numeric_log_entry(current_user, numeric_value):
 def handle_image_log_entry(current_user, image_url):
     user_log = Log.find_or_create(current_user)
 
-    image_log_entry = ImageLogEntry(log=user_log, image_url=image_url)
+    image_log_entry = ImageLogEntry(log=user_log, image_url=image_url, entry_type=2)
     image_log_entry.save()
 
     log_contexts = LogContext.objects.filter(log=user_log)
