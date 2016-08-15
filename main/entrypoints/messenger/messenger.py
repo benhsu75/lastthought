@@ -115,6 +115,32 @@ def handle_quick_reply(fbid, text, payload):
     else:
         misunderstood_domain.handle_misunderstood(current_user, text, text)
 
+# Handles postbacks
+def handle_postback(fbid, payload):
+    try:
+        current_user = User.objects.get(fbid=fbid)
+    except User.DoesNotExist:
+        send_api_helper.send_basic_text_message(
+            fbid, "Something went wrong :("
+        )
+        return
+
+    json = json.loads(payload)
+    print json
+
+    state = json['state']
+
+    if state == 'persistent_menu_log':
+        logs_domain.handle_log_listening(current_user, 'log', 'log')
+    elif state == 'persistent_menu_view_logs':
+        logs_domain.handle_logs_text(current_user, 'see logs', 'see logs')
+    elif state == 'persistent_menu_view_habits':
+        habits_domain.handle_habits_text(current_user, 'habits', 'habits')
+    elif state == 'persistent_menu_open_todo':
+        todo_domain.handle_todo(current_user, 'todo', 'todo')
+    else:
+        # Error
+        return
 
 # When the user responds by sending any text message
 def handle_message_received(fbid, text):

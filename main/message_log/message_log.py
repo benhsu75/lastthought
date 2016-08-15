@@ -44,7 +44,9 @@ message_mapping = {
     'log_listening_message' : 35,
     'log_invalid_trigger_message' : 36,
     'log_confirm_message' : 37,
-    'log_view_message' : 38
+    'log_view_message' : 38,
+    'cancel_log_response' : 39,
+    'cancel_log_message' : 40
 }
 
 
