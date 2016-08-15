@@ -35,6 +35,11 @@ class LogEntry(models.Model):
     log = models.ForeignKey(Log)
     log_context = models.ForeignKey(LogContext, blank=True, null=True)
 
+    entry_type = models.SmallIntegerField()
+    # 0 - text
+    # 1 - numeric
+    # 2 - image
+
 class TextLogEntry(LogEntry):
     text_value = models.CharField(max_length=1000)
 
