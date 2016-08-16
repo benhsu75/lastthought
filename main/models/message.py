@@ -14,6 +14,6 @@ class Message(models.Model):
 
     # Message types are enumerated in message_log.py
     message_type = models.SmallIntegerField(null=False)
-    text = models.CharField(max_length=200, null=True)
+    text = models.CharField(max_length=2000, null=True)
 
     habit_entry_in_reference = models.ForeignKey(HabitEntry, null=True)
