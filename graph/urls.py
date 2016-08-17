@@ -31,6 +31,7 @@ urlpatterns = [
     # Log endpoints
     url(r'^logs/(?P<logentry_id>\d+)/$', log_views.logs),
     url(r'^logs/$', log_views.logs),
+    url(r'^log_contexts/(?P<logcontext_id>\d+)/$', log_views.log_contexts),
 
     # Todo endpoints
     url(r'^todo/(?P<todo_id>\d+)/$', todo_views.todo),
@@ -44,7 +45,7 @@ urlpatterns = [
     url(r'^users/(?P<fbid>\d+)/habits/(?P<habit_id>\d+)/show', habit_views.show),
     url(r'^users/(?P<fbid>\d+)/setup_ridesharing', ridesharing_views.setup),
     url(r'^users/(?P<fbid>\d+)/logs', log_views.index),
-    url(r'^users/(?P<fbid>\d+)/log_context/(?P<log_context_id>\d+)', log_views.log_context),
+    url(r'^users/(?P<fbid>\d+)/log_context/(?P<log_context_id>\d+)', log_views.log_context_show),
 ]
 
 # Ensure static files are accessible

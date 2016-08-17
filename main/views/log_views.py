@@ -7,6 +7,27 @@ import json
 from django.core import serializers
 from main.utils import helper_util
 
+# Helper methods
+
+def get_log_entry(log_entry_id):
+    if log_entry_id is None:
+        return None
+    try:
+        log_entry = LogEntry.objects.get(id=log_entry_id)
+        return log_entry
+    except LogEntry.DoesNotExist:
+        return None
+
+def get_log_context(log_context_id):
+    if log_context_id is None:
+        return None
+    try:
+        log_context = LogContext.objects.get(id=log_context_id)
+        return log_context
+    except LogContext.DoesNotExist:
+        return None
+
+# Endpoint methods
 
 def logs(request, logentry_id=None):
     if request.method == 'GET':
@@ -23,8 +44,30 @@ def logs(request, logentry_id=None):
         return HttpResponse("GET LOGS", status=200)
     elif request.method == 'POST':
         return HttpResponse(status=200)
+    elif request.method == 'DELETE':
+        log_entry = get_log_entry(logentry_id)
+
+        log_entry.delete()
+
+        return HttpResponse(status=200)
     else:
         return HttpResponse(status=404)
+
+def log_contexts(request, logcontext_id=None):
+    if request.method == 'GET':
+        return HttpResponse("GET LOGS", status=200)
+    elif request.method == 'POST':
+        return HttpResponse(status=200)
+    elif request.method == 'DELETE':
+        log_context = get_log_context(logcontext_id)
+
+        log_context.delete()
+
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse(status=404)
+
+# View methods
 
 def index(request, fbid):
     # Get user
@@ -48,7 +91,7 @@ def index(request, fbid):
     template = loader.get_template('log/index.html')
     return HttpResponse(template.render(context))
 
-def log_context(request, fbid, log_context_id):
+def log_context_show(request, fbid, log_context_id):
      # Get user
     if helper_util.user_exists(fbid):
         current_user = User.objects.get(fbid=fbid)
