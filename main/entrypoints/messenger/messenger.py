@@ -177,11 +177,14 @@ def handle_message_received(fbid, text):
         ridesharing_domain.handle(current_user, text, processed_text)
 
     else:
-        misunderstood_domain.handle_misunderstood(
-            current_user,
-            text,
-            processed_text
-        )
+        # Handle everything else as a log
+        logs_domain.handle_logs_text(current_user, text, processed_text)
+        
+        # misunderstood_domain.handle_misunderstood(
+        #     current_user,
+        #     text,
+        #     processed_text
+        # )
 
 def handle_image_received(fbid, image_url):
     try:
@@ -193,4 +196,7 @@ def handle_image_received(fbid, image_url):
         return
 
     if nlp.user_is_in_log_entry_state(current_user):
+        logs_domain.handle_image_log_entry(current_user, image_url)
+    else:
+        # Still handle image as a log
         logs_domain.handle_image_log_entry(current_user, image_url)
