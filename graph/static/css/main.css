@@ -1,0 +1,126 @@
+* { 
+	margin:0;
+	padding:0;
+}
+
+body {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0px;
+	left: 0px;
+	font-family: 'Roboto', sans-serif;
+}
+
+.container {
+	margin: auto;
+	width: calc(100% - 20px);
+	max-width: 700px;
+	position: relative;
+	padding: 10px;
+}
+
+.row:before, 
+.row:after {
+	content:"";
+	display: table;
+	clear:both;
+}
+
+.row {
+	height: 100%;
+	position: relative;
+	text-align: center;
+}
+
+[class*='col-'] {
+	float: left;
+	min-height: 1px;
+	height: 100%;
+	text-align: center; 
+	display:block;
+	position: relative;
+}
+
+.col-4 {
+	width: calc(25% - 10px);
+	text-align: center;
+	margin: 5px;
+}
+
+@media all and (max-width:700px){
+	.col-4 { width: calc(33.3% - 10px); }
+	.message{ width: 70%; }
+}
+
+h1 {
+	font-family: 'Raleway', sans-serif;
+	margin: 20px 0px;
+}
+
+a {
+	text-decoration: none;
+}
+
+.context-section {
+	margin: 10px 0px;
+}
+
+.log-context {
+	width: 95%;
+	background-color: #8AC;
+	padding-left: 3px;
+	padding-right: 3px;
+	overflow: hidden;
+	font-size: 14px;
+	line-height: 30px;
+	height: 30px;
+	color: white;
+	border-radius: 5px;
+	text-align: center;
+}
+
+.log-context:hover, .log-back:hover {
+	background-color: #68A;
+}
+
+.log-entry {
+	padding: 20px;
+	border: 1px dashed #DDD;
+	text-align: left;
+	font-size: 16px;
+	line-height: 25px;
+	margin-bottom: 20px;
+}
+
+.log-img {
+	height: 400px;
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+.timestamp {
+	text-align: left;
+	margin-bottom: 20px;
+	font-size: 14px;
+	color: #68A;
+}
+
+.log-back {
+	position: fixed;
+	z-index: 1;
+	width: 100%;
+	background-color: #8AC;
+	padding-left: 3px;
+	padding-right: 3px;
+	font-size: 14px;
+	line-height: 50px;
+	height: 50px;
+	color: white;
+	text-align: center;
+}
+
+.nav-shift {
+	margin-top: 50px;
+}
