@@ -41,7 +41,7 @@ class LogEntry(models.Model):
     # 2 - image
 
 class TextLogEntry(LogEntry):
-    text_value = models.CharField(max_length=1000)
+    text_value = models.CharField(max_length=10000)
 
 class NumericLogEntry(LogEntry):
     numeric_value = models.FloatField(default=0)
