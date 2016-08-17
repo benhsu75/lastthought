@@ -77,7 +77,7 @@
                     $('input[name=habit-name]').val("");
                     $('input[name=habit-send-text]').val("");
                     $('input[name=habit-send-time]').val("");
-                    $('input[name=habit-response-type]:checked').val("");
+                    $('input[name=habit-response-type][value=0]').attr("checked",true);
 
                     $('.response-message').text("Success! Habit added!");
                 }
