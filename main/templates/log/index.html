@@ -18,7 +18,7 @@
       {% endif %}
 
       {% for log_context in log_context_list %}
-      <div class="col-4">
+      <div class="col-4 context-box">
         <a href="/users/{{fbid}}/log_context/{{log_context.id}}">
           <div class="log-context">
             {{log_context.context_name}}
@@ -34,13 +34,13 @@
       {% if log_entry.entry_type == 0 %}
       <div class="log-entry">
         <div class="timestamp">{{log_entry.created_at}}</div>
-        <span>{{log_entry.textlogentry.text_value}}</span>
+        <p>{{log_entry.textlogentry.text_value}}</p>
       </div>
 
       {% elif log_entry.entry_type == 1 %}
       <div class="log-entry">
         <div class="timestamp">{{log_entry.created_at}}</div>
-        <span>{{log_entry.numericlogentry.numeric_value}}</span>
+        <p>{{log_entry.numericlogentry.numeric_value}}</p>
       </div>  
 
       {% elif log_entry.entry_type == 2 %}
