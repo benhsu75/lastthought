@@ -1,34 +1,48 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Log Context</title>
+  <title>View {{ log_context.context_name }} logs</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}"/>
+  <link href="https://fonts.googleapis.com/css?family=Raleway|Roboto:300" rel="stylesheet">
 </head>
 <body>
-    <a href="/users/{{fbid}}/logs">All Logs</a>
-    <h2>{{ log_context.context_name }}</h2>
-    <div>
-        {% for log_entry in log_entry_list %}
-
-            {% if log_entry.entry_type == 0 %}
-                <div>
-                    <span>{{log_entry.textlogentry.text_value}}</span>-
-                    <span>{{log_entry.created_at}}</span>
-                </div>
-            {% elif log_entry.entry_type == 1 %}
-                <div>
-                    <span>{{log_entry.numericlogentry.numeric_value}}</span>-
-                    <span>{{log_entry.created_at}}</span>
-                </div>
-            {% elif log_entry.entry_type == 2 %}
-                <div>
-                    <a href="{{ log_entry.imagelogentry.image_url }}">
-                        <img src="{{ log_entry.imagelogentry.image_url }}" style="width:100px;"><br>
-                    </a>
-                    <span>{{log_entry.created_at}}</span>
-                </div>
-            {% endif %}
-
-        {% endfor %}
+  
+  <a href="/users/{{fbid}}/logs">
+    <div class="log-back">
+      Back to all logs
     </div>
+  </a>
+
+  <div class="container nav-shift">
+    <h1>Your <span class="context-title">{{ log_context.context_name }}</span> logs</h1>
+
+    {% for log_entry in log_entry_list %}
+    <div class="row">
+
+      {% if log_entry.entry_type == 0 %}
+      <div class="log-entry">
+        <div class="timestamp">{{log_entry.created_at}}</div>
+        <span>{{log_entry.textlogentry.text_value}}</span>
+      </div>
+
+      {% elif log_entry.entry_type == 1 %}
+      <div class="log-entry">
+        <div class="timestamp">{{log_entry.created_at}}</div>
+        <span>{{log_entry.numericlogentry.numeric_value}}</span>
+      </div>  
+
+      {% elif log_entry.entry_type == 2 %}
+      <div class="log-entry">
+        <div class="timestamp">{{log_entry.created_at}}</div>
+        <a href="{{ log_entry.imagelogentry.image_url }}">
+          <div class="log-img" style="background-image: url('{{ log_entry.imagelogentry.image_url }}');"></div>
+        </a>
+      </div>
+
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
 </body>
 </html>
