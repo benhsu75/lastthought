@@ -109,6 +109,7 @@ def handle_text_log_entry(current_user, entry_text):
         count += 1
 
         if count <= 8:
+            # Edit
             payload = json.dumps({
                 "state": "log_context_response",
                 "log_context_id": context.id,
