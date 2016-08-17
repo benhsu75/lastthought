@@ -104,18 +104,22 @@ def handle_text_log_entry(current_user, entry_text):
         })
     }]
 
+    count = 0
     for context in log_contexts:
-        payload = json.dumps({
-            "state": "log_context_response",
-            "log_context_id": context.id,
-            "entry_type": "text",
-            "log_entry_id": text_log_entry.id
-        })
-        quick_replies.append({
-            "content_type": "text",
-            "title": context.context_name,
-            "payload": payload
-        })
+        count += 1
+
+        if count < 8
+            payload = json.dumps({
+                "state": "log_context_response",
+                "log_context_id": context.id,
+                "entry_type": "text",
+                "log_entry_id": text_log_entry.id
+            })
+            quick_replies.append({
+                "content_type": "text",
+                "title": context.context_name,
+                "payload": payload
+            })
 
     quick_replies.append({
         "content_type": "text",
