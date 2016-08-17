@@ -1,6 +1,6 @@
 * { 
-	margin:0;
-	padding:0;
+	margin: 0;
+	padding: 0;
 }
 
 body {
@@ -61,6 +61,18 @@ a {
 	text-decoration: none;
 }
 
+p {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  word-break: break-all;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
 .context-section {
 	margin: 10px 0px;
 }
@@ -86,15 +98,6 @@ a {
 
 .log-context:hover, .log-back:hover {
 	background-color: #68A;
-}
-
-.log-entry {
-	padding: 20px;
-	border: 1px dashed #DDD;
-	text-align: left;
-	font-size: 16px;
-	line-height: 25px;
-	margin-bottom: 20px;
 }
 
 .log-img {
@@ -129,9 +132,17 @@ a {
 	margin-top: 50px;
 }
 
+.log-entry {
+	padding: 20px;
+	border: 1px dashed #DDD;
+	text-align: left;
+	font-size: 16px;
+	line-height: 25px;
+	margin-bottom: 20px;
+}
+
 @media all and (max-width:1000px){
-	.col-4 { width: calc(33.3% - 10px); }
-	.message{ width: 70%; }
+	.col-4 { width: calc(33.3% - 10px); }	
 	.container { max-width: none; }
 	h1 { font-size: 80px; }
 	.context-box {
