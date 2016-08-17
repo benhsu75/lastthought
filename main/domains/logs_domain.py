@@ -8,7 +8,7 @@ from main.utils import nlp
 BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
 
 # Global handler for anything logs related
-def handle_logs_text(current_user, text, processed_text):
+def handle_logs_text(current_user, text, processed_text, no_trigger_flag=False):
     print 'in handle_logs_text'
     print 'processed_text: ' + processed_text
 
@@ -71,7 +71,7 @@ def handle_logs_text(current_user, text, processed_text):
         else:
             handle_text_log_entry(current_user, entry_raw_text)
     # User responded to listening_message
-    elif nlp.user_is_in_log_entry_state(current_user):
+    elif no_trigger_flag or nlp.user_is_in_log_entry_state(current_user):
         # Log the entry
         entry_raw_text = text
 

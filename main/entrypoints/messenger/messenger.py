@@ -178,8 +178,8 @@ def handle_message_received(fbid, text):
 
     else:
         # Handle everything else as a log
-        logs_domain.handle_logs_text(current_user, text, processed_text)
-        
+        logs_domain.handle_logs_text(current_user, text, processed_text, True)
+
         # misunderstood_domain.handle_misunderstood(
         #     current_user,
         #     text,
