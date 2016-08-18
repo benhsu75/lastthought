@@ -166,18 +166,22 @@ def handle_numeric_log_entry(current_user, numeric_value):
         })
     }]
 
+    count = 0
     for context in log_contexts:
-        payload = json.dumps({
-            "state": "log_context_response",
-            "log_context_id": context.id,
-            "entry_type": "numeric",
-            "log_entry_id": numeric_log_entry.id
-        })
-        quick_replies.append({
-            "content_type": "text",
-            "title": context.context_name,
-            "payload": payload
-        })
+        count += 1
+
+        if count <= 8:
+            payload = json.dumps({
+                "state": "log_context_response",
+                "log_context_id": context.id,
+                "entry_type": "numeric",
+                "log_entry_id": numeric_log_entry.id
+            })
+            quick_replies.append({
+                "content_type": "text",
+                "title": context.context_name,
+                "payload": payload
+            })
 
     quick_replies.append({
         "content_type": "text",
@@ -223,18 +227,22 @@ def handle_image_log_entry(current_user, image_url):
         })
     }]
 
+    count = 0
     for context in log_contexts:
-        payload = json.dumps({
-            "state": "log_context_response",
-            "log_context_id": context.id,
-            "entry_type": "image",
-            "log_entry_id": image_log_entry.id
-        })
-        quick_replies.append({
-            "content_type": "text",
-            "title": context.context_name,
-            "payload": payload
-        })
+        count += 1
+
+        if count <= 8:
+            payload = json.dumps({
+                "state": "log_context_response",
+                "log_context_id": context.id,
+                "entry_type": "image",
+                "log_entry_id": image_log_entry.id
+            })
+            quick_replies.append({
+                "content_type": "text",
+                "title": context.context_name,
+                "payload": payload
+            })
 
     quick_replies.append({
         "content_type": "text",
