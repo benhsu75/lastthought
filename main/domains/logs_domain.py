@@ -4,6 +4,10 @@ from main.models import *
 from main.utils import helper_util, constants
 import json
 from main.utils import nlp
+import boto3
+import requests
+from PIL import Image
+import random
 
 BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
 
@@ -210,6 +214,24 @@ def handle_numeric_log_entry(current_user, numeric_value):
 # Handles an image entry
 def handle_image_log_entry(current_user, image_url):
     user_log = Log.find_or_create(current_user)
+
+    # Download image from FB
+    print 'DOWNLOADING IMAGE FROM FB'
+    image_response = requests.get(image_url)
+    r.raw.decode_content = True # handle spurious Content-Encoding
+    im = Image.open(r.raw)
+
+    # Upload to S3
+    print 'UPLOADING TO S3'
+    s3 = boto3.resource('s3')
+    random_id = current_user.fbid + '-' + random.getrandbits(128)
+    image_file_name = random_id + '.png'
+    s3.Bucket('userdatagraph-images').put_object(Key=image_file_name, Body=im)
+
+
+    # Get Url and set image_url
+    uploaded_image_url = 'https://userdatagraph.s3.amazonaws.com/' + image_file_name
+    print 'GOT THE NEW URL AS: ' + uploaded_image_url
 
     image_log_entry = ImageLogEntry(log=user_log, image_url=image_url, entry_type=2)
     image_log_entry.save()
