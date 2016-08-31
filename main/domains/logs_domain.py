@@ -229,7 +229,7 @@ def handle_image_log_entry(current_user, image_url):
     s3 = boto3.resource('s3')
     random_id = str(current_user.fbid) + '-' + str(random.getrandbits(128))
     image_file_name = random_id + '.jpg'
-    fp = StringIO.StringIO(im)
+    fp = StringIO(im)
     s3.Bucket('userdatagraph-images').put_object(Key=image_file_name, Body=fp)
 
 
