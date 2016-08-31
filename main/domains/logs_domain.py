@@ -222,15 +222,15 @@ def handle_image_log_entry(current_user, image_url):
     
     image_response = requests.get(image_url)
     # image_response.raw.decode_content = True # handle spurious Content-Encoding
-    im = Image.open(StringIO(image_response.content))
+    # im = Image.open(StringIO(image_response.content))
 
     # Upload to S3
     print 'UPLOADING TO S3'
     s3 = boto3.resource('s3')
     random_id = str(current_user.fbid) + '-' + str(random.getrandbits(128))
     image_file_name = random_id + '.jpg'
-    fp = StringIO(im)
-    s3.Bucket('userdatagraph-images').put_object(Key=image_file_name, Body=fp)
+    # fp = StringIO(im)
+    s3.Bucket('userdatagraph-images').put_object(Key=image_file_name, Body=StringIO(image_response.content))
 
 
     # Get Url and set image_url
