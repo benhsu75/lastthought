@@ -217,9 +217,12 @@ def handle_image_log_entry(current_user, image_url):
 
     # Download image from FB
     print 'DOWNLOADING IMAGE FROM FB'
+
+    from StringIO import StringIO
+    
     image_response = requests.get(image_url)
-    image_response.raw.decode_content = True # handle spurious Content-Encoding
-    im = Image.open(image_response.raw)
+    # image_response.raw.decode_content = True # handle spurious Content-Encoding
+    im = Image.open(StringIO(image_response.content))
 
     # Upload to S3
     print 'UPLOADING TO S3'
