@@ -46,9 +46,9 @@
       {% elif log_entry.entry_type == 2 %}
       <div class="log-entry">
         <div class="timestamp">{{log_entry.created_at}}</div>
-        <a href="{{ log_entry.imagelogentry.image_url }}">
-          <div class="log-img" style="background-image: url('{{ log_entry.imagelogentry.image_url }}');"></div>
-        </a>
+        <!-- <a href="{{ log_entry.imagelogentry.image_url }}"> -->
+          <div class="log-img" style="background-image: url('{{ log_entry.imagelogentry.image_url }}'); height: {{log_entry.imagelogentry.image_height}}px; width: {{log_entry.imagelogentry.image_width}}px;"></div>
+        <!-- </a> -->
       </div>
 
       {% endif %}

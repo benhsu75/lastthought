@@ -101,9 +101,8 @@ p {
 }
 
 .log-img {
-	height: 400px;
 	background-position: center;
-	background-size: cover;
+	/*background-size: cover;*/
 	background-repeat: no-repeat;
 }
 
