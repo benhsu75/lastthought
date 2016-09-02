@@ -6,6 +6,7 @@ from main.models import *
 import json
 from django.core import serializers
 from main.utils import helper_util
+from django.views.decorators.csrf import csrf_exempt
 
 # Helper methods
 
@@ -28,7 +29,7 @@ def get_log_context(log_context_id):
         return None
 
 # Endpoint methods
-
+@csrf_exempt
 def logs(request, logentry_id=None):
     if request.method == 'GET':
         # if logentry_id is None:
@@ -53,14 +54,22 @@ def logs(request, logentry_id=None):
     else:
         return HttpResponse(status=404)
 
+@csrf_exempt
 def log_contexts(request, logcontext_id=None):
     if request.method == 'GET':
         return HttpResponse("GET LOGS", status=200)
     elif request.method == 'POST':
         return HttpResponse(status=200)
     elif request.method == 'DELETE':
+
         log_context = get_log_context(logcontext_id)
 
+        # Remove all relations to this log context
+        log_entries = LogEntry.objects.filter(log_context=log_context)
+        for l_e in log_entries:
+            l_e.log_context = None
+            l_e.save()
+        
         log_context.delete()
 
         return HttpResponse(status=200)

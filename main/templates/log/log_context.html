@@ -5,6 +5,8 @@
   <title>View {{ log_context.context_name }} logs</title>
   <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}"/>
   <link href="https://fonts.googleapis.com/css?family=Raleway|Roboto:300" rel="stylesheet">
+  <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 <body>
   
@@ -16,6 +18,8 @@
 
   <div class="container nav-shift">
     <h1>Your <span class="context-title">{{ log_context.context_name }}</span> logs</h1>
+    <input type="hidden" name="log-context-id" value="{{log_context.id}}">
+    <button class="log-context-delete-button">Delete Context</button><br><br>
 
     {% for log_entry in log_entry_list %}
     <div class="row">
@@ -44,5 +48,26 @@
     </div>
     {% endfor %}
   </div>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.log-context-delete-button').click(function() {
+        var logContextId = $('input[name=log-context-id]').val();
+        console.log("asdf: " + logContextId);
+
+        // POST to delete context
+
+        $.ajax({
+            method: 'DELETE',
+            url: '/log_contexts/' + logContextId,
+            success: function() {
+                // Clear fields
+                window.location.href = "/users/{{fbid}}/logs";
+            }
+        })
+      });
+    });
+    
+  </script>
 </body>
 </html>
