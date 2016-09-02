@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Jarvis Dashboard</title>
+
+    <link rel="stylesheet" type"text/css" href="{% static 'css/style.css' %}"/>
+    <!-- jQuery -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Oswald:300' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+    <div class="footer" id="teach">
+        <div class="teach">Teach Jarvis!</div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <a href="https://www.lyft.com/oauth/authorize?client_id=OyrF54XChtFI&response_type=code&scope=public%20rides.read%20offline%20rides.request&state={{fbid}}">
+                    {% if lyft_connected_flag %}
+                    <div class="auth_card authorized" id="lyft_card"></div>
+                    <div class="check"></div>
+                    {% else %}
+                    <div class="auth_card" id="lyft_card"></div>
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+    </div>
+    
+</body>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#loading_background").hide();
+    $("#teach").click(function() {
+        console.log("hello");
+        $("#loading_background").show();
+
+        setTimeout(function(){
+            $("#loading_text").html("...Analyzing Lyft Data")
+            setTimeout(function(){
+                $("#loading_text").html("...Learning from your Google Calendar")
+                setTimeout(function(){
+                    $("#loading_text").html("...Talking to your mother")
+                    setTimeout(function(){
+                        window.location.href = "https://www.messenger.com/t/jarvisbot/";
+                    }, 1000);
+                }, 1000);
+            }, 1000);
+        }, 1000);
+    });
+    
+});
+
+</script>
+</html>

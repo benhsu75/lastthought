@@ -1,0 +1,239 @@
+body {
+    padding-top: 5%;
+    color: #DDD;
+}
+
+.container {
+    margin: auto;
+    width : 100%;
+    max-width: 900px;
+}
+
+h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 30px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #555;
+}
+
+.row:before, 
+.row:after {
+    content:"";
+    display: table;
+    clear:both;
+}
+
+.row {
+    height: 100%;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+[class*='col-'] {
+    float: left;
+    min-height: 1px;
+    height: 100%;
+    text-align: center; 
+    display:block;
+    position: relative;
+}
+
+.col-4 {
+    width: 25%;
+    text-align: center;
+}
+
+.col-1 {
+    width: 100%;
+    text-align: center;
+}
+
+@media all and (max-width:800px){
+    .col-4{ width: 100%; }
+    .teach{ width: 200px !important;}
+}
+
+.auth_card {
+    display: inline-block;
+    border: 3px solid #EEE;
+    border-radius: 20px;
+    margin: 20px;
+    margin-bottom: 0px;
+    width: 200px;
+    height: 200px;
+}
+.auth_card:hover, .authorized {
+    opacity: 0.4;
+}
+
+.authorized {
+    border: 3px solid #33CF43;
+}
+
+#lyft_card {
+    background: url("http://res.cloudinary.com/goodsearch/image/upload/v1419835891/hi_resolution_merchant_logos/lyft_coupons.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#google_card {
+    background: url("https://62e528761d0685343e1c-f3d1b99a743ffa4142d9d7f1978d9686.ssl.cf2.rackcdn.com/files/93616/area14mp/image-20150902-6700-t2axrz.jpg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#fitbit_card {
+    background: url("https://index.tnwcdn.com/images/620ea20d3096ff399a780bd927dedd0bd2893435.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#venmo_card {
+    background: url("http://brand.venmo.com/assets/venmo_logo_blue.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#yelp_card {
+    background: url("http://s3-media2.fl.yelpcdn.com/assets/srv0/www_pages/95212dafe621/assets/img/brand_guidelines/yelp-2c.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#weather_card {
+    background: url("https://icons.wxug.com/logos/PNG/wundergroundLogo_4c_rev.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#news_card {
+    background: url("https://upload.wikimedia.org/wikipedia/commons/4/40/New_York_Times_logo_variation.jpg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#foursquare_card {
+    background: url("https://img.stackshare.io/stack/18/lybUngI1.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.messenger-button {
+    text-align: center;
+}
+
+.welcome {
+    font-family: 'Oswald', sans-serif;
+    color: #AAA;
+    font-size: 50px;
+    text-align: center;
+    text-transform: uppercase;
+    margin: 30px;
+    margin-top: 100px;
+}
+
+.check {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 50px;
+    margin-bottom: 0px;
+    width: 150px;
+    height: 150px;
+    background: url("http://www.clker.com/cliparts/u/e/E/I/2/i/dark-green-check-mark-hi.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.7;
+}
+
+.teach {
+    text-align: center;
+    display: inline-block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 30px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.footer {
+    position: fixed;
+    width: 100%;
+    background-color: #EEE;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    text-align: center;
+    padding: 20px;
+}
+
+.footer:hover {
+    background-color: #33CF43;
+    color: #FFF;
+    cursor: pointer;
+}
+
+#loading_background {
+    display: none;
+    width: 100%;
+    height: 100%;
+    background-color: #FFF;
+    opacity: 0.9;
+    position: fixed;
+    left: 0;
+    top: 0;
+    text-align: center;
+    z-index: 3;
+}
+
+.loading_animation {
+    color: #000;
+    z-index: 5;
+    margin: auto;
+    padding: 15%;
+}
+
+#loading_text {
+    font-family: 'Oswald', sans-serif;
+    font-size: 30px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.trigger {
+    float: right;
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    text-align: center;
+    text-transform: uppercase;
+    border: 1px solid #33CF43;
+    padding: 5px;
+    color: #33CF43;
+}
+
+.trigger:hover {
+    cursor: pointer;
+    background-color: #33CF43;
+    color: #FFF;
+}
+
+.event_info {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 50px;
+    color: #999;
+}
+
+.event_type {
+    color: #F33;
+}

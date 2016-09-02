@@ -40,3 +40,16 @@ def dashboard(request, fbid):
     context = RequestContext(request, {})
     template = loader.get_template('main/dashboard.html')
     return HttpResponse(template.render(context))
+
+def connect(request, fbid):
+    if not helper_util.user_exists(fbid):
+        return HttpResponse(status=404)
+    user = User.objects.get(fbid=fbid)
+
+    context = RequestContext(request, {
+        'lyft_connected_flag' : user.rideshareinformation.lyft_connected_flag,
+        'fbid' : user.fbid
+        
+        })
+    template = loader.get_template('main/connect.html')
+    return HttpResponse(template.render(context))

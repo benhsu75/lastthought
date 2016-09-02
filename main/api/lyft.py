@@ -173,6 +173,7 @@ def cancel_ride(ride_id):
     x = 1
 
 def refresh_ride_history(current_user):
+    print 'REFRESH RIDE HISTORY!!!!!!!'
     # Get bearer token
     bearer_token = refresh_bearer_token(current_user)
 
@@ -216,7 +217,6 @@ def refresh_ride_history(current_user):
             origin_lat = ride['origin']['lat']
             origin_lng = ride['origin']['lng']
             origin_address = ride['origin']['address']
-            origin_eta_seconds = ride['origin']['eta_seconds']
 
             # Destination
             if 'destination' in ride:
@@ -247,8 +247,7 @@ def refresh_ride_history(current_user):
 
             primetime_percentage = ride['primetime_percentage']
             price = ride['price']['amount']
-
-            eta_seconds = ride['eta_seconds']
+            
             requested_at = ride['requested_at']
 
     # Parse response and put into database

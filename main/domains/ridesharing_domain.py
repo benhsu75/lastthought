@@ -44,8 +44,11 @@ def lyft_redirect(request):
     rideshare_information.lyft_connected_flag = True
     rideshare_information.save()
 
+    # Load ride history into logs
+    lyft.refresh_ride_history(current_user)
+
     # Redirect to ridesharing_setup page
-    return HttpResponseRedirect("/users/"+fbid+"/setup_ridesharing")
+    return HttpResponseRedirect("/users/"+fbid+"/connect")
 
 def lyft_webhook(request):
     # Todo
