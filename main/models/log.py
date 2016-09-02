@@ -48,4 +48,6 @@ class NumericLogEntry(LogEntry):
 
 class ImageLogEntry(LogEntry):
     image_url = models.CharField(max_length=1000)
+    image_width = models.SmallIntegerField()
+    image_height = models.SmallIntegerField()
 

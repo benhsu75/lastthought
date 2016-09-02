@@ -222,7 +222,8 @@ def handle_image_log_entry(current_user, image_url):
     
     image_response = requests.get(image_url)
     # image_response.raw.decode_content = True # handle spurious Content-Encoding
-    # im = Image.open(StringIO(image_response.content))
+    im = Image.open(StringIO(image_response.content))
+    image_width, image_height = im.size
 
     # Upload to S3
     print 'UPLOADING TO S3'
