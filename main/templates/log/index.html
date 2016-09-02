@@ -50,7 +50,11 @@
           <div class="log-img" style="background-image: url('{{ log_entry.imagelogentry.image_url }}'); height: {{log_entry.imagelogentry.image_height}}px; width: {{log_entry.imagelogentry.image_width}}px;"></div>
         <!-- </a> -->
       </div>
-
+      {% elif log_entry.entry_type == 3 %}
+      <div class="log-entry">
+        <div class="timestamp">{{log_entry.created_at}}</div>
+          RIDE
+      </div>
       {% endif %}
     </div>
     {% endfor %}

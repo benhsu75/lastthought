@@ -39,6 +39,7 @@ class LogEntry(models.Model):
     # 0 - text
     # 1 - numeric
     # 2 - image
+    # 3 - Lyft ride
 
 class TextLogEntry(LogEntry):
     text_value = models.CharField(max_length=10000)
@@ -50,4 +51,40 @@ class ImageLogEntry(LogEntry):
     image_url = models.CharField(max_length=1000)
     image_width = models.SmallIntegerField()
     image_height = models.SmallIntegerField()
+
+class RideLogEntry(LogEntry):
+    requested_at = models.DateTimeField()
+    rideshare_service = models.SmallIntegerField()
+    # 0 - lyft
+    # 1 - uber
+
+    # Ride info
+    ride_id = models.CharField(max_length=200)
+    ride_type = models.CharField(max_length=200)
+    status = models.CharField(max_length=200)
+
+    driver_first_name = models.CharField(max_length=200, null=True)
+
+    # Route info
+    origin_address = models.CharField(max_length=200, null=True)
+    origin_lat = models.FloatField(null=True)
+    origin_lng = models.FloatField(null=True)
+
+    dest_address = models.CharField(max_length=200, null=True)
+    dest_lat = models.FloatField(null=True)
+    dest_lng = models.FloatField(null=True)
+
+    pickup_address = models.CharField(max_length=200, null=True)
+    pickup_lat = models.FloatField(null=True)
+    pickup_lng = models.FloatField(null=True)
+
+    dropoff_address = models.CharField(max_length=200, null=True)
+    dropoff_lat = models.FloatField(null=True)
+    dropoff_lng = models.FloatField(null=True)
+
+    # Price info
+    price = models.FloatField(null=True)
+    primetime_percentage = models.IntegerField(null=True)
+
+
 
