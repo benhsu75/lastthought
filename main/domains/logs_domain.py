@@ -238,7 +238,7 @@ def handle_image_log_entry(current_user, image_url):
     uploaded_image_url = 'https://s3.amazonaws.com/userdatagraph-images/' + image_file_name
     print 'GOT THE NEW URL AS: ' + uploaded_image_url
 
-    image_log_entry = ImageLogEntry(log=user_log, image_url=uploaded_image_url, entry_type=2)
+    image_log_entry = ImageLogEntry(log=user_log, image_url=uploaded_image_url, entry_type=2, image_width=image_width, image_height=image_height)
     image_log_entry.save()
 
     log_contexts = LogContext.objects.filter(log=user_log)
