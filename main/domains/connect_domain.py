@@ -3,7 +3,7 @@ from main.utils import constants, helper_util
 from django.http import HttpResponse, HttpResponseRedirect
 
 def foursquare_redirect(request, fbid):
-    authorization_code = request.args.get('code')
+    authorization_code = request.GET['code']
 
     redirect_uri = 'https://userdatagraph.herokuapp.com/foursquare_redirect'
 
@@ -24,6 +24,6 @@ def foursquare_redirect(request, fbid):
     user.save()
 
     # Load all the foursquare data
-    
+
     # Redirect to ridesharing_setup page
     return HttpResponseRedirect("/users/"+fbid+"/connect")
