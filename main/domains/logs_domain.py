@@ -93,7 +93,7 @@ def handle_logs_text(current_user, text, processed_text, no_trigger_flag=False):
 def handle_text_log_entry(current_user, entry_text):
     user_log = Log.find_or_create(current_user)
 
-    text_log_entry = TextLogEntry(log=user_log, text_value=entry_text, entry_type=0, occurred_at=datetime.now())
+    text_log_entry = TextLogEntry(log=user_log, text_value=entry_text, entry_type=0, occurred_at=datetime.datetime.now())
     text_log_entry.save()
 
     log_contexts = LogContext.objects.filter(log=user_log).order_by('context_name')
@@ -155,7 +155,7 @@ def handle_text_log_entry(current_user, entry_text):
 def handle_numeric_log_entry(current_user, numeric_value):
     user_log = Log.find_or_create(current_user)
 
-    numeric_log_entry = NumericLogEntry(log=user_log, numeric_value=numeric_value, entry_type=1, occurred_at=datetime.now())
+    numeric_log_entry = NumericLogEntry(log=user_log, numeric_value=numeric_value, entry_type=1, occurred_at=datetime.datetime.now())
     numeric_log_entry.save()
 
     log_contexts = LogContext.objects.filter(log=user_log)
@@ -239,7 +239,7 @@ def handle_image_log_entry(current_user, image_url):
     uploaded_image_url = 'https://s3.amazonaws.com/userdatagraph-images/' + image_file_name
     print 'GOT THE NEW URL AS: ' + uploaded_image_url
 
-    image_log_entry = ImageLogEntry(log=user_log, image_url=uploaded_image_url, entry_type=2, image_width=image_width, image_height=image_height, occurred_at=datetime.now())
+    image_log_entry = ImageLogEntry(log=user_log, image_url=uploaded_image_url, entry_type=2, image_width=image_width, image_height=image_height, occurred_at=datetime.datetime.now())
     image_log_entry.save()
 
     log_contexts = LogContext.objects.filter(log=user_log)

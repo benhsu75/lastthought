@@ -29,6 +29,19 @@
                     {% endif %}
                 </a>
             </div>
+            <div class="col-4">
+                <a href="https://www.lyft.com/oauth/authorize?client_id=OyrF54XChtFI&response_type=code&scope=public%20rides.read%20offline%20rides.request&state={{fbid}}">
+                    {% if foursquare_connected_flag %}
+                    <div class="auth_card authorized" id="lyft_card"></div>
+                    <div class="check"></div>
+                    {% else %}
+                    <div class="auth_card" id="foursquare_card"></div>
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            
         </div>
     </div>
     
