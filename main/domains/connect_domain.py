@@ -1,6 +1,7 @@
 from main.models import *
 from main.utils import constants, helper_util
 from django.http import HttpResponse, HttpResponseRedirect
+import requests
 
 def foursquare_redirect(request, fbid):
     authorization_code = request.GET['code']
