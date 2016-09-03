@@ -85,7 +85,7 @@ class RideLogEntry(LogEntry):
     dropoff_lng = models.FloatField(null=True)
 
     # Price info
-    price = models.FloatField(null=True)
+    price_in_dollars = models.FloatField(null=True)
     primetime_percentage = models.IntegerField(null=True)
 
 

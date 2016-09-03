@@ -289,7 +289,7 @@ def refresh_ride_history(current_user):
                 else:
                     ride_entry.primetime_percentage = 0
 
-                ride_entry.price = ride['price']['amount']
+                ride_entry.price_in_dollars = ride['price']['amount']/100
 
                 ride_entry.save()
                 print "SAVED RIDE ENTRY"
