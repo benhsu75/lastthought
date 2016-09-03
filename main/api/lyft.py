@@ -213,15 +213,13 @@ def refresh_ride_history(current_user):
             count += 1
 
             requested_at = ride['requested_at']
-            print requested_at
+            raw_time_of_last_ride = requested_at[0:(len(requested_at)-6)]
+            requested_at_date = datetime.datetime.strptime(raw_time_of_last_ride, '%Y-%m-%dT%H:%M:%S')
 
             if count == len(ride_history):
-                raw_time_of_last_ride = requested_at[0:(len(requested_at)-6)]
-                print "RAW: " + raw_time_of_last_ride
-                requested_at_date = datetime.datetime.strptime(raw_time_of_last_ride, '%Y-%m-%dT%H:%M:%S')
+                
                 new_date = requested_at_date + datetime.timedelta(seconds=1)
                 start_time = new_date.strftime("%Y-%m-%dT%H:%M:%SZ")
-                print 'CHANGED CURRENT TIME to: ' + start_time
 
             print '--------RIDE--------'
             print ride
