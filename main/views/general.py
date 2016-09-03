@@ -48,6 +48,7 @@ def connect(request, fbid):
 
     context = RequestContext(request, {
         'lyft_connected_flag' : user.rideshareinformation.lyft_connected_flag,
+        'foursquare_connected_flag' : user.foursquare_connected_flag,
         'fbid' : user.fbid
         
         })
