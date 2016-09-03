@@ -1,6 +1,8 @@
 import requests
 from main.utils import constants
 from requests.auth import HTTPBasicAuth
+from main.models import *
+import datetime
 
 API_BASE_URL = 'https://api.lyft.com'
 OAUTH_URL = API_BASE_URL + '/oauth/token'
@@ -173,6 +175,8 @@ def cancel_ride(ride_id):
     x = 1
 
 def refresh_ride_history(current_user):
+    user_log = Log.find_or_create(current_user)
+
     print 'REFRESH RIDE HISTORY!!!!!!!'
     # Get bearer token
     bearer_token = refresh_bearer_token(current_user)
@@ -184,71 +188,112 @@ def refresh_ride_history(current_user):
 
     # Query parameters
     start_time = '2015-01-01T00:00:00Z'
-    end_time = '2016-06-01T00:00:00Z'
+    current_time = datetime.date.today().strftime("%Y-%m-%dT%H:%M:%SZ")
+    end_time = current_time
     limit = 50
+    more_to_parse = True
 
-    url_to_get = RIDES_URL + '?start_time=' + start_time + '&end_time=' + end_time + '&limit=' + str(limit)
+    while more_to_parse:
+        more_to_parse = False
 
-    print url_to_get
-    r = requests.get(url_to_get, headers=headers)
+        url_to_get = RIDES_URL + '?start_time=' + start_time + '&end_time=' + end_time + '&limit=' + str(limit)
+        print '################# MAKING REQUEST ####################'
+        print url_to_get
+        print '#####################################################'
 
-    ride_history = r.json()['ride_history']
+        r = requests.get(url_to_get, headers=headers)
 
-    # Loop through all rides
-    for ride in ride_history:
-        print '--------RIDE--------'
-        print ride
-        print '--------------------'
-        print '\n'
+        ride_history = r.json()['ride_history']
 
-        ride_id = ride['ride_id']
-        status = ride['status']
-        ride_type = ride['ride_type']
-        pax_first_name = ride['passenger']['first_name']
+        # Loop through all rides
 
-        if status == 'canceled':
-            # Do something
-            x = 1
-        else:
-            driver_first_name = ride['driver']['first_name']
-            driver_rating = ride['driver']['rating']
+        count = 0
+        for ride in ride_history:
+            more_to_parse = True
+            count += 1
 
-            # Origin
-            origin_lat = ride['origin']['lat']
-            origin_lng = ride['origin']['lng']
-            origin_address = ride['origin']['address']
-
-            # Destination
-            if 'destination' in ride:
-                destination_lat = ride['destination']['lat']
-                destination_lng = ride['destination']['lng']
-                destination_address = ride['destination']['address']
-                destination_eta_seconds = ride['destination']['eta_seconds']
-
-            # Pickup
-            if 'pickup' in ride:
-                pickup_lat = ride['pickup']['lat']
-                pickup_lng = ride['pickup']['lng']
-                pickup_address = ride['pickup']['address']
-                pickup_time = ride['pickup']['time']
-
-            # Dropoff 
-            if 'dropoff' in ride:
-                dropoff_lat = ride['dropoff']['lat']
-                dropoff_lng = ride['dropoff']['lng']
-                dropoff_address = ride['dropoff']['address']
-                dropoff_time = ride['dropoff']['time']
-
-            # Location
-            if 'location' in ride:
-                location_lat = ride['location']['lat']
-                location_lng = ride['location']['lng']
-                location_address = ride['location']['address']
-
-            primetime_percentage = ride['primetime_percentage']
-            price = ride['price']['amount']
-            
             requested_at = ride['requested_at']
+            print requested_at
 
-    # Parse response and put into database
+            if count == len(ride_history):
+                raw_time_of_last_ride = requested_at[0:(len(requested_at)-6)]
+                print "RAW: " + raw_time_of_last_ride
+                date = datetime.datetime.strptime(raw_time_of_last_ride, '%Y-%m-%dT%H:%M:%S')
+                new_date = date + datetime.timedelta(seconds=1)
+                start_time = new_date.strftime("%Y-%m-%dT%H:%M:%SZ")
+                print 'CHANGED CURRENT TIME to: ' + start_time
+
+            print '--------RIDE--------'
+            print ride
+            print '--------------------'
+            print '\n'
+
+            ride_id = ride['ride_id']
+
+            # Check if ride already in db
+            existing_ride = RideLogEntry.objects.filter(ride_id=ride_id, rideshare_service=0)
+            if len(existing_ride) != 0:
+                print 'RIDE ALREADY IN DB'
+                continue
+
+            status = ride['status']
+            ride_type = ride['ride_type']
+            pax_first_name = ride['passenger']['first_name']
+
+            if status == 'canceled':
+                print 'THIS RIDE WAS CANCELLED - NOT STORING'
+                # Do something
+                x = 1
+            else:
+                driver_first_name = ride['driver']['first_name']
+                driver_rating = ride['driver']['rating']
+
+                #
+                ride_entry = RideLogEntry(requested_at=requested_at, ride_id=ride_id, ride_type=ride_type, status=status, driver_first_name=driver_first_name, log=user_log, entry_type=3,rideshare_service=0)
+
+                # Origin
+                ride_entry.origin_lat = ride['origin']['lat']
+                ride_entry.origin_lng = ride['origin']['lng']
+                ride_entry.origin_address = ride['origin']['address']
+
+                
+                # Destination
+                if 'destination' in ride:
+                    ride_entry.dest_lat = ride['destination']['lat']
+                    ride_entry.dest_lng = ride['destination']['lng']
+                    ride_entry.dest_address = ride['destination']['address']
+                    # destination_eta_seconds = ride['destination']['eta_seconds']
+
+                # Pickup
+                if 'pickup' in ride:
+                    ride_entry.pickup_lat = ride['pickup']['lat']
+                    ride_entry.pickup_lng = ride['pickup']['lng']
+                    ride_entry.pickup_address = ride['pickup']['address']
+
+                    raw_pickup_time = ride['pickup']['time']
+
+                # Dropoff 
+                if 'dropoff' in ride:
+                    ride_entry.dropoff_lat = ride['dropoff']['lat']
+                    ride_entry.dropoff_lng = ride['dropoff']['lng']
+                    ride_entry.dropoff_address = ride['dropoff']['address']
+
+                    raw_dropoff_time = ride['dropoff']['time']
+
+                # # Location
+                # if 'location' in ride:
+                #     ride_entry.location_lat = ride['location']['lat']
+                #     ride_entry.location_lng = ride['location']['lng']
+                #     ride_entry.location_address = ride['location']['address']
+
+                if 'primetime_percentage' in ride:
+                    ride_entry.primetime_percentage = int(ride['primetime_percentage'].replace('%', ''))
+                else:
+                    ride_entry.primetime_percentage = 0
+
+                ride_entry.price = ride['price']['amount']
+
+                ride_entry.save()
+                print "SAVED RIDE ENTRY"
+
 
