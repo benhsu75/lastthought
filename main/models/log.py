@@ -32,6 +32,8 @@ class LogEntry(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    occurred_at = models.DateTimeField()
+
     log = models.ForeignKey(Log)
     log_context = models.ForeignKey(LogContext, blank=True, null=True)
 

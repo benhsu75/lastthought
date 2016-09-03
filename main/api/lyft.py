@@ -218,8 +218,8 @@ def refresh_ride_history(current_user):
             if count == len(ride_history):
                 raw_time_of_last_ride = requested_at[0:(len(requested_at)-6)]
                 print "RAW: " + raw_time_of_last_ride
-                date = datetime.datetime.strptime(raw_time_of_last_ride, '%Y-%m-%dT%H:%M:%S')
-                new_date = date + datetime.timedelta(seconds=1)
+                requested_at_date = datetime.datetime.strptime(raw_time_of_last_ride, '%Y-%m-%dT%H:%M:%S')
+                new_date = requested_at_date + datetime.timedelta(seconds=1)
                 start_time = new_date.strftime("%Y-%m-%dT%H:%M:%SZ")
                 print 'CHANGED CURRENT TIME to: ' + start_time
 
@@ -249,7 +249,7 @@ def refresh_ride_history(current_user):
                 driver_rating = ride['driver']['rating']
 
                 #
-                ride_entry = RideLogEntry(requested_at=requested_at, ride_id=ride_id, ride_type=ride_type, status=status, driver_first_name=driver_first_name, log=user_log, entry_type=3,rideshare_service=0)
+                ride_entry = RideLogEntry(requested_at=requested_at_date, occurred_at=requested_at_date,ride_id=ride_id, ride_type=ride_type, status=status, driver_first_name=driver_first_name, log=user_log, entry_type=3,rideshare_service=0)
 
                 # Origin
                 ride_entry.origin_lat = ride['origin']['lat']
