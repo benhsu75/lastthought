@@ -88,5 +88,16 @@ class RideLogEntry(LogEntry):
     price_in_dollars = models.FloatField(null=True)
     primetime_percentage = models.IntegerField(null=True)
 
+class LocationLogEntry(LogEntry):
+    lat = models.FloatField()
+    lng = models.FloatField()
+
+    name = models.CharField(max_length=200)
+    comment = models.CharField(max_length=1000)
+    
+
+
+
+
 
 

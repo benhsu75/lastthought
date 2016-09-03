@@ -33,7 +33,6 @@ def delete_all(request):
 
     return HttpResponse("Deleted all")
 
-
 def dashboard(request, fbid):
     if not helper_util.user_exists(fbid):
         return HttpResponse(status=404)
