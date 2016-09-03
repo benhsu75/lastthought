@@ -90,7 +90,7 @@ def index(request, fbid):
 
     log_context_list = LogContext.objects.filter(log=user_log)
 
-    log_entry_list = LogEntry.objects.filter(log=user_log).order_by('-created_at')
+    log_entry_list = LogEntry.objects.filter(log=user_log).order_by('-occurred_at')
     
     context = RequestContext(request, {
         'fbid': fbid,
@@ -113,7 +113,7 @@ def log_context_show(request, fbid, log_context_id):
     # Get objects
     log_context = LogContext.objects.get(id=log_context_id)
 
-    log_entry_list = LogEntry.objects.filter(log=user_log, log_context=log_context).order_by('-created_at')
+    log_entry_list = LogEntry.objects.filter(log=user_log, log_context=log_context).order_by('-occurred_at')
 
     context = RequestContext(request, {
         'fbid': fbid,
