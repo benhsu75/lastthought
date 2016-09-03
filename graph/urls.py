@@ -3,7 +3,7 @@ from django.contrib import admin
 from main.views import general, habit_views, todo_views, log_views, ridesharing_views
 from main.entrypoints.messenger import messenger
 from django.conf import settings
-from main.domains import ridesharing_domain
+from main.domains import ridesharing_domain, connect_domain
 
 urlpatterns = [
     url(r'^$', general.index),
@@ -14,11 +14,12 @@ urlpatterns = [
     # Messenger webhooks
     url(r'^messenger_callback/', messenger.messenger_callback),
 
-    # Ridesharing endpoints
+    # Third-[party endpoints
     url(r'^lyft_redirect/', ridesharing_domain.lyft_redirect), # lyft webhook
-    url(r'^rideshare_information/', ridesharing_views.rideshare_information),
-    url(r'^users/(?P<fbid>\d+)/request_ride', ridesharing_views.request_ride),
-    url(r'^users/(?P<fbid>\d+)/ride_history', ridesharing_views.ride_history),
+    url(r'^foursquare_redirect/(?P<fbid>\d+)', connect_domain.foursquare_redirect),
+    # url(r'^rideshare_information/', ridesharing_views.rideshare_information),
+    # url(r'^users/(?P<fbid>\d+)/request_ride', ridesharing_views.request_ride),
+    # url(r'^users/(?P<fbid>\d+)/ride_history', ridesharing_views.ride_history),
 
     # Temp helper methods
     url(r'^delete_users/', general.delete_users),

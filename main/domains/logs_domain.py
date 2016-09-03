@@ -10,8 +10,6 @@ from PIL import Image
 import random
 import datetime
 
-BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
-
 # Global handler for anything logs related
 def handle_logs_text(current_user, text, processed_text, no_trigger_flag=False):
     print 'in handle_logs_text'

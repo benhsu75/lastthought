@@ -30,9 +30,9 @@
                 </a>
             </div>
             <div class="col-4">
-                <a href="https://www.lyft.com/oauth/authorize?client_id=OyrF54XChtFI&response_type=code&scope=public%20rides.read%20offline%20rides.request&state={{fbid}}">
+                <a href="https://foursquare.com/oauth2/authenticate?client_id=N3HGCSUUK343TYRMTK2YTYQOFGBIBNQY4NSC3PSPZRIDIIEB&response_type=code&redirect_uri=https://userdatagraph.herokuapp.com/foursquare_redirect/{{fbid}}">
                     {% if foursquare_connected_flag %}
-                    <div class="auth_card authorized" id="lyft_card"></div>
+                    <div class="auth_card authorized" id="foursquare_card"></div>
                     <div class="check"></div>
                     {% else %}
                     <div class="auth_card" id="foursquare_card"></div>
