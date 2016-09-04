@@ -75,11 +75,11 @@ def refresh_checkin_history(user):
 
                 venue_log_entry.save()
 
-                # Change after_timestamp to iterate
-                print 'COUNT: ' + str(count)
-                print 'Checking Count: ' + str(checkin_count)
-                if count == checkin_count:
-                    after_timestamp = checkin['createdAt'] + 1
+            # Change after_timestamp to iterate
+            print 'COUNT: ' + str(count)
+            print 'Checking Count: ' + str(checkin_count)
+            if count == checkin_count:
+                after_timestamp = checkin['createdAt'] + 1
 
 
 
