@@ -13,7 +13,6 @@ def refresh_checkin_history(user):
 
     # Query parameters
     after_timestamp = 1262304000
-    before_timestamp = time.time()
     limit = 250
     sort = 'oldestfirst'
 
@@ -23,7 +22,7 @@ def refresh_checkin_history(user):
         user_log = Log.find_or_create(user)
         more_to_parse = False
 
-        url_to_get = FOURSQUARE_API_URL + 'users/self/checkins?' + 'limit=' + str(limit) + '&sort=' + sort + '&afterTimestamp=' + str(after_timestamp) + '&beforeTimestamp' + str(before_timestamp) + '&oauth_token=' + user.foursquareconnection.access_token + '&m=swarm' + '&v=20160904' 
+        url_to_get = FOURSQUARE_API_URL + 'users/self/checkins?' + 'limit=' + str(limit) + '&sort=' + sort + '&afterTimestamp=' + str(after_timestamp) + '&oauth_token=' + user.foursquareconnection.access_token + '&m=swarm' + '&v=20160904' 
 
         print '################# MAKING REQUEST ####################'
         print url_to_get
