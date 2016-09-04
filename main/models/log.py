@@ -42,6 +42,7 @@ class LogEntry(models.Model):
     # 1 - numeric
     # 2 - image
     # 3 - Lyft ride
+    # 4 - Venue checkin
 
 class TextLogEntry(LogEntry):
     text_value = models.CharField(max_length=10000)
@@ -88,13 +89,27 @@ class RideLogEntry(LogEntry):
     price_in_dollars = models.FloatField(null=True)
     primetime_percentage = models.IntegerField(null=True)
 
-class LocationLogEntry(LogEntry):
+class VenueLogEntry(LogEntry):
+    source_type = models.SmallIntegerField()
+    # 0 - Foursquare
+    # Others...
+
+    foursquare_id = models.CharField(max_length=200, null=True)
+
     lat = models.FloatField()
     lng = models.FloatField()
+    formatted_address = models.CharField(max_length=500)
 
     name = models.CharField(max_length=200)
-    comment = models.CharField(max_length=1000)
-    
+
+    comment = models.CharField(max_length=1000, null=True)
+
+    img_url_prefix = models.CharField(max_length=200, null=True)
+    img_url_suffix = models.CharField(max_length=200, null=True)
+    img_dim_width = models.SmallIntegerField(null=True)
+    img_dim_height = models.SmallIntegerField(null=True)
+
+
 
 
 
