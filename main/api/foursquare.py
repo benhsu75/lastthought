@@ -41,6 +41,7 @@ def refresh_checkin_history(user):
 
         # Look through checkins
         count = 0
+        print 'LENGTH: ' + str(len(checkin_items))
         for checkin in checkin_items:
             count += 1
 
@@ -75,6 +76,8 @@ def refresh_checkin_history(user):
                 venue_log_entry.save()
 
                 # Change after_timestamp to iterate
+                print 'COUNT: ' + str(count)
+                print 'Checking Count: ' + str(checkin_count)
                 if count == checkin_count:
                     after_timestamp = checkin['createdAt'] + 1
 
