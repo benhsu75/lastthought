@@ -17,6 +17,8 @@ class ThirdPartyConnection(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    user = models.OneToOneField(User)
+
     is_connected_flag = models.BooleanField(default=False)
 
 class FoursquareConnection(ThirdPartyConnection):

@@ -46,7 +46,7 @@ def get_bearer_token_and_refresh_token(code):
 # Gets a bearer token using the refresh token
 def refresh_bearer_token(current_user):
 # Get refresh token
-    refresh_token = current_user.rideshareinformation.lyft_refresh_token
+    refresh_token = current_user.lyftconnection.refresh_token
 
     # Make request to get access_token
     payload = {
@@ -54,12 +54,7 @@ def refresh_bearer_token(current_user):
         'refresh_token' : refresh_token
     }
 
-    print 'Refresh token:'
-    print refresh_token
-
     r = requests.post(OAUTH_URL, data=payload, auth=HTTPBasicAuth(constants.LYFT_CLIENT_ID, constants.LYFT_CLIENT_SECRET));
-
-    print r.text
 
     bearer_token = r.json()['access_token']
 
@@ -70,7 +65,7 @@ def refresh_bearer_token(current_user):
 #############################################################
 
 def get_eta(lat, lng):
-    # Get access_token
+    # Get access_tokenmodels.CharField(max_length=500, null=True)
     access_token = get_access_token()
 
     # Make request to eta endpoint
@@ -177,7 +172,6 @@ def cancel_ride(ride_id):
 def refresh_ride_history(current_user):
     user_log = Log.find_or_create(current_user)
 
-    print 'REFRESH RIDE HISTORY!!!!!!!'
     # Get bearer token
     bearer_token = refresh_bearer_token(current_user)
 
