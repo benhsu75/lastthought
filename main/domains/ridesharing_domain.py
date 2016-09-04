@@ -33,9 +33,12 @@ def lyft_redirect(request):
     (access_token, refresh_token) = lyft.get_bearer_token_and_refresh_token(authorization_code)
 
     # Update Rideshare information
-    lyft_connection = LyftConnection(refresh_token=refresh_token, user=current_user, is_connected_flag=True)
-    lyft_connection.save()
-
+    try:
+        lyft_connect = LyftConnection.objects.get(user=current_user)
+    except LyftConnection.DoesNotExist:
+        lyft_connection = LyftConnection(refresh_token=refresh_token, user=current_user, is_connected_flag=True)
+        lyft_connection.save()
+    
     # Load ride history into logs
     lyft.refresh_ride_history(current_user)
 
