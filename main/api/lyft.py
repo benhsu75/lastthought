@@ -46,7 +46,7 @@ def get_bearer_token_and_refresh_token(code):
 # Gets a bearer token using the refresh token
 def refresh_bearer_token(current_user):
 # Get refresh token
-    refresh_token = current_user.thirdpartyconnection.lyftconnection.refresh_token
+    refresh_token = current_user.lyftconnection.refresh_token
 
     # Make request to get access_token
     payload = {

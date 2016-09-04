@@ -8,23 +8,20 @@ class User(models.Model):
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
 
-    foursquare_connected_flag = models.BooleanField(default=False)
-    foursquare_access_token = models.CharField(max_length=1000, null=True) 
-
 # Models for third party connection
 
 class ThirdPartyConnection(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    user = models.OneToOneField(User)
-
     is_connected_flag = models.BooleanField(default=False)
 
 class FoursquareConnection(ThirdPartyConnection):
+    user = models.OneToOneField(User)
     access_token = models.CharField(max_length=1000, null=True) 
 
 class LyftConnection(ThirdPartyConnection):
+    user = models.OneToOneField(User)
     refresh_token = models.CharField(max_length=1000, null=True)
 
 # Represents known information about the user

@@ -47,7 +47,8 @@ def connect(request, fbid):
 
     context = RequestContext(request, {
         'lyft_connected_flag' : user.rideshareinformation.lyft_connected_flag,
-        'foursquare_connected_flag' : user.foursquare_connected_flag,
+        'foursquare_connected_flag' : hasattr(user,'foursquareconnection') and user.foursquareconnection.is_connected_flag,
+        'lyft_connected_flag' : hasattr(user,'lyftconnection') and user.lyftconnection.is_connected_flag,
         'fbid' : user.fbid
         
         })

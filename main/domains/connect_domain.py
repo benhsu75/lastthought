@@ -2,6 +2,7 @@ from main.models import *
 from main.utils import constants, helper_util
 from django.http import HttpResponse, HttpResponseRedirect
 import requests
+from main.api import foursquare
 
 def foursquare_redirect(request, fbid):
     authorization_code = request.GET['code']
@@ -14,17 +15,16 @@ def foursquare_redirect(request, fbid):
     if 'access_token' in r.json():
         access_token = r.json()['access_token']
 
-    print 'GOT FOURSQUARE ACCESS TOKEN'
-    print access_token
-
-    print fbid
-
     user = User.objects.get(fbid=fbid)
-    user.foursquare_connected_flag = True
-    user.foursquare_access_token = access_token
-    user.save()
+
+    try:
+        foursquare_connection = FoursquareConnection.objects.get(user=user)
+    except FoursquareConnection.DoesNotExist:
+        foursquare_connection = FoursquareConnection(is_connected_flag=True, access_token=access_token, user=user)
+        foursquare_connection.save()
 
     # Load all the foursquare data
+    foursquare.refresh_checkin_history()
 
     # Redirect to ridesharing_setup page
     return HttpResponseRedirect("/users/"+fbid+"/connect")
