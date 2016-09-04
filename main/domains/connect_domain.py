@@ -24,7 +24,7 @@ def foursquare_redirect(request, fbid):
         foursquare_connection.save()
 
     # Load all the foursquare data
-    foursquare.refresh_checkin_history()
+    foursquare.refresh_checkin_history(user)
 
     # Redirect to ridesharing_setup page
     return HttpResponseRedirect("/users/"+fbid+"/connect")
