@@ -17,7 +17,7 @@ def refresh_bearer_token(user):
     # Make request to get access_token
     payload = {
         'client_id' : constants.UBER_CLIENT_ID,
-        'client_secret' : constants.UBER_CLIENT_SECRET
+        'client_secret' : constants.UBER_CLIENT_SECRET,
         'grant_type' : 'refresh_token',
         'refresh_token' : refresh_token,
         'redirect_uri' : 'https://userdatagraph.herokuapp.com/uber_redirect'
@@ -31,5 +31,7 @@ def refresh_bearer_token(user):
 
     # Update refresh_token
     user.uberconnection.refresh_token = r.json()['refresh_token']
+
+    # Make request to ride history endpoint
 
     return bearer_token
