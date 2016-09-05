@@ -61,6 +61,12 @@ class RideLogEntry(LogEntry):
     # 0 - lyft
     # 1 - uber
 
+    # distance = models.FloatField(null=True)
+    # city_name = models.CharField(max_length=200, null=True)
+    # city_lat = models.FloatField(null=True)
+    # city_lng = models.FloatField(null=True)
+    
+
     # Ride info
     ride_id = models.CharField(max_length=200)
     ride_type = models.CharField(max_length=200)
@@ -108,6 +114,7 @@ class VenueLogEntry(LogEntry):
     img_url_suffix = models.CharField(max_length=200, null=True)
     img_dim_width = models.SmallIntegerField(null=True)
     img_dim_height = models.SmallIntegerField(null=True)
+
 
 
 
