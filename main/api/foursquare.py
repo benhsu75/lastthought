@@ -33,15 +33,16 @@ def refresh_checkin_history(user):
         checkins_json = r.json()
 
         checkin_count = checkins_json['response']['checkins']['count']
+
         checkin_items = checkins_json['response']['checkins']['items']
 
         # Set will continue flag
-        if checkin_count > 0:
+        if checkin_count > 0 and len(checkin_items) > 0:
             more_to_parse = True
 
         # Look through checkins
         count = 0
-        print 'LENGTH: ' + str(len(checkin_items))
+        print 'LENGTH of checkin items: ' + str(len(checkin_items))
         for checkin in checkin_items:
             count += 1
 
