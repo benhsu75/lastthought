@@ -41,7 +41,7 @@ def uber_redirect(request):
         'client_id' : constants.UBER_CLIENT_ID,
         'client_secret' : constants.UBER_CLIENT_SECRET,
         'grant_type' : 'authorization_code',
-        'redirect_uri' : 'https://userdatagraph.herokuapp.com/uber_redirect',
+        'redirect_uri' : 'https://userdatagraph.herokuapp.com/uber_redirect/',
         'code' : authorization_code
     }
     token_url = 'https://login.uber.com/oauth/v2/token'
