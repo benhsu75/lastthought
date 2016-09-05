@@ -61,7 +61,7 @@ def refresh_checkin_history(user):
 
                 venue_log_entry.lat = checkin['venue']['location']['lat']
                 venue_log_entry.lng = checkin['venue']['location']['lng']
-                venue_log_entry.formatted_address = checkin['venue']['location']['formattedAddress']
+                venue_log_entry.formatted_address = checkin['venue']['location']['formattedAddress'][0]
                 venue_log_entry.name = checkin['venue']['name']
                 if 'shout' in checkin:
                     venue_log_entry.comment = checkin['shout']
