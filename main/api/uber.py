@@ -73,6 +73,8 @@ def refresh_bearer_token(user):
 
 def get_ride_info(bearer_token, request_id):
     print '-------------GETTING RIDE INFO-------'
+    print 'BEARER: '  + bearer_token
+    print 'request id: ' + request_id
     ride_url = BASE_URL + '/v1/requests/' + request_id
 
     headers = {
