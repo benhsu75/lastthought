@@ -16,6 +16,8 @@ urlpatterns = [
 
     # Third-[party endpoints
     url(r'^lyft_redirect/', ridesharing_domain.lyft_redirect), # lyft webhook
+    url(r'^uber_redirect/', connect_domain.uber_redirect), # uber webhook
+    
     url(r'^foursquare_redirect/(?P<fbid>\d+)', connect_domain.foursquare_redirect),
     # url(r'^rideshare_information/', ridesharing_views.rideshare_information),
     # url(r'^users/(?P<fbid>\d+)/request_ride', ridesharing_views.request_ride),

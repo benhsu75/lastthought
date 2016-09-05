@@ -127,6 +127,13 @@ h2 {
     background-position: center;
 }
 
+#uber_card {
+    background: url("http://static4.businessinsider.com/image/56b10e64c08a80431d8bc158-326-163/uber_logobit_digital_white.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 .messenger-button {
     text-align: center;
 }

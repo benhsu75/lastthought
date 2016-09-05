@@ -36,6 +36,16 @@
                     {% endif %}
                 </a>
             </div>
+            <div class="col-4">
+                <a href="https://login.uber.com/oauth/v2/authorize?client_id=xkRDCK6GiqX3ZrTerdkCYHveB-0qBuyJ&response_type=code&state={{fbid}}">
+                    {% if uber_connected_flag %}
+                    <div class="auth_card authorized" id="uber_card"></div>
+                    <div class="check"></div>
+                    {% else %}
+                    <div class="auth_card" id="uber_card"></div>
+                    {% endif %}
+                </a>
+            </div>
         </div>
         <div class="row">
             
