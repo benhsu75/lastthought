@@ -33,6 +33,9 @@ def uber_redirect(request):
     authorization_code = request.GET['code']
     fbid = request.GET['state']
 
+    print authorization_code
+    print fbid
+
     # Get refresh token
     payload = {
         'client_id' : constants.UBER_CLIENT_ID,
