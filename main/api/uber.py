@@ -6,3 +6,6 @@ import datetime
 
 def refresh_ride_history(user):
     x = 1
+
+def refresh_bearer_token(user):
+    

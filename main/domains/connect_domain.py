@@ -36,8 +36,12 @@ def uber_redirect(request):
     # Get refresh token
     token_url = 'https://login.uber.com/oauth/v2/token?client_secret={}&client_id={}&grant_type=authorization_code&redirect_uri={}&code={}'.format(constants.UBER_CLIENT_ID, constants.UBER_CLIENT_SECRET, 'https://userdatagraph.herokuapp.com/uber_redirect', authorization_code)
 
+    print token_url
+
     r = requests.get(token_url)
 
+    print r.text
+    
     if 'refresh_token' in r.json():
         refresh_token = r.json()['refresh_token']
 
