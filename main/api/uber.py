@@ -50,6 +50,7 @@ def refresh_ride_history(user):
             start_city_lat = ride['start_city']['latitude']
             start_city_lng = ride['start_city']['longitude']
 
+            request_datetime = datetime.datetime.fromtimestamp(request_time)
             start_datetime = datetime.datetime.fromtimestamp(start_time)
             end_datetime = datetime.datetime.fromtimestamp(end_time)
 
@@ -69,7 +70,7 @@ def refresh_ride_history(user):
                 print 'RIDE ALREADY EXISTS'
             except RideLogEntry.DoesNotExist:
                 print 'CREATING NEW RIDE LOG ENTRY'
-                ride_log_entry = RideLogEntry(occurred_at=start_datetime, log=user_log, entry_type=3)
+                ride_log_entry = RideLogEntry(occurred_at=start_datetime, log=user_log, entry_type=3, requested_at=request_datetime)
 
                 ride_log_entry.rideshare_service = 1
                 ride_log_entry.ride_id = request_id
