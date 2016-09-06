@@ -45,7 +45,7 @@ def uber_redirect(request):
         uber_connection = UberConnection.objects.get(user=user)
         return
     except UberConnection.DoesNotExist:
-        pass
+        return HttpResponseRedirect("/users/"+fbid+"/connect")
 
     # Get refresh token
     payload = {
