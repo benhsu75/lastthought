@@ -5,6 +5,8 @@
   <title>View logs</title>
   <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}"/>
   <link href="https://fonts.googleapis.com/css?family=Raleway|Roboto:300" rel="stylesheet">
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -30,48 +32,56 @@
 
     {% for log_entry in log_entry_list %}
     <div class="row">
-
-      {% if log_entry.entry_type == 0 %}
-      <div class="log-entry">
+      <div class="log-entry" data-logentryid="{{log_entry.id}}">
         <div class="timestamp">{{log_entry.occurred_at}}</div>
-        <p>{{log_entry.textlogentry.text_value}}</p>
-      </div>
+        <a class="delete" href="#">Delete</a>
+        {% if log_entry.entry_type == 0 %}
 
-      {% elif log_entry.entry_type == 1 %}
-      <div class="log-entry">
-        <div class="timestamp">{{log_entry.occurred_at}}</div>
-        <p>{{log_entry.numericlogentry.numeric_value}}</p>
-      </div>  
+          <p>{{log_entry.textlogentry.text_value}}</p>
 
-      {% elif log_entry.entry_type == 2 %}
-      <div class="log-entry">
-        <div class="timestamp">{{log_entry.occurred_at}}</div>
-        <!-- <a href="{{ log_entry.imagelogentry.image_url }}"> -->
-          <div class="log-img" style="background-image: url('{{ log_entry.imagelogentry.image_url }}'); height: {{log_entry.imagelogentry.image_height}}px; width: {{log_entry.imagelogentry.image_width}}px;"></div>
-        <!-- </a> -->
-      </div>
-      {% elif log_entry.entry_type == 3 %}
+        {% elif log_entry.entry_type == 1 %}
 
-        {% if log_entry.ridelogentry.rideshare_service == 0 %}
-        <div class="log-entry">
-          <div class="timestamp">{{log_entry.occurred_at}}</div>
-          You took a {{log_entry.ridelogentry.ride_type}} from {{log_entry.ridelogentry.origin_address}} to {{log_entry.ridelogentry.dropoff_address}}. It cost ${{log_entry.ridelogentry.price_in_dollars}}. 
-        </div>
-        {% elif log_entry.ridelogentry.rideshare_service == 1 %}
-        <div class="log-entry">
-          <div class="timestamp">{{log_entry.occurred_at}}</div>
-          You took an Uber ({{log_entry.ridelogentry.ride_type}}) in {{log_entry.ridelogentry.start_city_name}} and traveled {{log_entry.ridelogentry.distance}} miles.
-        </div>
+          <p>{{log_entry.numericlogentry.numeric_value}}</p>
+
+        {% elif log_entry.entry_type == 2 %}
+
+            <div class="log-img" style="background-image: url('{{ log_entry.imagelogentry.image_url }}'); height: {{log_entry.imagelogentry.image_height}}px; width: {{log_entry.imagelogentry.image_width}}px;"></div>
+
+        {% elif log_entry.entry_type == 3 %}
+
+          {% if log_entry.ridelogentry.rideshare_service == 0 %}
+
+            You took a {{log_entry.ridelogentry.ride_type}} from {{log_entry.ridelogentry.origin_address}} to {{log_entry.ridelogentry.dropoff_address}}. It cost ${{log_entry.ridelogentry.price_in_dollars}}. 
+
+          {% elif log_entry.ridelogentry.rideshare_service == 1 %}
+
+            You took an Uber ({{log_entry.ridelogentry.ride_type}}) in {{log_entry.ridelogentry.start_city_name}} and traveled {{log_entry.ridelogentry.distance}} miles.
+
+          {% endif %}
+
+        {% elif log_entry.entry_type == 4 %}
+
+          You checked in to {{log_entry.venuelogentry.name}} at {{log_entry.venuelogentry.formatted_address}}.
+
         {% endif %}
-
-      {% elif log_entry.entry_type == 4 %}
-      <div class="log-entry">
-        <div class="timestamp">{{log_entry.occurred_at}}</div>
-        You checked in to {{log_entry.venuelogentry.name}} at {{log_entry.venuelogentry.formatted_address}}.
       </div>
-      {% endif %}
     </div>
     {% endfor %}
   </div>
+  <script type="text/javascript">
+    $('.delete').click(function() {
+      var logEntryId = $(this).parent().data('logentryid');
+
+      // DELETE to /logs
+      $.ajax({
+          method: 'DELETE',
+          url: '/logs/' + logEntryId,
+          success: function() {
+              // Clear fields
+              location.reload();
+          }
+      })
+      });
+  </script>
 </body>
 </html>

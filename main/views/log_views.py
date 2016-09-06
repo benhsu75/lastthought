@@ -90,7 +90,8 @@ def index(request, fbid):
 
     log_context_list = LogContext.objects.filter(log=user_log)
 
-    log_entry_list = LogEntry.objects.filter(log=user_log).order_by('-occurred_at')
+    # TODO PAGINATION, but for interim, limit results so page doesn't load SUPER slowly
+    log_entry_list = LogEntry.objects.filter(log=user_log).order_by('-occurred_at')[:100]  
     
     context = RequestContext(request, {
         'fbid': fbid,
