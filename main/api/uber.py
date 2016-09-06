@@ -10,7 +10,7 @@ BASE_URL = 'https://api.uber.com'
 def refresh_ride_history(user):
     print '--------GETTING RIDE HISTORY----------'
 
-    user_log = Log.find_or_create(current_user)
+    user_log = Log.find_or_create(user)
 
     bearer_token = refresh_bearer_token(user)
 
