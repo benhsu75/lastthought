@@ -139,5 +139,5 @@ def get_product_info(bearer_token, product_id):
     url_to_get = product_url
     r = requests.get(url_to_get, headers=headers)
 
-    print r.json()
+    return r.json()
 
