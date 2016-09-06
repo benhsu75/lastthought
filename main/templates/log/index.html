@@ -51,10 +51,19 @@
         <!-- </a> -->
       </div>
       {% elif log_entry.entry_type == 3 %}
-      <div class="log-entry">
-        <div class="timestamp">{{log_entry.occurred_at}}</div>
-        You took a {{log_entry.ridelogentry.ride_type}} from {{log_entry.ridelogentry.origin_address}} to {{log_entry.ridelogentry.dropoff_address}}. It cost ${{log_entry.ridelogentry.price_in_dollars}}. 
-      </div>
+
+        {% if log_entry.ridelogentry.rideshare_service == 0 %}
+        <div class="log-entry">
+          <div class="timestamp">{{log_entry.occurred_at}}</div>
+          You took a {{log_entry.ridelogentry.ride_type}} from {{log_entry.ridelogentry.origin_address}} to {{log_entry.ridelogentry.dropoff_address}}. It cost ${{log_entry.ridelogentry.price_in_dollars}}. 
+        </div>
+        {% elif log_entry.ridelogentry.rideshare_service == 1 %}
+        <div class="log-entry">
+          <div class="timestamp">{{log_entry.occurred_at}}</div>
+          You took an Uber ({{log_entry.ridelogentry.ride_type}}) in {{log_entry.ridelogentry.start_city_name}} and traveled {{log_entry.ridelogentry.distance}} miles.
+        </div>
+        {% endif %}
+
       {% elif log_entry.entry_type == 4 %}
       <div class="log-entry">
         <div class="timestamp">{{log_entry.occurred_at}}</div>

@@ -56,7 +56,7 @@ def refresh_ride_history(user):
 
             if product_id not in product_mapping:
                 product_response = get_product_info(bearer_token, product_id)
-
+                
                 product_name = product_response['display_name']
                 product_mapping[product_id] = product_name
             
