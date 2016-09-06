@@ -30,6 +30,15 @@ def foursquare_redirect(request, fbid):
     return HttpResponseRedirect("/users/"+fbid+"/connect")
 
 def uber_redirect(request):
+
+    # Check if user has already OAuthed uber
+    try:
+        # If user has already OAuthed, then no need to change data
+        uber_connection = UberConnection.objects.get(user=user)
+        return
+    except UberConnection.DoesNotExist:
+        continue
+
     authorization_code = request.GET['code']
     fbid = request.GET['state']
 
@@ -57,11 +66,8 @@ def uber_redirect(request):
 
     user = User.objects.get(fbid=fbid)
 
-    try:
-        uber_connection = UberConnection.objects.get(user=user)
-    except UberConnection.DoesNotExist:
-        uber_connection = UberConnection(is_connected_flag=True, refresh_token=refresh_token, user=user)
-        uber_connection.save()
+    uber_connection = UberConnection(is_connected_flag=True, refresh_token=refresh_token, user=user)
+    uber_connection.save()
 
     # Load all uber data
     uber.refresh_ride_history(user)
