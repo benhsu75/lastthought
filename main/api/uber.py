@@ -56,7 +56,7 @@ def refresh_ride_history(user):
 
             if product_id not in product_mapping:
                 product_response = get_product_info(bearer_token, product_id)
-                
+
                 product_name = product_response['display_name']
                 product_mapping[product_id] = product_name
             
@@ -91,6 +91,8 @@ def refresh_bearer_token(user):
     # Get refresh token
     refresh_token = user.uberconnection.refresh_token
 
+    print 'USING REFRESH TOKEN: ' + refresh_token
+
     # Make request to get access_token
     payload = {
         'client_id' : constants.UBER_CLIENT_ID,
@@ -108,6 +110,7 @@ def refresh_bearer_token(user):
 
     # Update refresh_token
     user.uberconnection.refresh_token = r.json()['refresh_token']
+    print 'NEW REFRESH TOKEN: ' + user.uberconnection.refresh_token
     user.uberconnection.save()
 
     return bearer_token
