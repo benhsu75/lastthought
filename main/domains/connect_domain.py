@@ -31,6 +31,14 @@ def foursquare_redirect(request, fbid):
 
 def uber_redirect(request):
 
+    authorization_code = request.GET['code']
+    fbid = request.GET['state']
+
+    print authorization_code
+    print fbid
+
+    user = User.objects.get(fbid=fbid)
+
     # Check if user has already OAuthed uber
     try:
         # If user has already OAuthed, then no need to change data
@@ -38,12 +46,6 @@ def uber_redirect(request):
         return
     except UberConnection.DoesNotExist:
         pass
-
-    authorization_code = request.GET['code']
-    fbid = request.GET['state']
-
-    print authorization_code
-    print fbid
 
     # Get refresh token
     payload = {
@@ -63,8 +65,6 @@ def uber_redirect(request):
 
     if 'refresh_token' in r.json():
         refresh_token = r.json()['refresh_token']
-
-    user = User.objects.get(fbid=fbid)
 
     uber_connection = UberConnection(is_connected_flag=True, refresh_token=refresh_token, user=user)
     uber_connection.save()
