@@ -37,7 +37,7 @@ def uber_redirect(request):
         uber_connection = UberConnection.objects.get(user=user)
         return
     except UberConnection.DoesNotExist:
-        continue
+        pass
 
     authorization_code = request.GET['code']
     fbid = request.GET['state']
