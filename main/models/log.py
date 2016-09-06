@@ -61,10 +61,15 @@ class RideLogEntry(LogEntry):
     # 0 - lyft
     # 1 - uber
 
-    # distance = models.FloatField(null=True)
-    # city_name = models.CharField(max_length=200, null=True)
-    # city_lat = models.FloatField(null=True)
-    # city_lng = models.FloatField(null=True)
+    distance = models.FloatField(null=True)
+    city_name = models.CharField(max_length=200, null=True)
+    city_lat = models.FloatField(null=True)
+    city_lng = models.FloatField(null=True)
+    start_time = models.DateTimeField(null=True)
+    end_time = models.DateTimeField(null=True)
+    start_city_name = models.CharField(max_length=200, null=True)
+    start_city_lat = models.FloatField(null=True)
+    start_city_lng = models.FloatField(null=True)
     
 
     # Ride info
