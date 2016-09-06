@@ -43,9 +43,10 @@ def uber_redirect(request):
     try:
         # If user has already OAuthed, then no need to change data
         uber_connection = UberConnection.objects.get(user=user)
+        return HttpResponseRedirect("/users/"+fbid+"/connect")
         return
     except UberConnection.DoesNotExist:
-        return HttpResponseRedirect("/users/"+fbid+"/connect")
+        pass
 
     # Get refresh token
     payload = {
