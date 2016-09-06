@@ -45,14 +45,13 @@ def refresh_ride_history(user):
             distance = ride['distance']
             request_time = ride['request_time']
             start_time = ride['start_time']
-
-            start_datetime = datetime.datetime.fromtimestamp(start_time)
-            end_datetime = datetime.datetime.fromtimestamp(end_time)
-
             end_time = ride['end_time']
             start_city_name = ride['start_city']['display_name']
             start_city_lat = ride['start_city']['latitude']
             start_city_lng = ride['start_city']['longitude']
+
+            start_datetime = datetime.datetime.fromtimestamp(start_time)
+            end_datetime = datetime.datetime.fromtimestamp(end_time)
 
             if product_id not in product_mapping:
                 product_response = get_product_info(bearer_token, product_id)
