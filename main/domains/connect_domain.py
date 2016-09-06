@@ -7,6 +7,15 @@ from main.api import foursquare, uber
 def foursquare_redirect(request, fbid):
     authorization_code = request.GET['code']
 
+    user = User.objects.get(fbid=fbid)
+
+    # Only OAuth if user hasn't connected foursquare yet
+    try:
+        foursquare_connection = FoursquareConnection.objects.get(user=user)
+        return HttpResponseRedirect("/users/"+fbid+"/connect")
+    except FoursquareConnection.DoesNotExist:
+        pass
+
     redirect_uri = 'https://userdatagraph.herokuapp.com/foursquare_redirect'
 
     # Get access token
@@ -15,13 +24,8 @@ def foursquare_redirect(request, fbid):
     if 'access_token' in r.json():
         access_token = r.json()['access_token']
 
-    user = User.objects.get(fbid=fbid)
-
-    try:
-        foursquare_connection = FoursquareConnection.objects.get(user=user)
-    except FoursquareConnection.DoesNotExist:
-        foursquare_connection = FoursquareConnection(is_connected_flag=True, access_token=access_token, user=user)
-        foursquare_connection.save()
+    foursquare_connection = FoursquareConnection(is_connected_flag=True, access_token=access_token, user=user)
+    foursquare_connection.save()
 
     # Load all the foursquare data
     foursquare.refresh_checkin_history(user)
