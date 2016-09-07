@@ -46,6 +46,16 @@
                     {% endif %}
                 </a>
             </div>
+            <div class="col-4">
+                <a href="#">
+                    {% if instagram_connected_flag %}
+                    <div class="auth_card authorized" id="instagram_card"></div>
+                    <div class="check"></div>
+                    {% else %}
+                    <div class="auth_card" id="instagram_card"></div>
+                    {% endif %}
+                </a>
+            </div>
         </div>
         <div class="row">
             
