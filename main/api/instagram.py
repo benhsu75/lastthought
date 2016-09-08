@@ -4,81 +4,118 @@ from requests.auth import HTTPBasicAuth
 from main.models import *
 import datetime
 
+BASE_URL = 'https://api.instagram.com/v1'
+
 def refresh_instagram_history(user):
-    print '--------GETTING RIDE HISTORY----------'
+    print '--------GETTING INSTAGRAM HISTORY----------'
 
     user_log = Log.find_or_create(user)
 
     access_token = user.instagramconnection.access_token
 
     # Make request to get all media
-    ride_history_url = BASE_URL + '/v1.2/history'
+    recent_media_url = BASE_URL + '/users/self/media/recent/'
 
-    offset = 0
-    headers = {
-        "Authorization" : "Bearer " + bearer_token
-    }
-    url_to_get = ride_history_url + '?limit=50&offset={}'.format(offset)
+    # Add access token and count to url
+    url_to_get = '?access_token=' + access_token + '&count=20'
+
     more_to_parse = True
 
-    product_mapping = {} # key = id, value = name
-
     while more_to_parse:
-        r = requests.get(url_to_get, headers=headers)
-        # print r.json()
+        r = requests.get(url_to_get)
 
-        count = r.json()['count']
-        if offset < count:
+        if r.json()['meta']['code'] != 200:
+            # Handle error
+            return
+
+        # Parse data into log entries
+
+        # More to parse if data in pagination
+        if 'next_url' in r.json()['pagination']:
             more_to_parse = True
-            offset += 50
-        else:
-            more_to_parse = False
+            url_to_get = r.json()['pagination']['next_url']
 
-        history = r.json()['history']
+        # Retrieve data
+        media_list = r.json()['data']
 
-        for ride in history:
-            request_id = ride['request_id']
-            product_id = ride['product_id']
-            distance = ride['distance']
-            request_time = ride['request_time']
-            start_time = ride['start_time']
-            end_time = ride['end_time']
-            start_city_name = ride['start_city']['display_name']
-            start_city_lat = ride['start_city']['latitude']
-            start_city_lng = ride['start_city']['longitude']
+        for media in media_list:
 
-            request_datetime = datetime.datetime.fromtimestamp(request_time)
-            start_datetime = datetime.datetime.fromtimestamp(start_time)
-            end_datetime = datetime.datetime.fromtimestamp(end_time)
+            # Extract all the information
+            media_type = media['type']
 
-            if product_id not in product_mapping:
-                product_response = get_product_info(bearer_token, product_id)
+            if media['location'] != None:
+                location_lat = media['location']['lat']
+                location_lng = media['location']['lng']
+                location_name = media['location']['name']
 
-                product_name = product_response['display_name']
-                product_mapping[product_id] = product_name
-            
-            product_display_name = product_mapping[product_id]
+            num_comments = media['comments']['count']
 
-            # Create ridelogentry object
+            created_time = media['created_time']
+            created_datetime = datetime.datetime.fromtimestamp(created_time)
 
-            # Check if ride already in db
+            link_to_post = media['link']
+
+            num_likes = media['likes']['count']
+
+            thumbnail_url = media['images']['thumbnail']['url']
+            thumbnail_height = media['images']['thumbnail']['height']
+            thumbnail_width = media['images']['thumbnail']['width']
+
+            low_res_url = media['images']['low_res']['url']
+            low_res_height = media['images']['low_res']['height']
+            low_res_width = media['images']['low_res']['width']
+
+            high_res_url = media['images']['high_res']['url']
+            high_res_height = media['images']['high_res']['height']
+            high_res_width = media['images']['high_res']['width']
+
+            caption = media['caption']['text']
+
+            instagram_id = media['id']
+
+            # Create InstagramLogEntry
+
+            # Check if one with this id already exists
             try:
-                ride_log_entry = RideLogEntry.objects.get(ride_id=request_id)
-                print 'RIDE ALREADY EXISTS'
-            except RideLogEntry.DoesNotExist:
-                print 'CREATING NEW RIDE LOG ENTRY'
-                ride_log_entry = RideLogEntry(occurred_at=start_datetime, log=user_log, entry_type=3, requested_at=request_datetime)
+                instagram_log_entry = InstagramLogEntry.objects.get(instagram_id=instagram_id)
+            except InstagramLogEntry.DoesNotExist:
+                instagram_log_entry = InstagramLogEntry(ocurred_at=created_datetime, log=user_log, entry_type=5)
 
-                ride_log_entry.rideshare_service = 1
-                ride_log_entry.ride_id = request_id
-                ride_log_entry.ride_type = product_display_name
-                ride_log_entry.distance = distance
-                ride_log_entry.start_time = start_datetime
-                ride_log_entry.end_time = end_datetime
-                ride_log_entry.start_city_name = start_city_name
-                ride_log_entry.start_city_lat = start_city_lat
-                ride_log_entry.start_city_lng = start_city_lng
+                instagram_log_entry.instagram_id = instagram_id
+                instagram_log_entry.likes = num_likes
+                instagram_log_entry.link_to_post = link_to_post
 
-                ride_log_entry.save()
+                instagram_log_entry.thumbnail_url = thumbnail_url
+                instagram_log_entry.thumbnail_height = thumbnail_height
+                instagram_log_entry.thumbnail_width = thumbnail_width
 
-    x = 1
+                instagram_log_entry.low_res_url = low_res_url
+                instagram_log_entry.low_res_height = low_res_height
+                instagram_log_entry.low_res_width = low_res_width
+
+                instagram_log_entry.high_res_url = high_res_url
+                instagram_log_entry.high_res_height = high_res_height
+                instagram_log_entry.high_res_width = high_res_width
+
+                instagram_log_entry.lat = location_lat
+                instagram_log_entry.lng = location_lng
+                instagram_log_entry.location_name = location_name
+
+                instagram_log_entry.caption = caption
+
+                instagram_log_entry.save()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
