@@ -36,6 +36,10 @@ class InstagramConnection(ThirdPartyConnection):
     username = models.CharField(max_length=100)
     profile_picture = models.CharField(max_length=200)
 
+class FitbitConnection(ThirdPartyConnection):
+    user = models.OneToOneField(User)
+    refresh_token = models.CharField(max_length=1000, null=True)
+
 #
 
 # Represents known information about the user
@@ -88,6 +92,8 @@ class RideshareInformation(models.Model):
     # 1 - Uber
 
     user = models.OneToOneField(User)
+
+
 
 
 
