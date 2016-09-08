@@ -100,7 +100,7 @@ def instagram_redirect(request):
         'client_id' : constants.INSTAGRAM_CLIENT_ID,
         'client_secret' : constants.INSTAGRAM_CLIENT_SECRET,
         'grant_type' : 'authorization_code',
-        'redirect_uri' : 'https://userdatagraph.herokuapp.com/instagram_redirect/',
+        'redirect_uri' : 'https://userdatagraph.herokuapp.com/instagram_redirect',
         'code' : authorization_code
     }
     token_url = 'https://api.instagram.com/oauth/access_token'
