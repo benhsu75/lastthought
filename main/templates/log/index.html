@@ -34,7 +34,7 @@
     <div class="row">
       <div class="log-entry" data-logentryid="{{log_entry.id}}">
         <div class="timestamp">{{log_entry.occurred_at}}</div>
-        <a class="delete" href="#">Delete</a>
+        <a class="delete" href="#">Delete</a><br>
         {% if log_entry.entry_type == 0 %}
 
           <p>{{log_entry.textlogentry.text_value}}</p>
@@ -62,6 +62,9 @@
         {% elif log_entry.entry_type == 4 %}
 
           You checked in to {{log_entry.venuelogentry.name}} at {{log_entry.venuelogentry.formatted_address}}.
+        {% elif log_entry.entry_type == 5 %}
+          <img src="{{log_entry.instagramlogentry.low_res_url}}"><br>
+          <a href="{{log_entry.instagramlogentry.link_to_post}}">{{log_entry.instagramlogentry.caption}}</a>
 
         {% endif %}
       </div>
