@@ -2,7 +2,7 @@ from main.models import *
 from main.utils import constants, helper_util
 from django.http import HttpResponse, HttpResponseRedirect
 import requests
-from main.api import foursquare, uber, instagram
+from main.api import foursquare, uber, instagram, fitbit
 
 def foursquare_redirect(request, fbid):
     authorization_code = request.GET['code']
@@ -86,7 +86,7 @@ def instagram_redirect(request):
 
     user = User.objects.get(fbid=fbid)
 
-    # Check if user has already OAuthed uber
+    # Check if user has already OAuthed instagram
     try:
         # If user has already OAuthed, then no need to change data
         instagram_connection = InstagramConnection.objects.get(user=user)
@@ -122,6 +122,50 @@ def instagram_redirect(request):
 
     # Load all instagram data
     instagram.refresh_instagram_history(user)
+
+    # Redirect
+    return HttpResponseRedirect("/users/"+fbid+"/connect")
+
+def fitbit_redirect(request):
+    authorization_code = request.GET['code']
+    fbid = request.GET['state']
+
+    user = User.objects.get(fbid=fbid)
+
+    # Check if user has already OAuthed fitbit
+    try:
+        # If user has already OAuthed, then no need to change data
+        fitbit_connection = FitbitConnection.objects.get(user=user)
+        return HttpResponseRedirect("/users/"+fbid+"/connect")
+        return
+    except FitbitConnection.DoesNotExist:
+        pass
+
+    # Get refresh token
+    payload = {
+        'client_id' : constants.FITBIT_CLIENT_ID,
+        'client_secret' : constants.FITBIT_CLIENT_SECRET,
+        'grant_type' : 'authorization_code',
+        'redirect_uri' : 'https://userdatagraph.herokuapp.com/fitbit_redirect',
+        'code' : authorization_code,
+        'state' : fbid
+    }
+
+    token_url = 'https://api.fitbit.com/oauth2/token'
+
+    r = requests.post(token_url, data=payload, auth=HTTPBasicAuth(constants.LYFT_CLIENT_ID, constants.LYFT_CLIENT_SECRET))
+
+    print r.text
+
+    if 'access_token' in r.json():
+        access_token = r.json()['access_token']
+        refresh_token = r.json()['refresh_token']
+
+    # Create a fitbit connection
+    # TODO
+
+    # Refresh fitbit data
+    # TODO
 
     # Redirect
     return HttpResponseRedirect("/users/"+fbid+"/connect")

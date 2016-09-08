@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^uber_redirect/', connect_domain.uber_redirect), # uber webhook
     url(r'^foursquare_redirect/(?P<fbid>\d+)', connect_domain.foursquare_redirect),
     url(r'^instagram_redirect', connect_domain.instagram_redirect),
+    url(r'^fitbit_redirect', connect_domain.fitbit_redirect),
 
     # Temp helper methods
     url(r'^delete_users/', general.delete_users),
