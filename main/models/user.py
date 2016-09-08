@@ -31,6 +31,11 @@ class UberConnection(ThirdPartyConnection):
 class InstagramConnection(ThirdPartyConnection):
     user = models.OneToOneField(User)
     access_token = models.CharField(max_length=1000, null=True)
+
+    instagram_id = models.IntegerField()
+    username = models.CharField(max_length=100)
+    profile_picture = models.CharField(max_length=200)
+
 #
 
 # Represents known information about the user

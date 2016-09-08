@@ -2,7 +2,7 @@ from main.models import *
 from main.utils import constants, helper_util
 from django.http import HttpResponse, HttpResponseRedirect
 import requests
-from main.api import foursquare, uber
+from main.api import foursquare, uber, instagram
 
 def foursquare_redirect(request, fbid):
     authorization_code = request.GET['code']
@@ -76,6 +76,52 @@ def uber_redirect(request):
 
     # Load all uber data
     uber.refresh_ride_history(user)
+
+    # Redirect
+    return HttpResponseRedirect("/users/"+fbid+"/connect")
+
+def instagram_redirect(request):
+    authorization_code = request.GET['code']
+    fbid = request.GET['state']
+
+    user = User.objects.get(fbid=fbid)
+
+    # Check if user has already OAuthed uber
+    try:
+        # If user has already OAuthed, then no need to change data
+        instagram_connection = InstagramConnection.objects.get(user=user)
+        return HttpResponseRedirect("/users/"+fbid+"/connect")
+        return
+    except InstagramConnection.DoesNotExist:
+        pass
+
+    # Get refresh token
+    payload = {
+        'client_id' : constants.INSTAGRAM_CLIENT_ID,
+        'client_secret' : constants.INSTAGRAM_CLIENT_SECRET,
+        'grant_type' : 'authorization_code',
+        'redirect_uri' : 'https://userdatagraph.herokuapp.com/instagram_redirect/',
+        'code' : authorization_code
+    }
+    token_url = 'https://api.instagram.com/oauth/access_token'
+
+    print token_url
+
+    r = requests.post(token_url, data=payload)
+
+    print r.text
+
+    if 'access_token' in r.json():
+        access_token = r.json()['access_token']
+        instagram_id = r.json()['user']['id']
+        username = r.json()['user']['usernam']
+        profile_picture = r.json()['user']['profile_picture']
+
+    instagram_connection = InstagramConnection(is_connected_flag=True, access_token=access_token, user=user, instagram_id=instagram_id, username=username, profile_picture=profile_picture)
+    instagram_connection.save()
+
+    # Load all instagram data
+    instagram.refresh_ride_history(user)
 
     # Redirect
     return HttpResponseRedirect("/users/"+fbid+"/connect")
