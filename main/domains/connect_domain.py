@@ -114,7 +114,7 @@ def instagram_redirect(request):
     if 'access_token' in r.json():
         access_token = r.json()['access_token']
         instagram_id = r.json()['user']['id']
-        username = r.json()['user']['usernam']
+        username = r.json()['user']['username']
         profile_picture = r.json()['user']['profile_picture']
 
     instagram_connection = InstagramConnection(is_connected_flag=True, access_token=access_token, user=user, instagram_id=instagram_id, username=username, profile_picture=profile_picture)
