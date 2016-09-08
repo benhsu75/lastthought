@@ -43,6 +43,7 @@ class LogEntry(models.Model):
     # 2 - image
     # 3 - Lyft ride
     # 4 - Venue checkin
+    # 5 - Instagram
 
 class TextLogEntry(LogEntry):
     text_value = models.CharField(max_length=10000)
@@ -119,6 +120,16 @@ class VenueLogEntry(LogEntry):
     img_url_suffix = models.CharField(max_length=200, null=True)
     img_dim_width = models.SmallIntegerField(null=True)
     img_dim_height = models.SmallIntegerField(null=True)
+
+class InstagramLogEntry(LogEntry):
+    instagram_id = models.CharField(max_length=100)
+    likes = models.SmallIntegerField()
+
+    link_to_post = models.CharField(max_length=200)
+    thumbnail_url = models.CharField(max_length=200)
+    low_res_url = models.CharField(max_length=200)
+    high_res_url = models.CharField(max_length=200)
+    
 
 
 

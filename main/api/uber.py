@@ -84,8 +84,6 @@ def refresh_ride_history(user):
 
                 ride_log_entry.save()
 
-    x = 1
-
 def refresh_bearer_token(user):
     print 'IN REFRESH BEARER TOKEN'
     # Get refresh token

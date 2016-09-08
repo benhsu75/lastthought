@@ -32,7 +32,7 @@ class InstagramConnection(ThirdPartyConnection):
     user = models.OneToOneField(User)
     access_token = models.CharField(max_length=1000, null=True)
 
-    instagram_id = models.IntegerField()
+    instagram_id = models.BigIntegerField()
     username = models.CharField(max_length=100)
     profile_picture = models.CharField(max_length=200)
 

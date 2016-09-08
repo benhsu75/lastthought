@@ -121,7 +121,7 @@ def instagram_redirect(request):
     instagram_connection.save()
 
     # Load all instagram data
-    instagram.refresh_ride_history(user)
+    instagram.refresh_instagram_history(user)
 
     # Redirect
     return HttpResponseRedirect("/users/"+fbid+"/connect")

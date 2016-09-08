@@ -69,10 +69,15 @@ def messenger_callback(request):
 
                     handle_image_received(fbid, image_url)
                     continue
+                # Reroute Video
+                elif 'attachments' in messaging['message'] and messaging['message']['attachments'][0]['type'] == 'video':
+                    # TODO
 
-                # Is normal message received
-                message_text = messaging['message']['text']
-                handle_message_received(fbid, message_text)
+                    continue
+                else:
+                    # Is normal message received
+                    message_text = messaging['message']['text']
+                    handle_message_received(fbid, message_text)
             elif 'optin' in messaging:
                 # Plugin authentication webhook
                 handle_optin(fbid)
