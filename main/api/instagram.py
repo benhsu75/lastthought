@@ -80,7 +80,7 @@ def refresh_instagram_history(user):
                 try:
                     instagram_log_entry = InstagramLogEntry.objects.get(instagram_id=instagram_id)
                 except InstagramLogEntry.DoesNotExist:
-                    instagram_log_entry = InstagramLogEntry(ocurred_at=created_datetime, log=user_log, entry_type=5)
+                    instagram_log_entry = InstagramLogEntry(occurred_at=created_datetime, log=user_log, entry_type=5)
 
                     instagram_log_entry.instagram_id = instagram_id
                     instagram_log_entry.likes = num_likes
