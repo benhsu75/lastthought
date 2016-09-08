@@ -58,7 +58,16 @@
             </div>
         </div>
         <div class="row">
-            
+            <div class="col-4">
+                <a href="#">
+                    {% if fitbit_connected_flag %}
+                    <div class="auth_card authorized" id="fibit_card"></div>
+                    <div class="check"></div>
+                    {% else %}
+                    <div class="auth_card" id="fitbit_card"></div>
+                    {% endif %}
+                </a>
+            </div>
         </div>
     </div>
     

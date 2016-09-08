@@ -51,6 +51,7 @@ def connect(request, fbid):
         'lyft_connected_flag' : hasattr(user,'lyftconnection') and user.lyftconnection.is_connected_flag,
         'uber_connected_flag' : hasattr(user, 'uberconnection') and user.uberconnection.is_connected_flag,
         'instagram_connected_flag' : hasattr(user, 'instagramconnection') and user.instagramconnection.is_connected_flag,
+        'fitbit_connected_flag' : False, #hasattr(user, 'fitbitconnection') and user.fitbitconnection.is_connected_flag,
         'fbid' : user.fbid
         
         })

@@ -141,6 +141,12 @@ h2 {
     background-position: center;
 }
 
+#fitbit_card {
+    background: url("https://img.stackshare.io/company/128/fitbit-logo-for-twitter.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
 .messenger-button {
     text-align: center;
 }

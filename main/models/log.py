@@ -129,7 +129,17 @@ class InstagramLogEntry(LogEntry):
     thumbnail_url = models.CharField(max_length=200)
     low_res_url = models.CharField(max_length=200)
     high_res_url = models.CharField(max_length=200)
-    
+
+    lat = models.FloatField(null=True)
+    lng = models.FloatField(null=True)
+    location_id = models.CharField(max_length=100)
+    location_name = models.CharField(max_length=200)
+    location_street_address = models.CharField(max_length=200)
+
+    caption = models.CharField(max_length=1000, null=True)
+
+
+
 
 
 
