@@ -50,7 +50,7 @@ def refresh_instagram_history(user):
 
             num_comments = media['comments']['count']
 
-            created_time = media['created_time']
+            created_time = float(media['created_time'])
             created_datetime = datetime.datetime.fromtimestamp(created_time)
 
             link_to_post = media['link']
