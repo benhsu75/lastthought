@@ -43,67 +43,71 @@ def refresh_instagram_history(user):
             # Extract all the information
             media_type = media['type']
 
-            if media['location'] != None:
-                location_lat = media['location']['latitude']
-                location_lng = media['location']['longitude']
-                location_name = media['location']['name']
+            if media_type == 'image': # Media was image
+                if media['location'] != None:
+                    location_lat = media['location']['latitude']
+                    location_lng = media['location']['longitude']
+                    location_name = media['location']['name']
 
-            num_comments = media['comments']['count']
+                num_comments = media['comments']['count']
 
-            created_time = float(media['created_time'])
-            created_datetime = datetime.datetime.fromtimestamp(created_time)
+                created_time = float(media['created_time'])
+                created_datetime = datetime.datetime.fromtimestamp(created_time)
 
-            link_to_post = media['link']
+                link_to_post = media['link']
 
-            num_likes = media['likes']['count']
+                num_likes = media['likes']['count']
 
-            thumbnail_url = media['images']['thumbnail']['url']
-            thumbnail_height = media['images']['thumbnail']['height']
-            thumbnail_width = media['images']['thumbnail']['width']
+                thumbnail_url = media['images']['thumbnail']['url']
+                thumbnail_height = media['images']['thumbnail']['height']
+                thumbnail_width = media['images']['thumbnail']['width']
 
-            low_res_url = media['images']['low_res']['url']
-            low_res_height = media['images']['low_res']['height']
-            low_res_width = media['images']['low_res']['width']
+                low_res_url = media['images']['low_resolution']['url']
+                low_res_height = media['images']['low_resolution']['height']
+                low_res_width = media['images']['low_resolution']['width']
 
-            high_res_url = media['images']['high_res']['url']
-            high_res_height = media['images']['high_res']['height']
-            high_res_width = media['images']['high_res']['width']
+                high_res_url = media['images']['standard_resolution']['url']
+                high_res_height = media['images']['standard_resolution']['height']
+                high_res_width = media['images']['standard_resolution']['width']
 
-            caption = media['caption']['text']
+                caption = media['caption']['text']
 
-            instagram_id = media['id']
+                instagram_id = media['id']
 
-            # Create InstagramLogEntry
+                # Create InstagramLogEntry
 
-            # Check if one with this id already exists
-            try:
-                instagram_log_entry = InstagramLogEntry.objects.get(instagram_id=instagram_id)
-            except InstagramLogEntry.DoesNotExist:
-                instagram_log_entry = InstagramLogEntry(ocurred_at=created_datetime, log=user_log, entry_type=5)
+                # Check if one with this id already exists
+                try:
+                    instagram_log_entry = InstagramLogEntry.objects.get(instagram_id=instagram_id)
+                except InstagramLogEntry.DoesNotExist:
+                    instagram_log_entry = InstagramLogEntry(ocurred_at=created_datetime, log=user_log, entry_type=5)
 
-                instagram_log_entry.instagram_id = instagram_id
-                instagram_log_entry.likes = num_likes
-                instagram_log_entry.link_to_post = link_to_post
+                    instagram_log_entry.instagram_id = instagram_id
+                    instagram_log_entry.likes = num_likes
+                    instagram_log_entry.link_to_post = link_to_post
 
-                instagram_log_entry.thumbnail_url = thumbnail_url
-                instagram_log_entry.thumbnail_height = thumbnail_height
-                instagram_log_entry.thumbnail_width = thumbnail_width
+                    instagram_log_entry.thumbnail_url = thumbnail_url
+                    instagram_log_entry.thumbnail_height = thumbnail_height
+                    instagram_log_entry.thumbnail_width = thumbnail_width
 
-                instagram_log_entry.low_res_url = low_res_url
-                instagram_log_entry.low_res_height = low_res_height
-                instagram_log_entry.low_res_width = low_res_width
+                    instagram_log_entry.low_res_url = low_res_url
+                    instagram_log_entry.low_res_height = low_res_height
+                    instagram_log_entry.low_res_width = low_res_width
 
-                instagram_log_entry.high_res_url = high_res_url
-                instagram_log_entry.high_res_height = high_res_height
-                instagram_log_entry.high_res_width = high_res_width
+                    instagram_log_entry.high_res_url = high_res_url
+                    instagram_log_entry.high_res_height = high_res_height
+                    instagram_log_entry.high_res_width = high_res_width
 
-                instagram_log_entry.lat = location_lat
-                instagram_log_entry.lng = location_lng
-                instagram_log_entry.location_name = location_name
+                    instagram_log_entry.lat = location_lat
+                    instagram_log_entry.lng = location_lng
+                    instagram_log_entry.location_name = location_name
 
-                instagram_log_entry.caption = caption
+                    instagram_log_entry.caption = caption
 
-                instagram_log_entry.save()
+                    instagram_log_entry.save()
+            elif media_type == 'video':
+                # TODO
+                x = 1
 
 
 
