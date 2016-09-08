@@ -44,8 +44,8 @@ def refresh_instagram_history(user):
             media_type = media['type']
 
             if media['location'] != None:
-                location_lat = media['location']['lat']
-                location_lng = media['location']['lng']
+                location_lat = media['location']['latitude']
+                location_lng = media['location']['longitude']
                 location_name = media['location']['name']
 
             num_comments = media['comments']['count']
