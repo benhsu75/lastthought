@@ -17,7 +17,7 @@ def refresh_instagram_history(user):
     recent_media_url = BASE_URL + '/users/self/media/recent/'
 
     # Add access token and count to url
-    url_to_get = '?access_token=' + access_token + '&count=20'
+    url_to_get = recent_mediau_url + '?access_token=' + access_token + '&count=20'
 
     more_to_parse = True
 
