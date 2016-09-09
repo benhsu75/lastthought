@@ -172,7 +172,7 @@ def fitbit_redirect(request):
     offsetFromUTCMillis = profile_response['user']['offsetFromUTCMillis']
     locale = profile_response['user']['locale']
 
-    print 'Offset: ' + offsetFromUTCMillis
+    print 'Offset: ' + str(offsetFromUTCMillis)
     print 'Locale: ' + locale
 
     # Refresh fitbit data
