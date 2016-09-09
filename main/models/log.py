@@ -150,7 +150,11 @@ class WeightLogEntry(LogEntry):
     # 0 - Fitbit
     # others...
 
+    metric_weight = models.FloatField()
     
+
+
+
 
 
 

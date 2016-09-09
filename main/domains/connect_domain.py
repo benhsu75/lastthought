@@ -163,10 +163,19 @@ def fitbit_redirect(request):
         fitbit_id = r.json()['user_id']
 
     # Create a fitbit connection
-    # TODO
+    fitbit_connection = FitbitConnection(is_connected_flag=True, refresh_token=refresh_token, user=user, fitbit_id=fitbit_id)
+    fitbit_connection.save()
+
+    # Get user's fitbit profile information
+    profile_response = fitbit.get_profile_information(user, access_token)
+    offsetFromUTCMillis = profile_response['user']['offsetFromUTCMillis']
+    locale = profile_response['user']['locale']
+
+    print 'Offset: ' + offsetFromUTCMillis
+    print 'Locale: ' + locale
 
     # Refresh fitbit data
-    # TODO
+    fitbit.refresh_weight_history(user)
 
     # Redirect
     return HttpResponseRedirect("/users/"+fbid+"/connect")
