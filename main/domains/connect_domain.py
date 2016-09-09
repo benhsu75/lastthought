@@ -1,6 +1,7 @@
 from main.models import *
 from main.utils import constants, helper_util
 from django.http import HttpResponse, HttpResponseRedirect
+from requests.auth import HTTPBasicAuth
 import requests
 from main.api import foursquare, uber, instagram, fitbit
 
