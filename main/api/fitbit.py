@@ -17,7 +17,11 @@ def refresh_activity_history(user):
 def get_profile_information(user, access_token):
     url_to_get = 'https://api.fitbit.com/1/user/'+user.fitbitconnection.fitbit_id+'/profile.json'
 
-    r = requests.get(url_to_get)
+    headers = {
+        'Authorization' : 'Bearer ' + access_token
+    }
+
+    r = requests.get(url_to_get, headers=headers)
 
     print r.text
 
