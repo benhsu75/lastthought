@@ -1,7 +1,7 @@
 from main.models import *
 from main.utils import constants, helper_util
 from django.http import HttpResponse, HttpResponseRedirect
-from requests.auth import HTTPBasicAuth
+from requests.auth import HTTPBasicAuth 
 import requests
 from main.api import foursquare, uber, instagram, fitbit
 
@@ -154,7 +154,7 @@ def fitbit_redirect(request):
 
     token_url = 'https://api.fitbit.com/oauth2/token'
 
-    r = requests.post(token_url, data=payload, auth=HTTPBasicAuth(constants.LYFT_CLIENT_ID, constants.LYFT_CLIENT_SECRET))
+    r = requests.post(token_url, data=payload, auth=HTTPBasicAuth(constants.FITBIT_CLIENT_ID, constants.FITBIT_CLIENT_SECRET))
 
     print r.text
 
