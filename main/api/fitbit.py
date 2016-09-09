@@ -6,7 +6,7 @@ import datetime
 
 def refresh_bearer_token(user):
     # Get refresh token
-    refresh_token = current_user.fitbitconnection.refresh_token
+    refresh_token = user.fitbitconnection.refresh_token
 
     # Make request to get access_token
     payload = {
@@ -27,6 +27,12 @@ def refresh_weight_history(user):
     access_token = refresh_bearer_token(user)
 
     # Make request
+    user_log = Log.find_or_create(current_user)
+    
+    # Make request to /ride
+    headers = {
+        'Authorization' : 'Bearer ' + bearer_token
+    }
 
 def refresh_activity_history(user):
     # TODO
