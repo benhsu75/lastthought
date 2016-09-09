@@ -39,6 +39,7 @@ class InstagramConnection(ThirdPartyConnection):
 class FitbitConnection(ThirdPartyConnection):
     user = models.OneToOneField(User)
     refresh_token = models.CharField(max_length=1000, null=True)
+    fitbit_id = models.CharField(max_length=200)
 
 #
 

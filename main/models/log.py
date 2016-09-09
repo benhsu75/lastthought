@@ -145,6 +145,13 @@ class InstagramLogEntry(LogEntry):
 
     caption = models.CharField(max_length=1000, null=True)
 
+class WeightLogEntry(LogEntry):
+    source_type = models.SmallIntegerField()
+    # 0 - Fitbit
+    # others...
+
+    
+
 
 
 

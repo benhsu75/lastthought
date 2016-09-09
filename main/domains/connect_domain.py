@@ -160,6 +160,7 @@ def fitbit_redirect(request):
     if 'access_token' in r.json():
         access_token = r.json()['access_token']
         refresh_token = r.json()['refresh_token']
+        fitbit_id = r.json()['user_id']
 
     # Create a fitbit connection
     # TODO
