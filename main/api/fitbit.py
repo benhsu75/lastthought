@@ -27,7 +27,7 @@ def refresh_weight_history(user):
     access_token = refresh_bearer_token(user)
 
     # Make request
-    user_log = Log.find_or_create(current_user)
+    user_log = Log.find_or_create(user)
     
     # Make request to /ride
     headers = {
