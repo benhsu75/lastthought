@@ -22,7 +22,7 @@
     </div>
     <script type="text/javascript">
         $(document).ready(function() {
-            $('body').on('click', function() {
+            $('body').on('tap', function() {
                 console.log('hello');
                 $('.insulin-amount').blur();
                 document.activeElement.blur();
@@ -33,7 +33,6 @@
                 e.stopImmediatePropagation();
             });
         });
-        
     </script>
 </body>
 </html>
