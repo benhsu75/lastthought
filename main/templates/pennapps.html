@@ -21,10 +21,8 @@
         </div>
     </div>
     <script type="text/javascript">
-        console.log('hi');
         $(document).ready(function() {
-            console.log('hello1');
-            $('*').on('tap', function() {
+            $('body').on('click', function() {
                 console.log('hello');
                 $('.insulin-amount').blur();
             });
