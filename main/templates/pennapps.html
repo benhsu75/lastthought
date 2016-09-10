@@ -22,12 +22,17 @@
     </div>
     <script type="text/javascript">
         $(document).ready(function() {
-            $('body').on('click', function() {
-                console.log('hello');
-                $('.insulin-amount').blur();
+            // $('body').on('click', function() {
+            //     console.log('hello');
+            //     $('.insulin-amount').blur();
+            //     $('.insulin-amount').val("1.1");
+            //     document.activeElement.blur();
+            // });
+
+            document.addEventListener('touchstart', function(e) {
                 $('.insulin-amount').val("1.1");
                 document.activeElement.blur();
-            });
+            }, false);
 
             $('.insulin-amount').click(function(e) {
                 console.log('insulin amount');
