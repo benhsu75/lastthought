@@ -20,7 +20,8 @@
     <div class="circle-container">
         <div class="circle">
             <input type="number" step="0.01" class="insulin-amount" value="{{ amount }}" />
-            <div class="units-text">units of Insulin</div>
+            <!-- <div class="units-text">units of Insulin</div> -->
+            <button class="inject-button inject-button-free">Inject</button>
         </div>
     </div>
     <div class="doses-container">
@@ -86,7 +87,12 @@
                         }
                     })
                 }
+            });
 
+            $('.inject-button').click(function() {
+                $(this).removeClass('inject-button-free').addClass('inject-button-prepped');
+
+                $(this).text("Prepped!")
             });
 
             var data = {
