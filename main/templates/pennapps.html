@@ -12,13 +12,23 @@
 <body>
     <div class="navbar">InsuPen</div>
     <div class="last-injection-container">
-        <div class="last-injection-text">Your last dose was 2 units 2 hours ago.</div>
+        <div class="last-injection-text">
+        Your last dose of <span class="last-num-units">2 units</span> was <span class="last-num-hours">2 hours</span> ago.
+        </div>
     </div>
     <div class="circle-container">
         <div class="circle">
             <input type="number" step="0.01" class="insulin-amount" value="{{ amount }}" />
             <div class="units-text">units of Insulin</div>
         </div>
+    </div>
+    <div class="doses-container">
+        {% for d in doses %}
+        <div class="dose">
+            {{ d.amount }}<br>
+            {{ d.created_at }}
+        </div>
+        {% endfor %}
     </div>
     <script type="text/javascript">
         $(document).ready(function() {

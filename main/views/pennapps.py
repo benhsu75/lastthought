@@ -7,19 +7,30 @@ from main.models import *
 
 @csrf_exempt
 def get_insulin_amount(request):
-    # TODO
-    return HttpResponse('2')
+
+    # Get the insulin amount
+    insulin_amount = InsulinAmount.objects.first()
+
+    if not insulin_amount:
+        insulin_amount = InsulinAmount(amount=0.0)
+        insulin_amount.save()
+
+    return HttpResponse(insulin_amount.amount)
 
 @csrf_exempt
 def log_insulin(request):
-    # TODO
-    x = 1
-    return HttpResponse(status=200)
+    # Get insulin amount
+    insulin_amount = InsulinAmount.objects.first()
 
-@csrf_exempt
-def get_insulin_logs(request):
-    # TODO
-    x = 1
+    if not insulin_amount:
+        insulin_amount = InsulinAmount(amount=0.0)
+        insulin_amount.save()
+
+    # Create log
+    dose = Dose(amount=insulin_amount.amount)
+    dose.save()
+    
+    return HttpResponse(status=200)
 
 @csrf_exempt
 def set_insulin_amount(request):
@@ -53,7 +64,8 @@ def pennapps(request):
 
 
     context = RequestContext(request, {
-        'amount' : amount 
+        'amount' : amount,
+        'doses' : Dose.objects.all().order_by('-created_at')
     })
     template = loader.get_template('pennapps.html')
     return HttpResponse(template.render(context))

@@ -52,7 +52,6 @@ urlpatterns = [
     # ENDPOINTS FOR PENNAPPS
     url(r'^get_insulin_amount/$', pennapps.get_insulin_amount),
     url(r'^log_insulin/$', pennapps.log_insulin),
-    url(r'^get_insulin_logs/$', pennapps.get_insulin_logs),
     url(r'^pennapps/$', pennapps.pennapps),
     url(r'^set_insulin_amount/$', pennapps.set_insulin_amount),
 ]
