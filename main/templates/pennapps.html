@@ -8,7 +8,8 @@
 
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-</head>
+
+    </head>
 <body>
     <div class="navbar">InsuPen</div>
     <div class="last-injection-container">
@@ -23,20 +24,37 @@
         </div>
     </div>
     <div class="doses-container">
-        {% for d in doses %}
-        <div class="dose">
-            <span class="num-units">{{ d.amount }} units</span> at {{ d.created_at }}
+        <div class="doses-header">
+            <div class="left">
+                
+            </div><div class="day">Today</div><div class="right">
+                
+            </div>
         </div>
-        {% endfor %}
+        <div class="doses-body">
+            <div class="back-in-time">
+                
+            </div><div class="doses-list"> 
+                {% for d in doses %}
+                <div class="dose">
+                    <span class="num-units">{{ d.amount }} units</span> - {{ d.get_time_diff_from_now }} ago
+                </div>
+                {% endfor %}
+            </div><div class="forward-in-time">
+                
+            </div>
+        </div>
     </div>
+    <div class="bg-container">
+        <canvas id="myChart" width="250" height="150"></canvas>
+    </div>
+
+    <!-- chart js -->
+    <!-- <script type="{% static 'js/chartjs/Chart.js' %}"></script> -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.js"></script> 
+
     <script type="text/javascript">
         $(document).ready(function() {
-            // $('body').on('click', function() {
-            //     console.log('hello');
-            //     $('.insulin-amount').blur();
-            //     $('.insulin-amount').val("1.1");
-            //     document.activeElement.blur();
-            // });
 
             document.addEventListener('touchstart', function(e) {
                 document.activeElement.blur();
@@ -71,6 +89,39 @@
 
             });
 
+            var data = {
+                labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                datasets: [
+                    {
+                        label: "Blood Glucose Levels",
+                        fillColor: "rgba(220,220,220,0.2)",
+                        strokeColor: "rgba(220,220,220,1)",
+                        pointColor: "rgba(220,220,220,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        data: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
+                    }
+                ]
+            };
+            var options = {
+                showLines : true,
+                scales: {
+                    xAxes: [{
+                        display: false
+                    }]
+                },
+                legend: {
+                    display: false
+                }
+            };
+
+            var ctx = document.getElementById("myChart");
+
+            var myLineChart = Chart.Line(ctx, {
+                data: data,
+                options: options
+            });
 
         });
     </script>
