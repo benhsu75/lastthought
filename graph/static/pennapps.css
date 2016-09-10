@@ -19,8 +19,8 @@
 }
 
 .circle-container {
-    padding-top: 10px;
-    padding-bottom: 20px;
+    /*padding-top: px;*/
+    padding-bottom: 5px;
 }
 
 .circle {
@@ -52,8 +52,8 @@
 
 .inject-button {
     margin-top: 10px;
-    margin-left: 35px;
-    width: 80px;
+    margin-left: 25px;
+    width: 100px;
     border-radius: 5px;
     height: 40px;
     color: white;
@@ -69,6 +69,7 @@
 
 .inject-button-prepped {
     background-color: green;
+    font-size: 10px;
 }
 
 .units-text {
@@ -86,7 +87,7 @@
 }
 
 .last-injection-text {
-    font-size: 12px;
+    font-size: 13px;
     font-style: italic;
     text-align: center;
 }
