@@ -4,37 +4,53 @@
 <head>
   <title>View logs</title>
   <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}"/>
-  <link href="https://fonts.googleapis.com/css?family=Raleway|Roboto:300" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,900" rel="stylesheet">
   <!-- jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 <body>
   <div class="container">
-    <h1>Your logs</h1>
+    <h1><span class="h-light">YOUR</span> <span class="h-strong">LOGS</span></h1>
+
+    <a href="/users/{{fbid}}/connect" class="nav-link">API Dashboard >></a>
 
     <hr>
 
     <div class="row context-section">
-      {% if log_context_list|length == 0 %}
-      No contexts yet
-      {% endif %}
-
+      Filter by context: <select onChange="window.location.href=this.value">
+        <option value="">---</option>
+      
       {% for log_context in log_context_list %}
-      <div class="col-4 context-box">
-        <a href="/users/{{fbid}}/log_context/{{log_context.id}}">
-          <div class="log-context">
-            {{log_context.context_name}}
-          </div>
-        </a>
-      </div>
+        <option value="/users/{{fbid}}/log_context/{{log_context.id}}">{{log_context.context_name}}</option>
+
       {% endfor %}
+      </select>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      Filter by type: <select>
+        <option value="">---</option>
+        <option value="">Fitness</option>
+        <option value="">Photos</option>
+        <option value="">Checkins</option>
+        <option value="">Rideshare</option>
+        <option value="">Text</option>
+      </select>
+
     </div>
+
+    <div class="row search-section">
+      <input type="text" placeholder="Search (e.g. with Cathy)"/>
+    </div>
+
+    <hr>
+
+    <br>
 
     {% for log_entry in log_entry_list %}
     <div class="row">
       <div class="log-entry" data-logentryid="{{log_entry.id}}">
         <div class="timestamp">{{log_entry.occurred_at}}</div>
-        <a class="delete" href="#">Delete</a><br>
+        <img class="delete" src="{% static 'img/close.png' %}"/>
         {% if log_entry.entry_type == 0 %}
 
           <p>{{log_entry.textlogentry.text_value}}</p>
@@ -45,26 +61,34 @@
 
         {% elif log_entry.entry_type == 2 %}
 
-            <div class="log-img" style="background-image: url('{{ log_entry.imagelogentry.image_url }}'); height: {{log_entry.imagelogentry.image_height}}px; width: {{log_entry.imagelogentry.image_width}}px;"></div>
+          <img src="{{ log_entry.imagelogentry.image_url }}" class="log-img"/>
 
         {% elif log_entry.entry_type == 3 %}
 
           {% if log_entry.ridelogentry.rideshare_service == 0 %}
 
-            You took a {{log_entry.ridelogentry.ride_type}} from {{log_entry.ridelogentry.origin_address}} to {{log_entry.ridelogentry.dropoff_address}}. It cost ${{log_entry.ridelogentry.price_in_dollars}}. 
+            <div class="type-circle" style="background-image: url('{% static 'img/lyft-logo.jpg' %}')"></div>
+
+            <p>You took a {{log_entry.ridelogentry.ride_type}} from {{log_entry.ridelogentry.origin_address}} to {{log_entry.ridelogentry.dropoff_address}}. It cost ${{log_entry.ridelogentry.price_in_dollars}}.</p>
 
           {% elif log_entry.ridelogentry.rideshare_service == 1 %}
 
-            You took an Uber ({{log_entry.ridelogentry.ride_type}}) in {{log_entry.ridelogentry.start_city_name}} and traveled {{log_entry.ridelogentry.distance}} miles.
+            <div class="type-circle" style="background-image: url('{% static 'img/uber-logo.jpg' %}')"></div>
+
+            <p>You took an Uber ({{log_entry.ridelogentry.ride_type}}) in {{log_entry.ridelogentry.start_city_name}} and traveled {{log_entry.ridelogentry.distance}} miles.</p>
 
           {% endif %}
 
         {% elif log_entry.entry_type == 4 %}
 
-          You checked in to {{log_entry.venuelogentry.name}} at {{log_entry.venuelogentry.formatted_address}}.
+          <div class="type-circle" style="background-image: url('{% static 'img/swarm-logo.png' %}')"></div>
+
+          <p>You checked in to {{log_entry.venuelogentry.name}} at {{log_entry.venuelogentry.formatted_address}}.</p>
+
         {% elif log_entry.entry_type == 5 %}
-          <img src="{{log_entry.instagramlogentry.low_res_url}}"><br>
-          <a href="{{log_entry.instagramlogentry.link_to_post}}">{{log_entry.instagramlogentry.caption}}</a>
+          <div class="type-circle" style="background-image: url('{% static 'img/instagram-logo.jpg' %}'); border: 1px solid #DDD"></div>
+          <a href="{{log_entry.instagramlogentry.link_to_post}}" target="_blank"><img class="log-img" src="{{log_entry.instagramlogentry.high_res_url}}"></a>
+          <p>{{log_entry.instagramlogentry.caption}}</p>
 
         {% endif %}
       </div>
