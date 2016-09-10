@@ -124,7 +124,6 @@ def show(request, fbid, habit_id):
     template = loader.get_template('habits/show.html')
     return HttpResponse(template.render(context))
 
-
 # Allow users to add a habit
 def add_habit_page(request, fbid):
     if not helper_util.user_exists(fbid):

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Insupen</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'pennapps.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+</head>
+<body>
+    <div class="navbar">InsuPen</div>
+    <div class="last-injection-container">
+        <div class="last-injection-text">Your last dose was 2 units 2 hours ago.</div>
+    </div>
+    <div class="circle-container">
+        <div class="circle">
+            <input type="text" class="insulin-amount" value="3.2" />
+            <div class="units-text">Units</div>
+        </div>
+    </div>
+</body>
+</html>
