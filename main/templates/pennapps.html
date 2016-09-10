@@ -36,6 +36,7 @@
             <div class="back-in-time">
                 
             </div><div class="doses-list"> 
+                <div class="label">Your recent injections:</div>
                 {% for d in doses %}
                 <div class="dose">
                     <span class="num-units">{{ d.amount }} units</span> - {{ d.get_time_diff_from_now }} ago
@@ -47,6 +48,7 @@
         </div>
     </div>
     <div class="bg-container">
+        <div class="label">Blood glucose levels:</div>
         <canvas id="myChart" width="250" height="150"></canvas>
     </div>
 
