@@ -65,7 +65,7 @@ def pennapps(request):
 
     context = RequestContext(request, {
         'amount' : amount,
-        'doses' : Dose.objects.all().order_by('-created_at'),
+        'doses' : Dose.objects.all().order_by('-created_at')[:4],
         'last_dose_amount' : Dose.objects.all().order_by('-created_at').first().amount,
         'last_dose_time' : Dose.objects.all().order_by('-created_at').first().get_time_diff_from_now
     })
