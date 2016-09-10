@@ -151,7 +151,10 @@ class WeightLogEntry(LogEntry):
     # others...
 
     metric_weight = models.FloatField()
+
+    log_id = models.CharField(max_length=200)
     
+
 
 
 

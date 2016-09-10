@@ -31,8 +31,35 @@ def refresh_weight_history(user):
     
     # Make request to /ride
     headers = {
-        'Authorization' : 'Bearer ' + bearer_token
+        'Authorization' : 'Bearer ' + access_token
     }
+
+    # Loop through requests to get weight
+    more_to_parse = True
+    base_date = '2010-01-01'
+    period = '1m'
+    url_to_get = 'https://api.fitbit.com/1/user/{}/body/log/weight/date/{}/{}.json'.format(user.fitbitconnection.fitbit_id, base_date, period)
+
+    while more_to_parse:
+        requests.get(url_to_get, headers=headers)
+
+        if 'weight' in r.json():
+            weight_list = r.json()['weight']
+
+            for weight_log in weight_list:
+                date = weight_log['date']
+                time = weight_log['time']
+                logId = weight_log['logId']
+                metric_weight = weight_log['metric_weight']
+                source = weight_log['source']
+
+                weight_log_entry = WeightLogEntry.objects.get(log=user_log, )
+
+        else:
+            # ERROR
+            # TODO
+            x = 1
+
 
 def refresh_activity_history(user):
     # TODO
