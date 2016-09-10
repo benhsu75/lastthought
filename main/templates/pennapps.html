@@ -25,6 +25,7 @@
             $('body').on('click', function() {
                 console.log('hello');
                 $('.insulin-amount').blur();
+                document.activeElement.blur();
             });
 
             $('.insulin-amount').click(function(e) {
