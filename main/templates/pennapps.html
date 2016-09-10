@@ -59,14 +59,14 @@
     <script type="text/javascript">
         $(document).ready(function() {
 
-            document.addEventListener('touchstart', function(e) {
-                console.log('touchstart');
-                if($('.insulin-amount').is(':focus')) 
-                {
-                    document.activeElement.blur();
-                }
+            // document.addEventListener('touchstart', function(e) {
+            //     console.log('touchstart');
+            //     if($('.insulin-amount').is(':focus')) 
+            //     {
+            //         document.activeElement.blur();
+            //     }
                 
-            }, false);
+            // }, false);
 
             $('.insulin-amount').click(function(e) {
                 console.log('insulin amount');
