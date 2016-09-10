@@ -1,6 +1,6 @@
 from django.conf.urls import url, patterns
 from django.contrib import admin
-from main.views import general, habit_views, todo_views, log_views, ridesharing_views
+from main.views import general, habit_views, todo_views, log_views, ridesharing_views, pennapps
 from main.entrypoints.messenger import messenger
 from django.conf import settings
 from main.domains import ridesharing_domain, connect_domain
@@ -48,6 +48,10 @@ urlpatterns = [
     url(r'^users/(?P<fbid>\d+)/setup_ridesharing', ridesharing_views.setup),
     url(r'^users/(?P<fbid>\d+)/logs', log_views.index),
     url(r'^users/(?P<fbid>\d+)/log_context/(?P<log_context_id>\d+)', log_views.log_context_show),
+
+    # ENDPOINTS FOR PENNAPPS
+    url(r'^get_insulin_amount/$', pennapps.get_insulin_amount),
+    url(r'^log_insulin/$', pennapps.get_insulin_amount),
 
 ]
 
