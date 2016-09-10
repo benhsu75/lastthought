@@ -60,7 +60,12 @@
         $(document).ready(function() {
 
             document.addEventListener('touchstart', function(e) {
-                document.activeElement.blur();
+                console.log('touchstart');
+                if($('.insulin-amount').is(':focus')) 
+                {
+                    document.activeElement.blur();
+                }
+                
             }, false);
 
             $('.insulin-amount').click(function(e) {
@@ -69,6 +74,7 @@
             });
 
             $('.insulin-amount').change(function() {
+                console.log('insulin-amount');
 
                 var amount = $('.insulin-amount').val();
 
