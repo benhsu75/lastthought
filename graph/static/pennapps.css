@@ -45,10 +45,11 @@
     margin-top: 40px;
     border-bottom: 2px solid #F5F5F5;
     border-radius: 0px;
+    color: #474747;
 }
 
 .insulin-amount:focus {
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid #474747;
 }
 
 .units-text {
@@ -78,5 +79,24 @@
 
 .last-num-hours {
     color: green;
+    font-weight: bold;
+}
+
+.doses-container {
+    width: calc(100%-40px);
+    padding: 3px 20px 3px 20px;
+}
+
+.dose {
+    width: 100%;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    font-size: 14px;
+    border: 1px solid gray;
+    background-color: #F5F5F5;
+}
+
+.num-units {
     font-weight: bold;
 }

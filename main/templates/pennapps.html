@@ -25,8 +25,7 @@
     <div class="doses-container">
         {% for d in doses %}
         <div class="dose">
-            {{ d.amount }}<br>
-            {{ d.created_at }}
+            <span class="num-units">{{ d.amount }} units</span> at {{ d.created_at }}
         </div>
         {% endfor %}
     </div>
