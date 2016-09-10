@@ -7,4 +7,7 @@ class InsulinAmount(models.Model):
 class Dose(models.Model):
     amount = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
+class GlucoseLog(models.Model):
+    level = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True)
