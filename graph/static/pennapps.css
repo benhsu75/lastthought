@@ -67,11 +67,11 @@
     outline: none;
     /*border: 1px solid black;*/
     border: none;
-    font-size: 16px;
 }
 
 .inject-button-free {
     background-color: red;
+    font-size: 20px;
 }
 
 .inject-button-prepped {
