@@ -6,15 +6,21 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Connect Accounts</title>
-
+    <link rel="stylesheet" type"text/css" href="{% static 'css/main.css' %}"/>
     <link rel="stylesheet" type"text/css" href="{% static 'css/style.css' %}"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,900" rel="stylesheet">
     <!-- jQuery -->
-    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Oswald:300' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
     <div class="container">
+
+        <h1><span class="h-light">API</span> <span class="h-strong">DASHBOARD</span></h1>
+        <a href="/users/{{fbid}}/logs" class="nav-link">Your logs >></a>
+
+        <hr>
+
         <div class="row">
             <div class="col-4">
                 <a href="https://www.lyft.com/oauth/authorize?client_id=OyrF54XChtFI&response_type=code&scope=public%20rides.read%20offline%20rides.request&state={{fbid}}">
