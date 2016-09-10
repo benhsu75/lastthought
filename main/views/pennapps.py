@@ -5,9 +5,7 @@ import json
 @csrf_exempt
 def get_insulin_amount(request):
     # TODO
-    return HttpResponse(json.dumps({
-        'amount' : '2'
-        }))
+    return HttpResponse('2')
 
 @csrf_exempt
 def log_insulin(request):
