@@ -52,6 +52,10 @@ def connect(request, fbid):
         'uber_connected_flag' : hasattr(user, 'uberconnection') and user.uberconnection.is_connected_flag,
         'instagram_connected_flag' : hasattr(user, 'instagramconnection') and user.instagramconnection.is_connected_flag,
         'fitbit_connected_flag' : hasattr(user, 'fitbitconnection') and user.fitbitconnection.is_connected_flag,
+        'gmail_connected_flag' : False,#hasattr(user, 'gmailconnection') and user.gmailconnection.is_connected_flag,
+        'gcal_connected_flag' : False,#hasattr(user, 'gcalconnection') and user.gcalconnection.is_connected_flag,
+        'gdrive_connected_flag' : False,#hasattr(user, 'gdriveconnection') and user.gdriveconnection.is_connected_flag,
+        'facebook_connected_flag' : False,#hasattr(user, 'facebookconnection') and user.facebookconnection.is_connected_flag,
         'fbid' : user.fbid
         
         })

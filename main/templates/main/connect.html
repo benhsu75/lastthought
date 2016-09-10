@@ -74,6 +74,48 @@
                     {% endif %}
                 </a>
             </div>
+            <div class="col-4">
+                <a href="#">
+                    {% if gmail_connected_flag %}
+                    <div class="auth_card authorized" id="gmail_card"></div>
+                    <div class="check"></div>
+                    {% else %}
+                    <div class="auth_card" id="gmail_card"></div>
+                    {% endif %}
+                </a>
+            </div>
+            <div class="col-4">
+                <a href="#">
+                    {% if gcal_connected_flag %}
+                    <div class="auth_card authorized" id="gcal_card"></div>
+                    <div class="check"></div>
+                    {% else %}
+                    <div class="auth_card" id="gcal_card"></div>
+                    {% endif %}
+                </a>
+            </div>
+            <div class="col-4">
+                <a href="#">
+                    {% if gdrive_connected_flag %}
+                    <div class="auth_card authorized" id="gdrive_card"></div>
+                    <div class="check"></div>
+                    {% else %}
+                    <div class="auth_card" id="gdrive_card"></div>
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <a href="#">
+                    {% if facebook_connected_flag %}
+                    <div class="auth_card authorized" id="facebook_card"></div>
+                    <div class="check"></div>
+                    {% else %}
+                    <div class="auth_card" id="facebook_card"></div>
+                    {% endif %}
+                </a>
+            </div>
         </div>
     </div>
     

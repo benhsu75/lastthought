@@ -146,6 +146,34 @@ h2 {
     background-repeat: no-repeat;
     background-position: center;
 }
+
+#gmail_card {
+    background: url("https://cdn4.iconfinder.com/data/icons/free-colorful-icons/360/gmail.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#gcal_card {
+    background: url("http://icons.iconarchive.com/icons/dtafalonso/android-lollipop/512/calendar-icon.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#gdrive_card {
+    background: url("http://icons.iconarchive.com/icons/marcus-roberto/google-play/256/Google-Drive-icon.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#facebook_card {
+    background: url("https://s-media-cache-ak0.pinimg.com/564x/2f/08/a2/2f08a25f31c27f3e72a495964bcaa0d9.jpg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
 .messenger-button {
     text-align: center;
 }
