@@ -16,7 +16,7 @@
     </div>
     <div class="circle-container">
         <div class="circle">
-            <input type="number" class="insulin-amount" value="3.2" />
+            <input type="number" class="insulin-amount" value="{{ amount }}" />
             <div class="units-text">units of Insulin</div>
         </div>
     </div>
@@ -37,6 +37,32 @@
                 console.log('insulin amount');
                 e.stopImmediatePropagation();
             });
+
+            $('.insulin-amount').change(function() {
+
+                var amount = $('.insulin-amount').val();
+
+                if(!isNaN(amount)) {
+                    // Ajax
+                    var payload = {
+                        amount: parseFloat(amount)
+                    };
+
+                    // POST to /habits
+                    $.ajax({
+                        method: 'POST',
+                        url: '/set_insulin_amount/',
+                        data: payload,
+                        success: function() {
+                            // Clear fields
+                            console.log('SAVED');
+                        }
+                    })
+                }
+
+            });
+
+
         });
     </script>
 </body>
