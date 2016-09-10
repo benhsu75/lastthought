@@ -90,9 +90,14 @@
             });
 
             $('.inject-button').click(function() {
-                $(this).removeClass('inject-button-free').addClass('inject-button-prepped');
-
-                $(this).text("Prepped! Press the button on InsuPen to inject.")
+                if($(this).hasClass('inject-button-free')) {
+                    $(this).removeClass('inject-button-free').addClass('inject-button-prepped');
+                    $(this).text("Prepped! Press the button on InsuPen to inject.")
+                }
+                else {
+                    $(this).addClass('inject-button-free').removeClass('inject-button-prepped');
+                    $(this).text("Inject")
+                }
             });
 
             var data = {
