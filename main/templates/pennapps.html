@@ -19,7 +19,7 @@
     </div>
     <div class="circle-container">
         <div class="circle">
-            <input type="text" class="" value="{{ amount }}" />
+            <input type="text" class="insulin-amount" value="{{ amount }}" />
             <!-- <div class="units-text">units of Insulin</div> -->
             <button class="inject-button inject-button-free">Inject</button>
         </div>
@@ -59,43 +59,43 @@
     <script type="text/javascript">
         $(document).ready(function() {
 
-            // document.addEventListener('touchstart', function(e) {
-            //     console.log('touchstart');
-            //     if($('.insulin-amount').is(':focus')) 
-            //     {
-            //         document.activeElement.blur();
-            //     }
+            document.addEventListener('touchstart', function(e) {
+                console.log('touchstart');
+                if($('.insulin-amount').is(':focus')) 
+                {
+                    document.activeElement.blur();
+                }
                 
-            // }, false);
+            }, false);
 
-            // $('.insulin-amount').click(function(e) {
-            //     console.log('insulin amount');
-            //     // e.stopImmediatePropagation();
-            // });
+            $('.insulin-amount').click(function(e) {
+                console.log('insulin amount');
+                // e.stopImmediatePropagation();
+            });
 
-            // $('.insulin-amount').change(function() {
-            //     console.log('insulin-amount');
+            $('.insulin-amount').change(function() {
+                console.log('insulin-amount');
 
-            //     var amount = $('.insulin-amount').val();
+                var amount = $('.insulin-amount').val();
 
-            //     if(!isNaN(amount)) {
-            //         // Ajax
-            //         var payload = {
-            //             amount: parseFloat(amount)
-            //         };
+                if(!isNaN(amount)) {
+                    // Ajax
+                    var payload = {
+                        amount: parseFloat(amount)
+                    };
 
-            //         // POST to /habits
-            //         $.ajax({
-            //             method: 'POST',
-            //             url: '/set_insulin_amount/',
-            //             data: payload,
-            //             success: function() {
-            //                 // Clear fields
-            //                 console.log('SAVED');
-            //             }
-            //         })
-            //     }
-            // });
+                    // POST to /habits
+                    $.ajax({
+                        method: 'POST',
+                        url: '/set_insulin_amount/',
+                        data: payload,
+                        success: function() {
+                            // Clear fields
+                            console.log('SAVED');
+                        }
+                    })
+                }
+            });
 
             $('.inject-button').click(function() {
                 if($(this).hasClass('inject-button-free')) {
