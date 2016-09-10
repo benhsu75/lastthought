@@ -68,34 +68,34 @@
                 
             // }, false);
 
-            $('.insulin-amount').click(function(e) {
-                console.log('insulin amount');
-                // e.stopImmediatePropagation();
-            });
+            // $('.insulin-amount').click(function(e) {
+            //     console.log('insulin amount');
+            //     // e.stopImmediatePropagation();
+            // });
 
-            $('.insulin-amount').change(function() {
-                console.log('insulin-amount');
+            // $('.insulin-amount').change(function() {
+            //     console.log('insulin-amount');
 
-                var amount = $('.insulin-amount').val();
+            //     var amount = $('.insulin-amount').val();
 
-                if(!isNaN(amount)) {
-                    // Ajax
-                    var payload = {
-                        amount: parseFloat(amount)
-                    };
+            //     if(!isNaN(amount)) {
+            //         // Ajax
+            //         var payload = {
+            //             amount: parseFloat(amount)
+            //         };
 
-                    // POST to /habits
-                    $.ajax({
-                        method: 'POST',
-                        url: '/set_insulin_amount/',
-                        data: payload,
-                        success: function() {
-                            // Clear fields
-                            console.log('SAVED');
-                        }
-                    })
-                }
-            });
+            //         // POST to /habits
+            //         $.ajax({
+            //             method: 'POST',
+            //             url: '/set_insulin_amount/',
+            //             data: payload,
+            //             success: function() {
+            //                 // Clear fields
+            //                 console.log('SAVED');
+            //             }
+            //         })
+            //     }
+            // });
 
             $('.inject-button').click(function() {
                 if($(this).hasClass('inject-button-free')) {
