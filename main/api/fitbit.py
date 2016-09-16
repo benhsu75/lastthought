@@ -36,12 +36,15 @@ def refresh_weight_history(user):
 
     # Loop through requests to get weight
     more_to_parse = True
-    base_date = '2010-01-01'
+    base_year = 2010
+    base_month = '01'
+    base_day = '01'
+    base_date_string = '2010-01-01'
     period = '1m'
-    url_to_get = 'https://api.fitbit.com/1/user/{}/body/log/weight/date/{}/{}.json'.format(user.fitbitconnection.fitbit_id, base_date, period)
+    url_to_get = 'https://api.fitbit.com/1/user/{}/body/log/weight/date/{}/{}.json'.format(user.fitbitconnection.fitbit_id, base_date_string, period)
 
     while more_to_parse:
-        requests.get(url_to_get, headers=headers)
+        r = requests.get(url_to_get, headers=headers)
 
         if 'weight' in r.json():
             weight_list = r.json()['weight']

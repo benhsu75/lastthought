@@ -180,3 +180,7 @@ def fitbit_redirect(request):
 
     # Redirect
     return HttpResponseRedirect("/users/"+fbid+"/connect")
+
+
+
+    
