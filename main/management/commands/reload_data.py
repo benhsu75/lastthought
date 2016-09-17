@@ -11,18 +11,18 @@ class Command(BaseCommand):
         all_users = User.objects.all()
 
         for user in all_users:
-            # # Refresh lyft
-            # if hasattr(user,'lyftconnection'):
-            #     lyft.refresh_ride_history(user)
+            # Refresh lyft
+            if hasattr(user,'lyftconnection'):
+                lyft.refresh_ride_history(user)
 
-            # # Refresh uber
-            # if hasattr(user,'uberconnection'):
-            #     uber.refresh_ride_history(user)
+            # Refresh uber
+            if hasattr(user,'uberconnection'):
+                uber.refresh_ride_history(user)
 
             # Refresh foursquare
             if hasattr(user,'foursquareconnection'):
                 foursquare.refresh_checkin_history(user)
 
-            # # Refresh instagram
-            # if hasattr(user,'instagramconnection'):
-            #     instagram.refresh_instagram_history(user)
+            # Refresh instagram
+            if hasattr(user,'instagramconnection'):
+                instagram.refresh_instagram_history(user)

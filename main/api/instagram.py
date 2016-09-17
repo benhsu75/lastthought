@@ -22,6 +22,9 @@ def refresh_instagram_history(user):
     more_to_parse = True
 
     while more_to_parse:
+        more_to_parse = False
+        print "Requesting: " + url_to_get
+
         r = requests.get(url_to_get)
 
         if r.json()['meta']['code'] != 200:
@@ -80,6 +83,7 @@ def refresh_instagram_history(user):
                 try:
                     instagram_log_entry = InstagramLogEntry.objects.get(instagram_id=instagram_id)
                 except InstagramLogEntry.DoesNotExist:
+                    print 'Creating new InstagramLogEntry'
                     instagram_log_entry = InstagramLogEntry(occurred_at=created_datetime, log=user_log, entry_type=5)
 
                     instagram_log_entry.instagram_id = instagram_id
@@ -98,9 +102,10 @@ def refresh_instagram_history(user):
                     instagram_log_entry.high_res_height = high_res_height
                     instagram_log_entry.high_res_width = high_res_width
 
-                    instagram_log_entry.lat = location_lat
-                    instagram_log_entry.lng = location_lng
-                    instagram_log_entry.location_name = location_name
+                    if media['location'] != None:
+                        instagram_log_entry.lat = location_lat
+                        instagram_log_entry.lng = location_lng
+                        instagram_log_entry.location_name = location_name
 
                     instagram_log_entry.caption = caption
 

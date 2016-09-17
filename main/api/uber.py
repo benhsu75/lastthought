@@ -54,22 +54,20 @@ def refresh_ride_history(user):
             start_datetime = datetime.datetime.fromtimestamp(start_time)
             end_datetime = datetime.datetime.fromtimestamp(end_time)
 
-            if product_id not in product_mapping:
-                product_response = get_product_info(bearer_token, product_id)
-
-                product_name = product_response['display_name']
-                product_mapping[product_id] = product_name
-            
-            product_display_name = product_mapping[product_id]
-
-            # Create ridelogentry object
-
             # Check if ride already in db
             try:
                 ride_log_entry = RideLogEntry.objects.get(ride_id=request_id)
-                print 'RIDE ALREADY EXISTS'
+                # print 'RIDE ALREADY EXISTS'
             except RideLogEntry.DoesNotExist:
                 print 'CREATING NEW RIDE LOG ENTRY'
+                if product_id not in product_mapping:
+                    product_response = get_product_info(bearer_token, product_id)
+
+                    product_name = product_response['display_name']
+                    product_mapping[product_id] = product_name
+                
+                product_display_name = product_mapping[product_id]
+                
                 ride_log_entry = RideLogEntry(occurred_at=start_datetime, log=user_log, entry_type=3, requested_at=request_datetime)
 
                 ride_log_entry.rideshare_service = 1

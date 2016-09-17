@@ -88,7 +88,7 @@ def refresh_ride_history(current_user, access_token=None):
             # Check if ride already in db
             existing_ride = RideLogEntry.objects.filter(ride_id=ride_id, rideshare_service=0)
             if len(existing_ride) != 0:
-                print 'RIDE ALREADY IN DB'
+                # print 'RIDE ALREADY IN DB'
                 continue
 
             status = ride['status']
@@ -96,7 +96,7 @@ def refresh_ride_history(current_user, access_token=None):
             pax_first_name = ride['passenger']['first_name']
 
             if status == 'canceled':
-                print 'THIS RIDE WAS CANCELLED - NOT STORING'
+                # print 'THIS RIDE WAS CANCELLED - NOT STORING'
                 # Do something
                 x = 1
             else:

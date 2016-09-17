@@ -40,7 +40,6 @@ def refresh_checkin_history(user):
 
         # Look through checkins
         count = 0
-        print 'LENGTH of checkin items: ' + str(len(checkin_items))
         for checkin in checkin_items:
             count += 1
 
@@ -72,11 +71,10 @@ def refresh_checkin_history(user):
                     venue_log_entry.img_url_prefix = checkin['photos']['items'][0]['prefix']
                     venue_log_entry.img_url_prefix = checkin['photos']['items'][0]['suffix']
 
+                print 'Adding a new swarm checkin'
                 venue_log_entry.save()
 
             # Change after_timestamp to iterate
-            print 'COUNT: ' + str(count)
-            print 'Checking Count: ' + str(checkin_count)
             if count == checkin_count or count == 250:
                 after_timestamp = checkin['createdAt'] + 1
 
