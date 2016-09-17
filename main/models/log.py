@@ -153,6 +153,17 @@ class WeightLogEntry(LogEntry):
     metric_weight = models.FloatField()
 
     source_id = models.CharField(max_length=200)
+
+class ActivityLogEntry(LogEntry):
+    source_type = models.SmallIntegerField()
+    # 0 - Fitbit
+    # Others...
+
+    num_steps = models.IntegerField(null=True)
+    distance_miles = models.FloatField(null=True)
+    num_calories = models.IntegerField(null=True)
+    
+
     
 
 
