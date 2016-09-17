@@ -45,7 +45,6 @@ class GoogleConnection(ThirdPartyConnection):
     user = models.OneToOneField(User)
     refresh_token = models.CharField(max_length=1000, null=True)
     
-#
 
 # Represents known information about the user
 class BackgroundInformation(models.Model):
