@@ -8,8 +8,6 @@ import time
 FOURSQUARE_API_URL = 'https://api.foursquare.com/v2/'
 
 def refresh_checkin_history(user):
-    # TODO
-    print 'FOURSQUARE REQUEST'
 
     # Query parameters
     after_timestamp = 1262304000
@@ -37,7 +35,7 @@ def refresh_checkin_history(user):
         checkin_items = checkins_json['response']['checkins']['items']
 
         # Set will continue flag
-        if checkin_count > 0 and len(checkin_items) > 0:
+        if checkin_count > 0 and len(checkin_items) == 250:
             more_to_parse = True
 
         # Look through checkins
@@ -79,7 +77,7 @@ def refresh_checkin_history(user):
             # Change after_timestamp to iterate
             print 'COUNT: ' + str(count)
             print 'Checking Count: ' + str(checkin_count)
-            if count == checkin_count:
+            if count == checkin_count or count == 250:
                 after_timestamp = checkin['createdAt'] + 1
 
 

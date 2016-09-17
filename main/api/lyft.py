@@ -3,6 +3,7 @@ from main.utils import constants
 from requests.auth import HTTPBasicAuth
 from main.models import *
 import datetime
+from dateutil.relativedelta import relativedelta
 
 API_BASE_URL = 'https://api.lyft.com'
 OAUTH_URL = API_BASE_URL + '/oauth/token'
@@ -13,38 +14,10 @@ RIDES_URL = API_BASE_URL + '/v1/rides'
 #############################################################
 ###################### AUTH METHODS #########################
 #############################################################
-
-# Get's the access_token for public scope requests
-def get_access_token():
-    # Construct payload
-    payload = {
-        'grant_type' : 'client_credentials',
-        'scope' : 'public'
-    }
-
-    r = requests.post(OAUTH_URL, data=payload, auth=HTTPBasicAuth(constants.LYFT_CLIENT_ID, constants.LYFT_CLIENT_SECRET));
-
-    access_token = r.json()['access_token']
-
-    return access_token
-
-# Returns a tuple (bearer_token, refresh_token)
-def get_bearer_token_and_refresh_token(code):
-    payload = {
-        'grant_type' : 'authorization_code',
-        'code' : code
-    }
-
-    r = requests.post(OAUTH_URL, data=payload, auth=HTTPBasicAuth(constants.LYFT_CLIENT_ID, constants.LYFT_CLIENT_SECRET));
-
-    bearer_token = r.json()['access_token']
-    refresh_token = r.json()['refresh_token']
-
-    return (bearer_token, refresh_token)
     
 
 # Gets a bearer token using the refresh token
-def refresh_bearer_token(current_user):
+def refresh_access_token(current_user):
 # Get refresh token
     refresh_token = current_user.lyftconnection.refresh_token
 
@@ -59,131 +32,25 @@ def refresh_bearer_token(current_user):
     bearer_token = r.json()['access_token']
 
     return bearer_token
-    
-#############################################################
-################### PUBLIC SCOPE METHODS ####################
-#############################################################
 
-def get_eta(lat, lng):
-    # Get access_tokenmodels.CharField(max_length=500, null=True)
-    access_token = get_access_token()
-
-    # Make request to eta endpoint
-    headers = {
-        "Authorization" : "Bearer " + access_token
-    }
-    url_to_get = ETA_URL + '?lat=' + str(lat) + '&lng=' + str(lng)
-
-    r = requests.get(url_to_get, headers=headers)
-
-    response = r.json()
-
-    return response
-
-def get_eta_for_ride_type(lat, lng, ride_type):
-    # Get access_token
-    access_token = get_access_token()
-
-    # Make request to eta endpoint
-    headers = {
-        "Authorization" : "Bearer " + access_token
-    }
-    url_to_get = ETA_URL + '?lat=' + str(lat) + '&lng=' + str(lng) + '&ride_type=' + ride_type
-
-    r = requests.get(url_to_get, headers=headers)
-
-    response = r.json()
-
-    return response
-
-def get_cost(start_lat, start_lng, end_lat, end_lng):
-    # Get access_token
-    access_token = get_access_token()
-
-    # Make request to eta endpoint
-    headers = {
-        "Authorization" : "Bearer " + access_token
-    }
-    url_to_get = COST_URL + '?start_lat=' + str(start_lat) + '&start_lng=' + str(start_lng) + '&end_lat=' + str(end_lat) + '&end_lng=' + str(end_lng)
-
-    r = requests.get(url_to_get, headers=headers)
-
-    response = r.json()
-
-    return response
-
-def get_cost_for_ride_type(start_lat, start_lng, end_lat, end_lng, ride_type):
-    # Get access_token
-    access_token = get_access_token()
-
-    # Make request to eta endpoint
-    headers = {
-        "Authorization" : "Bearer " + access_token
-    }
-    url_to_get = COST_URL + '?start_lat=' + str(start_lat) + '&start_lng=' + str(start_lng) + '&end_lat=' + str(end_lat) + '&end_lng=' + str(end_lng) + '&ride_type=' + ride_type
-
-    r = requests.get(url_to_get, headers=headers)
-
-    response = r.json()
-
-    return response
-
-#############################################################
-##################### USER METHODS# #########################
-#############################################################
-
-def request_ride(current_user, start_lat, start_lng, end_lat, end_lng, ride_type):
-    # Get bearer token
-    bearer_token = refresh_bearer_token(current_user)
-
-    # Make request to /ride
-    headers = {
-        'Authorization' : 'Bearer ' + bearer_token
-    }
-
-    payload = {
-        'ride_type' : ride_type,
-        'origin.lat' : start_lat,
-        'origin.lng' : start_lng,
-        'destination.lat' : end_lat,
-        'destination.lng' : end_lng
-    }
-
-    print payload
-    r = requests.post(RIDES_URL, data=payload, headers=headers)
-
-    print r.text
-    
-    if 'status' not in r.json():
-        return False
-
-    status = r.json()['status']
-
-    # Return whether or not the ride was successfully requested
-    if status == 'pending':
-        return True
-    else:
-        return False
-
-def cancel_ride(ride_id):
-    # TODO
-    x = 1
-
-def refresh_ride_history(current_user):
+def refresh_ride_history(current_user, access_token=None):
     user_log = Log.find_or_create(current_user)
 
     # Get bearer token
-    bearer_token = refresh_bearer_token(current_user)
+    if not access_token:
+        access_token = refresh_access_token(current_user)
+        print "GOT ACCESS TOKEN: " + access_token
 
     # Make request to /ride
     headers = {
-        'Authorization' : 'Bearer ' + bearer_token
+        'Authorization' : 'Bearer ' + access_token
     }
 
     # Query parameters
-    start_time = '2015-01-01T00:00:00Z'
+    start_time = '2015-07-01T00:00:00Z'
+    start_datetime = datetime.datetime.strptime(start_time, '%Y-%m-%dT%H:%M:%SZ')
     current_time = datetime.date.today().strftime("%Y-%m-%dT%H:%M:%SZ")
-    end_time = current_time
+    end_time = (start_datetime + relativedelta(years=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
     limit = 50
     more_to_parse = True
 
@@ -214,11 +81,7 @@ def refresh_ride_history(current_user):
                 
                 new_date = requested_at_date + datetime.timedelta(seconds=1)
                 start_time = new_date.strftime("%Y-%m-%dT%H:%M:%SZ")
-
-            print '--------RIDE--------'
-            print ride
-            print '--------------------'
-            print '\n'
+                end_time = (new_date + relativedelta(years=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
             ride_id = ride['ride_id']
 
@@ -271,12 +134,6 @@ def refresh_ride_history(current_user):
                     ride_entry.dropoff_address = ride['dropoff']['address']
 
                     raw_dropoff_time = ride['dropoff']['time']
-
-                # # Location
-                # if 'location' in ride:
-                #     ride_entry.location_lat = ride['location']['lat']
-                #     ride_entry.location_lng = ride['location']['lng']
-                #     ride_entry.location_address = ride['location']['address']
 
                 if 'primetime_percentage' in ride:
                     ride_entry.primetime_percentage = int(ride['primetime_percentage'].replace('%', ''))
