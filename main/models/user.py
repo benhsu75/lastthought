@@ -41,6 +41,10 @@ class FitbitConnection(ThirdPartyConnection):
     refresh_token = models.CharField(max_length=1000, null=True)
     fitbit_id = models.CharField(max_length=200)
 
+class GoogleConnection(ThirdPartyConnection):
+    user = models.OneToOneField(User)
+    refresh_token = models.CharField(max_length=1000, null=True)
+    
 #
 
 # Represents known information about the user
