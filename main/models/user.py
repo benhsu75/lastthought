@@ -9,7 +9,6 @@ class User(models.Model):
     last_name = models.CharField(max_length=200)
 
 # Models for third party connection
-
 class ThirdPartyConnection(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -44,7 +43,7 @@ class FitbitConnection(ThirdPartyConnection):
 class GoogleConnection(ThirdPartyConnection):
     user = models.OneToOneField(User)
     refresh_token = models.CharField(max_length=1000, null=True)
-    
+
 
 # Represents known information about the user
 class BackgroundInformation(models.Model):

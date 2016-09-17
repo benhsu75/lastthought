@@ -40,13 +40,14 @@ def refresh_weight_history(user, access_token=None):
     }
 
     # Loop through requests to get weight
-    base_datetime = datetime.datetime(year=2012, month=1, day=1)
+    months_to_go_back = 12
+    base_datetime = datetime.datetime.now()
+    # base_datetime -= relativedelta(months=1) # Go 1 month back first
     base_date_string = base_datetime.strftime('%Y-%m-%d');
-    today_datetime = datetime.datetime.now()
     period = '1m'
     url_to_get = 'https://api.fitbit.com/1/user/{}/body/log/weight/date/{}/{}.json'.format(user.fitbitconnection.fitbit_id, base_date_string, period)
 
-    while base_datetime.date() <= today_datetime.date():
+    for x in range(0,months_to_go_back):
         print 'Making Request to: ' + url_to_get
         r = requests.get(url_to_get, headers=headers)
 
@@ -66,11 +67,11 @@ def refresh_weight_history(user, access_token=None):
                 try:
                     weight_log_entry = WeightLogEntry.objects.get(log=user_log, source_id=logId)
                 except WeightLogEntry.DoesNotExist:
-                    weight_log_entry = WeightLogEntry(log=user_log, source_type=0, source_id=logId, metric_weight=metric_weight)
 
                     # Get datetime from date and time and set it
                     occurred_at = get_datetime_from_date_and_time(date, time)
-                    weight_log_entry.occurred_at = occurred_at
+
+                    weight_log_entry = WeightLogEntry(log=user_log, source_type=0, source_id=logId, metric_weight=metric_weight, entry_type=6, occurred_at=occurred_at)
 
                     weight_log_entry.save()
         else:
@@ -79,7 +80,7 @@ def refresh_weight_history(user, access_token=None):
             x = 1
 
         # Increment base_datetime
-        base_datetime += relativedelta(months=1)
+        base_datetime -= relativedelta(months=1)
         base_date_string = base_datetime.strftime('%Y-%m-%d');
         url_to_get = 'https://api.fitbit.com/1/user/{}/body/log/weight/date/{}/{}.json'.format(user.fitbitconnection.fitbit_id, base_date_string, period)
 
@@ -242,3 +243,4 @@ def get_profile_information(user, access_token):
 def get_datetime_from_date_and_time(date, time):
     date_time_combined = date + ' ' + time
     occurred_at = datetime.datetime.strptime(date_time_combined, '%Y-%m-%d %H:%M:%S')
+    return occurred_at

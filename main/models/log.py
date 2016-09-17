@@ -44,6 +44,8 @@ class LogEntry(models.Model):
     # 3 - Lyft ride
     # 4 - Venue checkin
     # 5 - Instagram
+    # 6 - Weight
+    # 7 - Activity
 
 class TextLogEntry(LogEntry):
     text_value = models.CharField(max_length=10000)

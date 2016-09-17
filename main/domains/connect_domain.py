@@ -176,7 +176,13 @@ def fitbit_redirect(request):
     print 'Locale: ' + locale
 
     # Refresh fitbit data
-    # fitbit.refresh_weight_history(user)
+
+    # Get weight logs
+    fitbit.refresh_weight_history(user)
+
+    # Get sleep logs
+
+    # Get activity logs
 
     # Redirect
     return HttpResponseRedirect("/users/"+fbid+"/connect")
