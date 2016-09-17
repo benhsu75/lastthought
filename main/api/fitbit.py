@@ -135,8 +135,8 @@ def refresh_activity_history(user, access_token=None):
 
     # print r_distance.text
 
-    if 'activities-log-distance' in r_distance.json():
-        distance_list = r_distance.json()['activities-log-distance']
+    if 'activities-distance' in r_distance.json():
+        distance_list = r_distance.json()['activities-distance']
 
         for distance_log in distance_list:
             date = distance_log['dateTime']
@@ -159,8 +159,8 @@ def refresh_activity_history(user, access_token=None):
 
     # print r_calories.text
 
-    if 'activities-log-calories' in r_calories.json():
-        calories_list = r_calories.json()['activities-log-calories']
+    if 'activities-calories' in r_calories.json():
+        calories_list = r_calories.json()['activities-calories']
 
         for calories_log in calories_list:
             date = calories_log['dateTime']
