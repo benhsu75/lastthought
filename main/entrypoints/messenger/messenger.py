@@ -61,21 +61,30 @@ def messenger_callback(request):
                     handle_quick_reply(fbid, message_text, payload)
                     continue
 
-                # Reroute images
-                elif 'attachments' in messaging['message'] and messaging['message']['attachments'][0]['type'] == 'image':
-                    image_url = messaging['message']['attachments'][0]['payload']['url']
+                # Reroute messages with attachments
+                elif 'attachments' in messaging['message']:
+                    attachment_type = messaging['message']['attachments'][0]
 
-                    handle_image_received(fbid, image_url)
-                    continue
-                # Reroute Video
-                elif 'attachments' in messaging['message'] and messaging['message']['attachments'][0]['type'] == 'video':
-                    # TODO
+                    # Images
+                    if attachment_type == 'image':
+                        image_url = messaging['message']['attachments'][0]['payload']['url']
 
+                        handle_image_received(fbid, image_url)
+                        continue
+                    # Video
+                    elif attachment_type == 'video':
+                        # TODO
+                        x = 1
+                    else:
+                        print 'COULD NOT HANDLE THIS ATTACHMENT TYPE'
                     continue
-                else:
-                    # Is normal message received
+                # Is normal message received
+                elif 'text' in messaging['message']:
                     message_text = messaging['message']['text']
                     handle_message_received(fbid, message_text)
+                else:
+                    print 'COULD NOT HANDLE'
+                    # TODO
             elif 'optin' in messaging:
                 # Plugin authentication webhook
                 handle_optin(fbid)
