@@ -10,7 +10,6 @@ def index(request):
     template = loader.get_template('main/index.html')
     return HttpResponse(template.render(context))
 
-
 def learn_more(request):
     context = RequestContext(request, {})
     template = loader.get_template('main/learn_more.html')
