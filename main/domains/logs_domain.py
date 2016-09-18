@@ -12,11 +12,11 @@ import datetime
 
 # Global handler for anything logs related
 def handle_logs_text(current_user, text, processed_text, no_trigger_flag=False):
-    print 'in handle_logs_text'
-    print 'processed_text: ' + processed_text
-
     # Convert to UTF-8
     processed_text = processed_text.encode('utf-8')
+
+    print 'in handle_logs_text'
+    print 'processed_text: ' + processed_text
 
     # Triggers asking what they want to log
     if processed_text == 'log':
