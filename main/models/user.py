@@ -61,42 +61,6 @@ class BackgroundInformation(models.Model):
 
     user = models.OneToOneField(User)
 
-# Represents all the ridesharing information known about a user
-class RideshareInformation(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    lyft_refresh_token = models.CharField(max_length=500, null=True)
-
-    ride_type_preference = models.CharField(max_length=100, null=True)
-    # Can be lyft_line, lyft, or lyft_plus
-
-    # Home and work text
-    current_home_address = models.CharField(max_length=200, null=True)
-    current_work_address = models.CharField(max_length=200, null=True)
-
-    # Home and work lat and longs
-    home_lat = models.FloatField(null=True)
-    home_lng = models.FloatField(null=True)
-    work_lat = models.FloatField(null=True)
-    work_lng = models.FloatField(null=True)
-
-    # True if either Lyft is connected
-    lyft_connected_flag = models.BooleanField(default=False)
-
-    uber_connected_flag = models.BooleanField(default=False)
-
-    # True if the user wants us to send them a commute button
-    send_ride_button_flag = models.BooleanField(default=True)
-
-    # Preferred rideshare company
-    rideshare_service_preference = models.SmallIntegerField(default=0)
-    # 0 - Lyft
-    # 1 - Uber
-
-    user = models.OneToOneField(User)
-
-
 
 
 

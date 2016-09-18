@@ -3,7 +3,34 @@ from main.utils import constants, helper_util
 from django.http import HttpResponse, HttpResponseRedirect
 from requests.auth import HTTPBasicAuth 
 import requests
-from main.api import foursquare, uber, instagram, fitbit
+from main.api import foursquare, uber, instagram, fitbit, lyft
+
+def lyft_redirect(request):
+    # Get query params
+    authorization_code = request.GET['code']
+    fbid = request.GET['state']
+
+    # Get current user
+    if helper_util.user_exists(fbid):
+        current_user = User.objects.get(fbid=fbid)
+    else:
+        return HttpResponse(status=404)
+
+    # Get access_token and refresh_token
+    (access_token, refresh_token) = lyft.get_bearer_token_and_refresh_token(authorization_code)
+
+    # Update Rideshare information
+    try:
+        lyft_connect = LyftConnection.objects.get(user=current_user)
+    except LyftConnection.DoesNotExist:
+        lyft_connection = LyftConnection(refresh_token=refresh_token, user=current_user, is_connected_flag=True)
+        lyft_connection.save()
+    
+    # Load ride history into logs
+    lyft.refresh_ride_history(current_user)
+
+    # Redirect to ridesharing_setup page
+    return HttpResponseRedirect("/users/"+fbid+"/connect")
 
 def foursquare_redirect(request, fbid):
     authorization_code = request.GET['code']

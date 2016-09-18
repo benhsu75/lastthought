@@ -32,11 +32,6 @@ def is_weather_domain(processed_text):
     if 'weather' in processed_text:
         return True
 
-
-def is_ridesharing_domain(processed_text):
-    if 'ride' in processed_text:
-        return True
-
 ##############################################
 ############### HELPER METHODS ###############
 ##############################################
