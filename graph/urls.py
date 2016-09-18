@@ -1,6 +1,6 @@
 from django.conf.urls import url, patterns
 from django.contrib import admin
-from main.views import general, habit_views, log_views, pennapps
+from main.views import general, habit_views, log_views
 from main.entrypoints.messenger import messenger
 from django.conf import settings
 from main.domains import connect_domain
@@ -31,7 +31,6 @@ urlpatterns = [
     url(r'^log_contexts/(?P<logcontext_id>\d+)/$', log_views.log_contexts),
 
     # Display endpoints
-    url(r'^users/(?P<fbid>\d+)/$', general.dashboard),
     url(r'^users/(?P<fbid>\d+)/habits$', habit_views.list),
     url(r'^users/(?P<fbid>\d+)/connect$', general.connect),
     url(r'^users/(?P<fbid>\d+)/add_habit', habit_views.add_habit_page),
@@ -39,11 +38,6 @@ urlpatterns = [
     url(r'^users/(?P<fbid>\d+)/logs', log_views.index),
     url(r'^users/(?P<fbid>\d+)/log_context/(?P<log_context_id>\d+)', log_views.log_context_show),
 
-    # ENDPOINTS FOR PENNAPPS
-    url(r'^get_insulin_amount/$', pennapps.get_insulin_amount),
-    url(r'^log_insulin/$', pennapps.log_insulin),
-    url(r'^pennapps/$', pennapps.pennapps),
-    url(r'^set_insulin_amount/$', pennapps.set_insulin_amount),
 ]
 
 # Ensure static files are accessible
