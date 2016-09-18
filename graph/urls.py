@@ -20,11 +20,7 @@ urlpatterns = [
     url(r'^foursquare_redirect/(?P<fbid>\d+)', connect_domain.foursquare_redirect),
     url(r'^instagram_redirect', connect_domain.instagram_redirect),
     url(r'^fitbit_redirect', connect_domain.fitbit_redirect),
-
-    # Temp helper methods
-    url(r'^delete_users/', general.delete_users),
-    url(r'^delete_all/', general.delete_all),
-
+    
     # Habit endpoints
     url(r'^habits/(?P<habit_id>\d+)/$', habit_views.habits),
     url(r'^habits/$', habit_views.habits),
