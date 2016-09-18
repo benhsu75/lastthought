@@ -63,7 +63,7 @@ def messenger_callback(request):
 
                 # Reroute messages with attachments
                 elif 'attachments' in messaging['message']:
-                    attachment_type = messaging['message']['attachments'][0]
+                    attachment_type = messaging['message']['attachments'][0]['type']
 
                     # Images
                     if attachment_type == 'image':
