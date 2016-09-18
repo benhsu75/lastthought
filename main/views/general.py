@@ -28,7 +28,6 @@ def delete_all(request):
     User.objects.all().delete()
     Habit.objects.all().delete()
     HabitEntry.objects.all().delete()
-    ToDoTask.objects.all().delete()
     Message.objects.all().delete()
 
     return HttpResponse("Deleted all")

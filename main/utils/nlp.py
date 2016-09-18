@@ -28,18 +28,6 @@ def is_logs_domain(current_user, processed_text):
         return True
     return False
 
-
-def is_todo_domain(current_user, processed_text):
-    if 'todo' in processed_text:
-        return True
-    elif user_is_in_complete_todo_state(processed_text, current_user):
-        return True
-    elif user_is_in_todo_listening_state(current_user):
-        return True
-    else:
-        return False
-
-
 def is_weather_domain(processed_text):
     if 'weather' in processed_text:
         return True
