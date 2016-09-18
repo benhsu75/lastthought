@@ -28,9 +28,6 @@ def is_logs_domain(current_user, processed_text):
         return True
     return False
 
-def is_weather_domain(processed_text):
-    if 'weather' in processed_text:
-        return True
 
 ##############################################
 ############### HELPER METHODS ###############
