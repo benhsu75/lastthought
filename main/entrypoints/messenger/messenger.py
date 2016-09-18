@@ -67,13 +67,20 @@ def messenger_callback(request):
 
                     # Images
                     if attachment_type == 'image':
-                        image_url = messaging['message']['attachments'][0]['payload']['url']
+                        for image in messaging['message']['attachments']:
+                            image_url = image['payload']['url']
 
-                        handle_image_received(fbid, image_url)
-                        continue
+                            handle_image_received(fbid, image_url)
+                            continue
                     # Video
                     elif attachment_type == 'video':
                         # TODO
+                        x = 1
+                    elif attachment_type == 'audio':
+                        # TODO
+                        x = 1
+                    elif attachment_type == 'location':
+                        # TODO 
                         x = 1
                     else:
                         print 'COULD NOT HANDLE THIS ATTACHMENT TYPE: ' + attachment_type
