@@ -181,8 +181,10 @@ def fitbit_redirect(request):
     fitbit.refresh_weight_history(user)
 
     # Get sleep logs
+    fitbit.refresh_sleep_history(user)
 
     # Get activity logs
+    fitbit.refresh_activity_history(user)
 
     # Redirect
     return HttpResponseRedirect("/users/"+fbid+"/connect")

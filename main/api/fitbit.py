@@ -2,7 +2,7 @@ import requests
 from main.utils import constants
 from requests.auth import HTTPBasicAuth
 from main.models import *
-import datetime
+import datetime, pytz
 from dateutil.relativedelta import relativedelta
 
 def refresh_bearer_token(user):
@@ -22,6 +22,10 @@ def refresh_bearer_token(user):
     print r.text
 
     bearer_token = r.json()['access_token']
+    refresh_token = r.json()['refresh_token']
+
+    user.fitbitconnection.refresh_token = refresh_token
+    user.fitbitconnection.save()
 
     return bearer_token
 
@@ -112,20 +116,20 @@ def refresh_activity_history(user, access_token=None):
 
     # print r_steps.text
 
-    if 'activities-log-steps' in r_steps.json():
-        steps_list = r_steps.json()['activities-log-steps']
+    retrieved_steps = False
+    retrieved_distance = False
+    retrieved_calories = False
 
-        for steps_log in steps_list:
-            date = steps_log['dateTime']
-            num_steps = steps_log['value']
+    steps_list = []
+    distance_list = []
+    calories_list = []
 
-            print "Steps Log: " + str(num_steps) + " Date: "  + date
-
+    if 'activities-steps' in r_steps.json():
+        retrieved_steps = True
+        steps_list = r_steps.json()['activities-steps']
     else:
         # ERROR
         print r_steps.text
-        # TODO
-        x = 1
 
     distance_url_to_get = 'https://api.fitbit.com/1/user/{}/{}/date/{}/{}.json'.format(user.fitbitconnection.fitbit_id, ACTIVITY_DISTANCE_PATH, "today", period)
 
@@ -134,22 +138,12 @@ def refresh_activity_history(user, access_token=None):
 
     r_distance = requests.get(distance_url_to_get, headers=headers)
 
-    # print r_distance.text
-
     if 'activities-distance' in r_distance.json():
+        retrieved_distance = True
         distance_list = r_distance.json()['activities-distance']
-
-        for distance_log in distance_list:
-            date = distance_log['dateTime']
-            num_distance = distance_log['value']
-
-            print "Distance Log: " + str(num_distance) + " Date: "  + date
-
     else:
         # ERROR
         print r_distance.text
-        # TODO
-        x = 1
 
     calories_url_to_get = 'https://api.fitbit.com/1/user/{}/{}/date/{}/{}.json'.format(user.fitbitconnection.fitbit_id, ACTIVITY_CALORIES_PATH, "today", period)
 
@@ -158,72 +152,105 @@ def refresh_activity_history(user, access_token=None):
 
     r_calories = requests.get(calories_url_to_get, headers=headers)
 
-    # print r_calories.text
-
     if 'activities-calories' in r_calories.json():
         calories_list = r_calories.json()['activities-calories']
-
-        for calories_log in calories_list:
-            date = calories_log['dateTime']
-            num_calories = calories_log['value']
-
-            print "Calories Log: " + str(num_calories) + " Date: "  + date
-
+        retrieved_calories = True
     else:
         # ERROR
         print r_calories.text
-        # TODO
-        x = 1
 
+    # Confirm that the length of steps, calories, and distance list is the same
+    if len(steps_list) != len(distance_list) or len(distance_list) != len(calories_list):
+        # Error
+        print 'ERROR - LIST SIZES DO NOT MATCH'
 
-# def refresh_sleep_history(user, access_token=None):
-#     # Get the access token
-#     if not access_token:
-#         access_token = refresh_bearer_token(user)
+    # Create activity log entries
+    if retrieved_calories and retrieved_steps and retrieved_distance:
+        # Loop through the data
+        for x in range(0, len(steps_list)):
+            # Extract information
+            steps = steps_list[x]
+            distance = distance_list[x]
+            calories = calories_list[x]
 
-#     # Make request
-#     user_log = Log.find_or_create(user)
+            steps_date = steps['dateTime']
+            distance_date = distance['dateTime']
+            calories_date = distance['dateTime']
+
+            num_steps = steps['value']
+            num_distance = distance['value']
+            num_calories = calories['value']
+
+            # Confirm that the dateTimes are equal
+            if steps_date != distance_date or distance_date != calories_date:
+                # Error
+                print "dateTimes ARE NOT MATCHING UP"
+
+            num_steps_int = int(num_steps)
+            num_distance_float = float(num_distance)
+            num_calories_int = int(num_calories)
+
+            # Convert dateTime to datetime
+            occurred_at_datetime = datetime.datetime.strptime(steps_date, '%Y-%m-%d').replace(hour=0, minute=0, second=0, tzinfo=pytz.UTC)
+
+            # Check if activity_log_entry exists yet for that date
+            try:
+                activity_log_entry = ActivityLogEntry.objects.get(occurred_at=occurred_at_datetime)
+            except ActivityLogEntry.DoesNotExist:   
+                # Instantiate model object
+                activity_log_entry = ActivityLogEntry(source_type=0, num_steps=num_calories_int, distance_km=num_distance_float, num_calories=num_calories_int, occurred_at=occurred_at_datetime, entry_type=7, log=user_log)
+                activity_log_entry.save()
+
+        print 'Created ' + str(len(steps_list)) + " Activity log entries!"
+
+def refresh_sleep_history(user, access_token=None):
+    # Get the access token
+    if not access_token:
+        access_token = refresh_bearer_token(user)
+
+    # Make request
+    user_log = Log.find_or_create(user)
     
-#     # Make request to /ride
-#     headers = {
-#         'Authorization' : 'Bearer ' + access_token
-#     }
+    # Make request to /ride
+    headers = {
+        'Authorization' : 'Bearer ' + access_token
+    }
 
-#     # Loop through requests to get weight
-#     more_to_parse = True
-#     base_datetime = datetime.datetime(year=2010, month=1, day=1)
-#     base_date_string = base_datetime.strftime('%Y-%m-%d');
-#     today_datetime = datetime.datetime.now()
-#     period = '1m'
-#     url_to_get = 'https://api.fitbit.com/1/user/{}/body/log/activities/date/{}/{}.json'.format(user.fitbitconnection.fitbit_id, base_date_string, period)
+    # Loop through requests to get weight
+    more_to_parse = True
+    base_datetime = datetime.datetime(year=2010, month=1, day=1)
+    base_date_string = base_datetime.strftime('%Y-%m-%d');
+    today_datetime = datetime.datetime.now()
+    period = '1m'
+    url_to_get = 'https://api.fitbit.com/1/user/{}/body/log/activities/date/{}/{}.json'.format(user.fitbitconnection.fitbit_id, base_date_string, period)
 
-#     while base_datetime.date() <= today_datetime.date():
-#         print 'Making Request to: ' + url_to_get
-#         r = requests.get(url_to_get, headers=headers)
+    while base_datetime.date() <= today_datetime.date():
+        print 'Making Request to: ' + url_to_get
+        r = requests.get(url_to_get, headers=headers)
 
-#         if 'weight' in r.json():
-#             weight_list = r.json()['weight']
+        if 'weight' in r.json():
+            weight_list = r.json()['weight']
 
-#             for weight_log in weight_list:
-#                 date = weight_log['date']
-#                 time = weight_log['time']
-#                 logId = weight_log['logId']
-#                 metric_weight = weight_log['metric_weight']
-#                 source = weight_log['source']
+            for weight_log in weight_list:
+                date = weight_log['date']
+                time = weight_log['time']
+                logId = weight_log['logId']
+                metric_weight = weight_log['metric_weight']
+                source = weight_log['source']
 
-#                 print "Weight Log: " + str(metric_weight)
+                print "Weight Log: " + str(metric_weight)
                 
-#                 weight_log_entry = WeightLogEntry.objects.get(log=user_log)
+                weight_log_entry = WeightLogEntry.objects.get(log=user_log)
 
-#         else:
-#             # ERROR
-#             # TODO
-#             x = 1
+        else:
+            # ERROR
+            # TODO
+            x = 1
 
-#         # Increment base_datetime
-#         base_datetime += relativedelta(months=1)
-#         base_date_string = base_datetime.strftime('%Y-%m-%d');
-#         url_to_get = 'https://api.fitbit.com/1/user/{}/body/log/weight/date/{}/{}.json'.format(user.fitbitconnection.fitbit_id, base_date_string, period)
+        # Increment base_datetime
+        base_datetime += relativedelta(months=1)
+        base_date_string = base_datetime.strftime('%Y-%m-%d');
+        url_to_get = 'https://api.fitbit.com/1/user/{}/body/log/weight/date/{}/{}.json'.format(user.fitbitconnection.fitbit_id, base_date_string, period)
 
 def get_profile_information(user, access_token):
     url_to_get = 'https://api.fitbit.com/1/user/'+user.fitbitconnection.fitbit_id+'/profile.json'

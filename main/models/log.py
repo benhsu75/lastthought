@@ -162,7 +162,7 @@ class ActivityLogEntry(LogEntry):
     # Others...
 
     num_steps = models.IntegerField(null=True)
-    distance_miles = models.FloatField(null=True)
+    distance_km = models.FloatField(null=True)
     num_calories = models.IntegerField(null=True)
     
 
