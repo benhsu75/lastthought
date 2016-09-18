@@ -15,6 +15,9 @@ def handle_logs_text(current_user, text, processed_text, no_trigger_flag=False):
     print 'in handle_logs_text'
     print 'processed_text: ' + processed_text
 
+    # Convert to UTF-8
+    processed_text = processed_text.encode('utf-8')
+
     # Triggers asking what they want to log
     if processed_text == 'log':
         handle_log_listening(current_user, text, processed_text)
