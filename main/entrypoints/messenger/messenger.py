@@ -76,7 +76,7 @@ def messenger_callback(request):
                         # TODO
                         x = 1
                     else:
-                        print 'COULD NOT HANDLE THIS ATTACHMENT TYPE'
+                        print 'COULD NOT HANDLE THIS ATTACHMENT TYPE: ' + attachment_type
                     continue
                 # Is normal message received
                 elif 'text' in messaging['message']:
