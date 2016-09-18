@@ -10,7 +10,6 @@ from main.utils import nlp, helper_util
 from main.domains import (habits_domain,
                           logs_domain,
                           onboarding_domain,
-                          todo_domain,
                           misunderstood_domain,
                           help_domain,
                           ridesharing_domain)
@@ -142,10 +141,6 @@ def handle_postback(fbid, payload):
         logs_domain.handle_logs_text(current_user, 'see logs', 'see logs')
     elif state == 'persistent_menu_view_habits':
         habits_domain.handle_habits_text(current_user, 'habits', 'habits')
-    elif state == 'persistent_menu_open_todo':
-        todo_domain.handle_todo(current_user, 'todo', 'todo')
-    elif state == 'persistent_menu_add_todo':
-        todo_domain.handle_todo(current_user, 'add todo', 'add todo')
     else:
         # Error
         return
@@ -175,21 +170,12 @@ def handle_message_received(fbid, text):
     elif nlp.is_logs_domain(current_user, processed_text):
         logs_domain.handle_logs_text(current_user, text, processed_text)
 
-    elif nlp.is_todo_domain(current_user, processed_text):
-        todo_domain.handle_todo(current_user, text, processed_text)
-
     elif nlp.is_ridesharing_domain(processed_text):
         ridesharing_domain.handle(current_user, text, processed_text)
 
     else:
         # Handle everything else as a log
         logs_domain.handle_logs_text(current_user, text, processed_text, True)
-
-        # misunderstood_domain.handle_misunderstood(
-        #     current_user,
-        #     text,
-        #     processed_text
-        # )
 
 def handle_image_received(fbid, image_url):
     try:

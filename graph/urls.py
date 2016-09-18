@@ -1,6 +1,6 @@
 from django.conf.urls import url, patterns
 from django.contrib import admin
-from main.views import general, habit_views, todo_views, log_views, ridesharing_views, pennapps
+from main.views import general, habit_views, log_views, ridesharing_views, pennapps
 from main.entrypoints.messenger import messenger
 from django.conf import settings
 from main.domains import ridesharing_domain, connect_domain
@@ -34,13 +34,8 @@ urlpatterns = [
     url(r'^logs/$', log_views.logs),
     url(r'^log_contexts/(?P<logcontext_id>\d+)/$', log_views.log_contexts),
 
-    # Todo endpoints
-    url(r'^todo/(?P<todo_id>\d+)/$', todo_views.todo),
-    url(r'^todo/$', todo_views.todo),
-
     # Display endpoints
     url(r'^users/(?P<fbid>\d+)/$', general.dashboard),
-    url(r'^users/(?P<fbid>\d+)/todo', todo_views.list),
     url(r'^users/(?P<fbid>\d+)/habits$', habit_views.list),
     url(r'^users/(?P<fbid>\d+)/connect$', general.connect),
     url(r'^users/(?P<fbid>\d+)/add_habit', habit_views.add_habit_page),
