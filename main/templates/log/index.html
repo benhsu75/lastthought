@@ -63,33 +63,6 @@
 
           <img src="{{ log_entry.imagelogentry.image_url }}" class="log-img"/>
 
-        {% elif log_entry.entry_type == 3 %}
-
-          {% if log_entry.ridelogentry.rideshare_service == 0 %}
-
-            <div class="type-circle" style="background-image: url('{% static 'img/lyft-logo.jpg' %}')"></div>
-
-            <p>You took a {{log_entry.ridelogentry.ride_type}} from {{log_entry.ridelogentry.origin_address}} to {{log_entry.ridelogentry.dropoff_address}}. It cost ${{log_entry.ridelogentry.price_in_dollars}}.</p>
-
-          {% elif log_entry.ridelogentry.rideshare_service == 1 %}
-
-            <div class="type-circle" style="background-image: url('{% static 'img/uber-logo.jpg' %}')"></div>
-
-            <p>You took an Uber ({{log_entry.ridelogentry.ride_type}}) in {{log_entry.ridelogentry.start_city_name}} and traveled {{log_entry.ridelogentry.distance}} miles.</p>
-
-          {% endif %}
-
-        {% elif log_entry.entry_type == 4 %}
-
-          <div class="type-circle" style="background-image: url('{% static 'img/swarm-logo.png' %}')"></div>
-
-          <p>You checked in to {{log_entry.venuelogentry.name}} at {{log_entry.venuelogentry.formatted_address}}.</p>
-
-        {% elif log_entry.entry_type == 5 %}
-          <div class="type-circle" style="background-image: url('{% static 'img/instagram-logo.jpg' %}'); border: 1px solid #DDD"></div>
-          <a href="{{log_entry.instagramlogentry.link_to_post}}" target="_blank"><img class="log-img" src="{{log_entry.instagramlogentry.high_res_url}}"></a>
-          <p>{{log_entry.instagramlogentry.caption}}</p>
-
         {% endif %}
       </div>
     </div>
