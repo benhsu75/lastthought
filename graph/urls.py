@@ -31,7 +31,6 @@ urlpatterns = [
     url(r'^log_contexts/(?P<logcontext_id>\d+)/$', log_views.log_contexts),
 
     # Display endpoints
-    url(r'^users/(?P<fbid>\d+)/$', general.dashboard),
     url(r'^users/(?P<fbid>\d+)/habits$', habit_views.list),
     url(r'^users/(?P<fbid>\d+)/connect$', general.connect),
     url(r'^users/(?P<fbid>\d+)/add_habit', habit_views.add_habit_page),
