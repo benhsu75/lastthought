@@ -3,7 +3,6 @@ from django.contrib import admin
 from main.views import general, habit_views, log_views
 from main.entrypoints.messenger import messenger
 from django.conf import settings
-from main.domains import connect_domain
 
 urlpatterns = [
     url(r'^$', general.index),
@@ -13,13 +12,6 @@ urlpatterns = [
 
     # Messenger webhooks
     url(r'^messenger_callback/', messenger.messenger_callback),
-
-    # Third-party endpoints
-    url(r'^lyft_redirect/', connect_domain.lyft_redirect), # lyft webhook
-    url(r'^uber_redirect/', connect_domain.uber_redirect), # uber webhook
-    url(r'^foursquare_redirect/(?P<fbid>\d+)', connect_domain.foursquare_redirect),
-    url(r'^instagram_redirect', connect_domain.instagram_redirect),
-    url(r'^fitbit_redirect', connect_domain.fitbit_redirect),
     
     # Habit endpoints
     url(r'^habits/(?P<habit_id>\d+)/$', habit_views.habits),
@@ -32,7 +24,6 @@ urlpatterns = [
 
     # Display endpoints
     url(r'^users/(?P<fbid>\d+)/habits$', habit_views.list),
-    url(r'^users/(?P<fbid>\d+)/connect$', general.connect),
     url(r'^users/(?P<fbid>\d+)/add_habit', habit_views.add_habit_page),
     url(r'^users/(?P<fbid>\d+)/habits/(?P<habit_id>\d+)/show', habit_views.show),
     url(r'^users/(?P<fbid>\d+)/logs', log_views.index),
