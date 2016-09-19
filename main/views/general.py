@@ -20,9 +20,7 @@ def fblogin_redirect(request):
     # Make request for user profile information e.g. fbid
     return HttpResponse("hi")
 
-def index(request):
-
-    
+def index(request):    
     context = RequestContext(request, {})
     template = loader.get_template('main/index.html')
     return HttpResponse(template.render(context))
