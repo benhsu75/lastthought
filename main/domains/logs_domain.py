@@ -113,7 +113,7 @@ def send_context_message(current_user, entry_type, entry_id):
     # If first diary entry, then explain to user how categories work
     user_log = Log.find_or_create(current_user)
     num_log_entries = len(LogEntry.objects.filter(log=user_log))
-    if num_log_entries == 0:
+    if num_log_entries == 1:
         onboarding_domain.send_categories_explanation_message()
 
     # Send message to user to allow them to categorize their diary entry
