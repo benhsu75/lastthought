@@ -111,7 +111,8 @@ def handle_image_log_entry(current_user, image_url):
 def send_context_message(current_user, entry_type, entry_id):
 
     # If first diary entry, then explain to user how categories work
-    num_log_entries = len(LogEntry.objects.filter(user=current_user))
+    user_log = Log.find_or_create(current_user)
+    num_log_entries = len(LogEntry.objects.filter(log=user_log))
     if num_log_entries == 0:
         onboarding_domain.send_categories_explanation_message()
 
