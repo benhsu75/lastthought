@@ -58,8 +58,14 @@ def send_view_logs_message(current_user):
 def handle_text_log_entry(current_user, entry_text):
     user_log = Log.find_or_create(current_user)
 
+    num_log_entries = len(LogEntry.objects.filter(log=user_log))
+    print "1 num_log_entries " + str(num_log_entries)
+
     text_log_entry = TextLogEntry(log=user_log, text_value=entry_text, entry_type=0, occurred_at=datetime.datetime.now())
     text_log_entry.save()
+
+    num_log_entries = len(LogEntry.objects.filter(log=user_log))
+    print "2 num_log_entries " + str(num_log_entries)
 
     # Ask the user to apply a context
     send_context_message(current_user, "text", text_log_entry.id)

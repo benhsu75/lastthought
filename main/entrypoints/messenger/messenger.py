@@ -86,6 +86,7 @@ def messenger_callback(request):
                 elif 'text' in messaging['message']:
                     message_text = messaging['message']['text']
                     handle_message_received(fbid, message_text)
+                    continue
                 else:
                     print 'COULD NOT HANDLE'
                     # TODO
