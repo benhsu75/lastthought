@@ -18,10 +18,8 @@ import json
 ######### MESSENGER WEBHOOK ##########
 ######################################
 
-
 @csrf_exempt
 def messenger_callback(request):
-
     if('hub.challenge' in request.GET):
         return HttpResponse(request.GET['hub.challenge'])
 
@@ -130,8 +128,6 @@ def handle_quick_reply(fbid, text, payload):
         habits_domain.handle_quick_reply(current_user, text, payload)
     elif state == 'log_context_response':
         logs_domain.apply_context_to_log(current_user, text, payload)
-    elif state == 'cancel_log':
-        logs_domain.handle_cancel_log(current_user, text, payload)
     else:
         misunderstood_domain.handle_misunderstood(current_user, text, text)
 
@@ -150,14 +146,10 @@ def handle_postback(fbid, payload):
 
     state = json_payload['state']
 
-    if state == 'persistent_menu_log':
-        logs_domain.handle_log_listening(current_user, 'log', 'log')
-    elif state == 'persistent_menu_view_logs':
-        logs_domain.handle_logs_text(current_user, 'see logs', 'see logs')
-    elif state == 'persistent_menu_view_habits':
-        habits_domain.handle_habits_text(current_user, 'habits', 'habits')
+    if state == 'persistent_menu_view_logs':
+        logs_domain.send_view_logs_message(current_user)
     else:
-        # Error
+        # Error - never should reach here
         return
 
 # When the user responds by sending any text message
@@ -182,12 +174,9 @@ def handle_message_received(fbid, text):
     elif nlp.is_habits_domain(current_user, processed_text):
         habits_domain.handle_habits_text(current_user, text, processed_text)
 
-    elif nlp.is_logs_domain(current_user, processed_text):
-        logs_domain.handle_logs_text(current_user, text, processed_text)
-
     else:
         # Handle everything else as a log
-        logs_domain.handle_logs_text(current_user, text, processed_text, True)
+        logs_domain.handle_logs_text(current_user, text, processed_text)
 
 def handle_image_received(fbid, image_url):
     try:

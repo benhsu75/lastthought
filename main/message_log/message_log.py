@@ -17,10 +17,6 @@ message_mapping = {
     'habit_prompt_response': 7,
     'misunderstood_response': 9,
     'misunderstood_message': 10,
-    'show_todo_message': 11,
-    'show_todo_response': 12,
-    'add_todo_message': 13,
-    'add_todo_response': 14,
     'habits_trigger_message': 15,
     'habits_trigger_response': 16,
     'misunderstood_habit_response': 17,
@@ -29,17 +25,12 @@ message_mapping = {
     'existing_habits_message': 20,
     'habit_info_message': 21,
     'help_response': 22,
-    'complete_todo_response': 23,
-    'incorrect_todo_index_message': 24,
-    'ridesharing_setup_response': 25,
-    'ridesharing_setup_message': 26,
     'log_new_entry_response': 27,
     'log_add_context_message': 28,
     'log_context_response': 29,
     'log_new_context_message': 30,
     'log_new_context_response': 31,
     'log_successful_context_message': 32,
-    'ride_request_message': 33,
     'log_trigger_listening_response' : 34,
     'log_listening_message' : 35,
     'log_invalid_trigger_message' : 36,
@@ -47,8 +38,6 @@ message_mapping = {
     'log_view_message' : 38,
     'cancel_log_response' : 39,
     'cancel_log_message' : 40,
-    'add_todo_trigger_response' : 41,
-    'add_todo_trigger_message' : 42
 }
 
 

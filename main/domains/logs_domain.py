@@ -11,73 +11,18 @@ import random
 import datetime
 
 # Global handler for anything logs related
-def handle_logs_text(current_user, text, processed_text, no_trigger_flag=False):
-    # Convert to UTF-8
+def handle_logs_text(current_user, text, processed_text):
+    # Convert to UTF-8 (handles emojis)
     processed_text = processed_text.encode('utf-8')
 
     print 'in handle_logs_text'
     print 'processed_text: ' + processed_text
 
-    # Triggers asking what they want to log
-    if processed_text == 'log':
-        handle_log_listening(current_user, text, processed_text)
-    elif processed_text == 'see logs':
-        # Send user message linking to log
-        log_view_message = (
-            "Click to view your logs"
-        )
-        send_api_helper.send_button_message(current_user.fbid, log_view_message, [
-            {
-                'type': 'web_url',
-                'url': constants.BASE_HEROKU_URL + '/users/'+str(current_user.fbid)+'/logs',
-                'title': 'See Logs'    
-            }
-        ])
-        message_log.log_message(
-            'log_view_message',
-            current_user,
-            log_view_message,
-            None
-        )
-
-    # Triggers asking what context
-    elif processed_text.startswith('log:'):
-        # Log response
-        message_log.log_message(
-            'log_new_entry_response',
-            current_user,
-            text,
-            None
-        )
-
-        # Parse out 'log:'
-        log_entry_raw = text.split(None, 1)
-
-        # If incorrect format
-        if len(log_entry_raw) < 2:
-            log_invalid_trigger_message = ("Looks like an empty log entry! "
-                 "Type in \"log: [your log entry]\" to log something.")
-            send_api_helper.send_basic_text_message(
-                current_user.fbid,
-                log_invalid_trigger_message
-            )
-            message_log.log_message(
-                'log_invalid_trigger_message',
-                current_user,
-                log_invalid_trigger_message,
-                None
-            )
-            return
-
-        # Log the entry
-        entry_raw_text = log_entry_raw[1]
-
-        if helper_util.is_number(entry_raw_text):
-            handle_numeric_log_entry(current_user, entry_raw_text)
-        else:
-            handle_text_log_entry(current_user, entry_raw_text)
-    # User responded to listening_message
-    elif no_trigger_flag or nlp.user_is_in_log_entry_state(current_user):
+    # User is adding new context
+    if nlp.user_is_in_log_context_prompt_state(current_user):
+        add_and_apply_new_context(current_user, text)
+    # User is logging text or a number
+    else:
         # Log the entry
         entry_raw_text = text
 
@@ -87,8 +32,6 @@ def handle_logs_text(current_user, text, processed_text, no_trigger_flag=False):
             handle_numeric_log_entry(current_user, entry_raw_text)
         else:
             handle_text_log_entry(current_user, entry_raw_text)
-    else:
-        add_and_apply_new_context(current_user, text)
 
 # Handles a text log entry
 def handle_text_log_entry(current_user, entry_text):
@@ -149,6 +92,26 @@ def handle_text_log_entry(current_user, entry_text):
         'log_add_context_message',
         current_user,
         add_context_message,
+        None
+    )
+
+# Sed
+def send_view_logs_message(current_user):
+    # Send user message linking to log
+    log_view_message = (
+        "Click to view your logs"
+    )
+    send_api_helper.send_button_message(current_user.fbid, log_view_message, [
+        {
+            'type': 'web_url',
+            'url': constants.BASE_HEROKU_URL + '/users/'+str(current_user.fbid)+'/logs',
+            'title': 'See Logs'    
+        }
+    ])
+    message_log.log_message(
+        'log_view_message',
+        current_user,
+        log_view_message,
         None
     )
 
@@ -297,37 +260,6 @@ def handle_image_log_entry(current_user, image_url):
         None
     )
 
-# Handles the case where user says "log"
-def handle_log_listening(current_user, text, processed_text):
-    # Log response
-    message_log.log_message(
-            'log_trigger_listening_response',
-            current_user,
-            processed_text,
-            None
-        )
-
-    # Send and log message
-    log_listening_message = "I'm listening - reply with a number, text, or image!"
-    quick_replies = [{
-        "content_type": "text",
-        "title": "Cancel",
-        "payload": json.dumps({
-            "state": "cancel_log"
-        })
-    }]
-
-    send_api_helper.send_quick_reply_message(
-        current_user.fbid,
-        log_listening_message,
-        quick_replies
-    )
-    message_log.log_message(
-            'log_listening_message',
-            current_user,
-            log_listening_message,
-            None
-        )
 # Adds a new context based on the user response and applies that context to the log
 def add_and_apply_new_context(current_user, text):
     message_log.log_message(
@@ -436,23 +368,3 @@ def apply_context_to_log(current_user, text, payload):
             log_confirm_message,
             None
         )
-
-def handle_cancel_log(current_user, text, payload):
-    message_log.log_message(
-        'cancel_log_response',
-        current_user,
-        text,
-        None
-    )
-
-    cancel_log_message = 'k!'
-    send_api_helper.send_basic_text_message(
-        current_user.fbid,
-        cancel_log_message
-    )
-    message_log.log_message(
-        'cancel_log_message',
-        current_user,
-        cancel_log_message,
-        None
-    )

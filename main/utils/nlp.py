@@ -18,13 +18,7 @@ def is_habits_domain(current_user, processed_text):
 
 
 def is_logs_domain(current_user, processed_text):
-    if processed_text.startswith('log'):
-        return True
-    elif processed_text == 'see logs':
-        return True
-    elif user_is_in_log_entry_state(current_user):
-        return True
-    elif user_is_in_log_context_prompt_state(current_user):
+    if user_is_in_log_context_prompt_state(current_user):
         return True
     return False
 
@@ -40,28 +34,6 @@ def last_message_is_habit_prompt(current_user):
     return Message.objects.filter(
         user=current_user
     ).order_by('-id')[0].message_type == 6
-
-
-def last_message_is_show_todo(current_user):
-    return Message.objects.filter(
-        user=current_user
-    ).order_by('-id')[0].message_type == 11
-
-
-def last_message_is_incorrect_index_message(current_user):
-    return Message.objects.filter(
-        user=current_user
-    ).order_by('-id')[0].message_type == 24
-
-def last_message_is_listening_message(current_user):
-    return Message.objects.filter(
-        user=current_user
-    ).order_by('-id')[0].message_type == 35
-
-def last_message_is_todo_prompt(current_user):
-    return Message.objects.filter(
-        user=current_user
-    ).order_by('-id')[0].message_type == 42
 
 # Looks at the message history, and returns whether or not this
 # message is a response to a prompt
@@ -101,30 +73,3 @@ def user_is_in_log_context_prompt_state(current_user):
         user=current_user
     ).order_by('-id')[0].message_type == 30
 
-
-
-def user_is_in_complete_todo_state(processed_text, current_user):
-    try:
-        int(processed_text)
-    except ValueError:
-        return False
-
-    if last_message_is_show_todo(current_user):
-        return True
-
-    if last_message_is_incorrect_index_message(current_user):
-        return True
-
-    return False
-
-def user_is_in_log_entry_state(current_user):
-    if last_message_is_listening_message(current_user):
-        return True
-    else:
-        return False
-
-def user_is_in_todo_listening_state(current_user):
-    if last_message_is_todo_prompt(current_user):
-        return True
-    else:
-        return False
