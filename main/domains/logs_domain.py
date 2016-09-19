@@ -9,6 +9,7 @@ import requests
 from PIL import Image
 import random
 import datetime
+from main.domains import onboarding_domain
 
 # Global handler for anything logs related
 def handle_logs_text(current_user, text, processed_text):
@@ -108,6 +109,13 @@ def handle_image_log_entry(current_user, image_url):
 
 # Helper method that asks the user to categorize their diary entry
 def send_context_message(current_user, entry_type, entry_id):
+
+    # If first diary entry, then explain to user how categories work
+    num_log_entries = len(LogEntry.objects.filter(user=current_user))
+    if num_log_entries == 0:
+        onboarding_domain.send_categories_explanation_message()
+
+    # Send message to user to allow them to categorize their diary entry
     user_log = Log.find_or_create(current_user)
 
     log_contexts = LogContext.objects.filter(log=user_log).order_by('context_name')
