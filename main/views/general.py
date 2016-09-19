@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.template import RequestContext, loader
 from main.models import *
 from main.utils import helper_util, constants
-
+import requests
 
 def fblogin_redirect(request):
     code = request.GET['code']
