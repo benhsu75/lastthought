@@ -260,6 +260,8 @@ def handle_image_log_entry(current_user, image_url):
         None
     )
 
+
+
 # Adds a new context based on the user response and applies that context to the log
 def add_and_apply_new_context(current_user, text):
     message_log.log_message(

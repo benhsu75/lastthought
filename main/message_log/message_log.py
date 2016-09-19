@@ -38,6 +38,7 @@ message_mapping = {
     'log_view_message' : 38,
     'cancel_log_response' : 39,
     'cancel_log_message' : 40,
+    'get_started_message' : 41,
 }
 
 

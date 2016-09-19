@@ -28,8 +28,12 @@ def create_new_user(fbid):
     send_api_helper.send_basic_text_message(fbid, welcome_message)
     message_log.log_message('welcome_message', u, welcome_message, None)
 
-    # Send "Learn More"
+    # Send "learn more" message
     send_learn_more_message(u)
+
+    # Send get started message
+    send_get_started_message(u)
+
 
 def send_learn_more_message(current_user):
     learn_more_message = "It's super simple - anytime you want to remember something, whether it be a thought, photo, or video, simply send it to me and I'll store it for you!"
@@ -37,7 +41,13 @@ def send_learn_more_message(current_user):
             {
                 'type': 'web_url',
                 'url': 'http://userdatagraph.herokuapp.com/learn_more',
-                'title': 'Learn More'    
+                'title': 'Learn More'
             }
         ])
     message_log.log_message('learn_more_message', current_user, learn_more_message, None)
+
+def send_get_started_message(current_user):
+    get_started_message = "Let's get your diary started with a selfie! Tap the camera below this message, and send me a selfie :)"
+    send_api_helper.send_basic_text_message(current_user.fbid, get_started_message)
+    message_log.log_message('get_started_message', current_user, get_started_message, None)
+
