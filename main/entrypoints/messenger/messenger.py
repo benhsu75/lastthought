@@ -10,8 +10,7 @@ from main.utils import nlp, helper_util
 from main.domains import (habits_domain,
                           logs_domain,
                           onboarding_domain,
-                          misunderstood_domain,
-                          help_domain)
+                          misunderstood_domain)
 import json
 
 ######################################
@@ -111,7 +110,6 @@ def handle_optin(fbid):
         pass
 
     onboarding_domain.create_new_user(fbid)
-
 
 # When the user responds by tapping a quick reply
 def handle_quick_reply(fbid, text, payload):

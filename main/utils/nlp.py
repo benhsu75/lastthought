@@ -3,10 +3,6 @@ from datetime import datetime
 from main.utils import helper_util
 
 
-def is_help_domain(processed_text):
-    return processed_text == 'help'
-
-
 def is_habits_domain(current_user, processed_text):
     # NLP Stuff
     if('habits' in processed_text):

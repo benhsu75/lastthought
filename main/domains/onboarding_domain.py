@@ -1,7 +1,6 @@
 from main.message_log import message_log
 from main.entrypoints.messenger import send_api_helper, fb_profile_helper
 from main.models import *
-import help_domain
 
 BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
 
@@ -25,9 +24,20 @@ def create_new_user(fbid):
     background_information.save()
 
     # Send user intro message
-    welcome_message = "Hey "+ first_name +"! Nice to meet you. I'm Jarvis, here to help be your better self :)."
+    welcome_message = "Hey "+ first_name +"! Nice to meet you. I'm Jarvis, here to help you keep a diary of your life!"
     send_api_helper.send_basic_text_message(fbid, welcome_message)
     message_log.log_message('welcome_message', u, welcome_message, None)
 
     # Send "Learn More"
-    help_domain.send_learn_more_message(u)
+    send_learn_more_message(u)
+
+def send_learn_more_message(current_user):
+    learn_more_message = "It's super simple - anytime you want to remember something, whether it be a thought, photo, or video, simply send it to me and I'll store it for you!"
+    send_api_helper.send_button_message(current_user.fbid, learn_more_message, [
+            {
+                'type': 'web_url',
+                'url': 'http://userdatagraph.herokuapp.com/learn_more',
+                'title': 'Learn More'    
+            }
+        ])
+    message_log.log_message('learn_more_message', current_user, learn_more_message, None)
