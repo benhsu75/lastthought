@@ -143,7 +143,7 @@ def send_context_message(current_user, entry_type, entry_id):
 
     quick_replies.append({
         "content_type": "text",
-        "title": "Add a new context",
+        "title": "Add a new category",
         "payload": json.dumps({
             "state": "log_context_response",
             "entry_type": entry_type,
@@ -152,7 +152,7 @@ def send_context_message(current_user, entry_type, entry_id):
         })
     })
 
-    add_context_message = "Add a context to your log entry:"
+    add_context_message = "Categorize your diary entry:"
     send_api_helper.send_quick_reply_message(
         current_user.fbid,
         add_context_message,
@@ -232,7 +232,7 @@ def apply_context_to_log(current_user, text, payload):
 
         successful_context_message = (
             "\"" + context.context_name + "\""
-            + " was applied to your log entry."
+            + " was applied to your diary entry."
         )
         send_api_helper.send_basic_text_message(
             current_user.fbid,
@@ -246,7 +246,7 @@ def apply_context_to_log(current_user, text, payload):
         )
     elif "add_new_context_flag" in payload:
         new_context_message = (
-            "What is the name of the context you want to add?"
+            "What is the name of the category you want to add?"
         )
         send_api_helper.send_basic_text_message(
             current_user.fbid,
