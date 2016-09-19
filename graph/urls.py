@@ -12,6 +12,9 @@ urlpatterns = [
 
     # Messenger webhooks
     url(r'^messenger_callback/', messenger.messenger_callback),
+
+    # Facebook Login redirect
+    url(r'^fblogin_redirect/', general.fblogin_redirect),
     
     # Habit endpoints
     url(r'^habits/(?P<habit_id>\d+)/$', habit_views.habits),

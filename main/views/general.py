@@ -2,10 +2,27 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from main.models import *
-from main.utils import helper_util
+from main.utils import helper_util, constants
 
+
+def fblogin_redirect(request):
+    code = request.GET['code']
+
+    # Make request to get access_token
+    access_token_url = 'https://graph.facebook.com/v2.3/oauth/access_token?client_id={}&redirect_uri={}&client_secret={}&code={}'.format(constants.FB_APP_ID, constants.FB_LOGIN_REDIRECT_URI, constants.FB_CLIENT_SECRET, code)
+
+    r = requests.get(access_token_url)
+
+    print r.text
+
+    access_token = r.json()['access_token']
+
+    # Make request for user profile information e.g. fbid
+    return HttpResponse("hi")
 
 def index(request):
+
+    
     context = RequestContext(request, {})
     template = loader.get_template('main/index.html')
     return HttpResponse(template.render(context))

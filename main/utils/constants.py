@@ -22,6 +22,11 @@ FB_SEND_BASE_URL = 'https://graph.facebook.com/v2.6/me/messages?access_token='
 
 GRAPH_BASE_URL = 'https://graph.facebook.com/v2.6/'
 
+# Facebook
+FB_APP_ID = '257720774614110'
+FB_CLIENT_SECRET = 'a2e40b091f021abd9ba83f319fc440ba'
+FB_LOGIN_REDIRECT_URI = 'https://userdatagraph.herokuapp.com/fblogin_redirect'
+
 # Lyft
 LYFT_CLIENT_ID = 'OyrF54XChtFI'
 
