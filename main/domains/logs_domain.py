@@ -121,7 +121,7 @@ def send_context_message(current_user, entry_type, entry_id):
     num_log_entries = len(LogEntry.objects.filter(log=user_log))
     print "num_log_entries " + str(num_log_entries)
     if num_log_entries == 1:
-        onboarding_domain.send_categories_explanation_message()
+        onboarding_domain.send_categories_explanation_message(current_user)
 
     # Send message to user to allow them to categorize their diary entry
     user_log = Log.find_or_create(current_user)
