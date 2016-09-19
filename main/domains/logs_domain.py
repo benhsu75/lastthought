@@ -33,69 +33,7 @@ def handle_logs_text(current_user, text, processed_text):
         else:
             handle_text_log_entry(current_user, entry_raw_text)
 
-# Handles a text log entry
-def handle_text_log_entry(current_user, entry_text):
-    user_log = Log.find_or_create(current_user)
-
-    text_log_entry = TextLogEntry(log=user_log, text_value=entry_text, entry_type=0, occurred_at=datetime.datetime.now())
-    text_log_entry.save()
-
-    log_contexts = LogContext.objects.filter(log=user_log).order_by('context_name')
-
-    quick_replies = [{
-        "content_type": "text",
-        "title": "None",
-        "payload": json.dumps({
-            "state": "log_context_response",
-            "entry_type": "text",
-            "no_context_flag" : 1,
-            "log_entry_id": text_log_entry.id
-        })
-    }]
-
-    count = 0
-    for context in log_contexts:
-        count += 1
-
-        if count <= 8:
-            # Edit
-            payload = json.dumps({
-                "state": "log_context_response",
-                "log_context_id": context.id,
-                "entry_type": "text",
-                "log_entry_id": text_log_entry.id
-            })
-            quick_replies.append({
-                "content_type": "text",
-                "title": context.context_name,
-                "payload": payload
-            })
-
-    quick_replies.append({
-        "content_type": "text",
-        "title": "Add a new context",
-        "payload": json.dumps({
-            "state": "log_context_response",
-            "entry_type": "text",
-            "add_new_context_flag": 1,
-            "log_entry_id": text_log_entry.id
-        })
-    })
-
-    add_context_message = "Add a context to your log entry:"
-    send_api_helper.send_quick_reply_message(
-        current_user.fbid,
-        add_context_message,
-        quick_replies
-    )
-    message_log.log_message(
-        'log_add_context_message',
-        current_user,
-        add_context_message,
-        None
-    )
-
-# Sed
+# Helper method to send message for user to view logs
 def send_view_logs_message(current_user):
     # Send user message linking to log
     log_view_message = (
@@ -115,6 +53,16 @@ def send_view_logs_message(current_user):
         None
     )
 
+# Handles a text log entry
+def handle_text_log_entry(current_user, entry_text):
+    user_log = Log.find_or_create(current_user)
+
+    text_log_entry = TextLogEntry(log=user_log, text_value=entry_text, entry_type=0, occurred_at=datetime.datetime.now())
+    text_log_entry.save()
+
+    # Ask the user to apply a context
+    send_context_message(current_user, "text", text_log_entry.id)
+
 # Handles a numeric log entry
 def handle_numeric_log_entry(current_user, numeric_value):
     user_log = Log.find_or_create(current_user)
@@ -122,59 +70,8 @@ def handle_numeric_log_entry(current_user, numeric_value):
     numeric_log_entry = NumericLogEntry(log=user_log, numeric_value=numeric_value, entry_type=1, occurred_at=datetime.datetime.now())
     numeric_log_entry.save()
 
-    log_contexts = LogContext.objects.filter(log=user_log)
-
-    quick_replies = [{
-        "content_type": "text",
-        "title": "None",
-        "payload": json.dumps({
-            "state": "log_context_response",
-            "entry_type": "numeric",
-            "no_context_flag" : 1,
-            "log_entry_id": numeric_log_entry.id
-        })
-    }]
-
-    count = 0
-    for context in log_contexts:
-        count += 1
-
-        if count <= 8:
-            payload = json.dumps({
-                "state": "log_context_response",
-                "log_context_id": context.id,
-                "entry_type": "numeric",
-                "log_entry_id": numeric_log_entry.id
-            })
-            quick_replies.append({
-                "content_type": "text",
-                "title": context.context_name,
-                "payload": payload
-            })
-
-    quick_replies.append({
-        "content_type": "text",
-        "title": "Add a new context",
-        "payload": json.dumps({
-            "state": "log_context_response",
-            "add_new_context_flag": 1,
-            "entry_type": "numeric",
-            "log_entry_id": numeric_log_entry.id
-        })
-    })
-
-    add_context_message = "Add a context to your log entry:"
-    send_api_helper.send_quick_reply_message(
-        current_user.fbid,
-        add_context_message,
-        quick_replies
-    )
-    message_log.log_message(
-        'log_add_context_message',
-        current_user,
-        add_context_message,
-        None
-    )
+    # Ask the user to apply a context
+    send_context_message(current_user, "numeric", numeric_log_entry.id)
 
 # Handles an image entry
 def handle_image_log_entry(current_user, image_url):
@@ -206,16 +103,23 @@ def handle_image_log_entry(current_user, image_url):
     image_log_entry = ImageLogEntry(log=user_log, image_url=uploaded_image_url, entry_type=2, image_width=image_width, image_height=image_height, occurred_at=datetime.datetime.now())
     image_log_entry.save()
 
-    log_contexts = LogContext.objects.filter(log=user_log)
+    # Ask the user to apply a context
+    send_context_message(current_user, "image", image_log_entry.id)
+
+# Helper method that asks the user to categorize their diary entry
+def send_context_message(current_user, entry_type, entry_id):
+    user_log = Log.find_or_create(current_user)
+
+    log_contexts = LogContext.objects.filter(log=user_log).order_by('context_name')
 
     quick_replies = [{
         "content_type": "text",
         "title": "None",
         "payload": json.dumps({
             "state": "log_context_response",
-            "entry_type": "image",
+            "entry_type": entry_type,
             "no_context_flag" : 1,
-            "log_entry_id": image_log_entry.id
+            "log_entry_id": entry_id
         })
     }]
 
@@ -224,14 +128,15 @@ def handle_image_log_entry(current_user, image_url):
         count += 1
 
         if count <= 8:
+            # Edit
             payload = json.dumps({
                 "state": "log_context_response",
                 "log_context_id": context.id,
-                "entry_type": "image",
-                "log_entry_id": image_log_entry.id
+                "entry_type": entry_type,
+                "log_entry_id": entry_id
             })
             quick_replies.append({
-                "content_type": "text",
+                "content_type": entry_type,
                 "title": context.context_name,
                 "payload": payload
             })
@@ -241,9 +146,9 @@ def handle_image_log_entry(current_user, image_url):
         "title": "Add a new context",
         "payload": json.dumps({
             "state": "log_context_response",
-            "entry_type": "image",
+            "entry_type": entry_type,
             "add_new_context_flag": 1,
-            "log_entry_id": image_log_entry.id
+            "log_entry_id": entry_id
         })
     })
 
@@ -260,8 +165,6 @@ def handle_image_log_entry(current_user, image_url):
         None
     )
 
-
-
 # Adds a new context based on the user response and applies that context to the log
 def add_and_apply_new_context(current_user, text):
     message_log.log_message(
@@ -270,7 +173,6 @@ def add_and_apply_new_context(current_user, text):
         text,
         None
     )
-
 
     user_log = Log.objects.filter(user=current_user)[0]
     context = LogContext(log=user_log, context_name=text)
