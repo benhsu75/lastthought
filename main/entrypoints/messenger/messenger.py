@@ -41,7 +41,7 @@ def messenger_callback(request):
 
             fbid = messaging['sender']['id']
 
-            # Create new user
+            # If user doesn't exist, then start onboarding flow and create new user
             if not helper_util.user_exists(fbid):
                 onboarding_domain.create_new_user(fbid)
                 continue
@@ -166,10 +166,8 @@ def handle_message_received(fbid, text):
     # Use nlp to determine which domain it goes under,
     # then triage to that domain. The domain handles the
     # sub-triaging within itself
-    if nlp.is_help_domain(processed_text):
-        help_domain.handle(current_user, text, processed_text)
 
-    elif nlp.is_habits_domain(current_user, processed_text):
+    if nlp.is_habits_domain(current_user, processed_text):
         habits_domain.handle_habits_text(current_user, text, processed_text)
 
     else:
@@ -185,8 +183,4 @@ def handle_image_received(fbid, image_url):
         )
         return
 
-    if nlp.user_is_in_log_entry_state(current_user):
-        logs_domain.handle_image_log_entry(current_user, image_url)
-    else:
-        # Still handle image as a log
-        logs_domain.handle_image_log_entry(current_user, image_url)
+    logs_domain.handle_image_log_entry(current_user, image_url)
