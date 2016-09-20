@@ -15,6 +15,7 @@ import json
 from django.shortcuts import redirect
 from main.utils import constants
 import requests
+from main.views import general
 
 ######################################
 ######### MESSENGER WEBHOOK ##########
@@ -112,11 +113,8 @@ def account_link(request):
     # Get the PSID with the account_linking_token
     psid = get_psid_from_account_linking_token(account_linking_token)
 
-    # Create the person's account
-    print 'GOT PSID: ' + str(psid)
-
-    return redirect('/')
-
+    # return redirect('/fblogin_view?fbid={}&redirect_uri={}'.format(psid, redirect_uri))
+    return general.fblogin_view(request, psid, redirect_uri)
 
 def get_psid_from_account_linking_token(token):
     url_to_get = 'https://graph.facebook.com/v2.6/me?access_token={}&fields=recipient&account_linking_token={}'.format(constants.FB_PAGE_ACCESS_TOKEN, token)

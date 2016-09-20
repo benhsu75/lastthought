@@ -7,6 +7,10 @@ import requests
 
 def fblogin_redirect(request):
     code = request.GET['code']
+    state = request.GET['state']
+
+    print 'IN FB LOGIN REDIRECT'
+    print 'STATE ' + state
 
     # Make request to get access_token
     access_token_url = 'https://graph.facebook.com/v2.3/oauth/access_token?client_id={}&redirect_uri={}&client_secret={}&code={}'.format(constants.FB_APP_ID, constants.FB_LOGIN_REDIRECT_URI, constants.FB_CLIENT_SECRET, code)
@@ -18,7 +22,17 @@ def fblogin_redirect(request):
     access_token = r.json()['access_token']
 
     # Make request for user profile information e.g. fbid
+    
+    
     return HttpResponse("hi")
+
+def fblogin_view(request, fbid, redirect_uri):
+    context = RequestContext(request, {
+        'fbid' : fbid,
+        'redirect_uri' : redirect_uri
+        })
+    template = loader.get_template('main/fblogin_view.html')
+    return HttpResponse(template.render(context))
 
 def index(request):    
     context = RequestContext(request, {})
