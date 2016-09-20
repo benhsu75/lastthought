@@ -6,6 +6,7 @@ from main.utils import helper_util, constants
 import requests
 from django.shortcuts import redirect
 from main.api import facebook
+from main.domains import onboarding_domain
 
 def fblogin_redirect(request):
     code = request.GET['code']

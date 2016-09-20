@@ -57,6 +57,13 @@ def send_categories_explanation_message(current_user):
     message_log.log_message('categories_explanation_message', current_user, categories_explanation_message, None)
 
 def send_create_account_message(current_user):
+
+    # Send message explaining
+    explain_link_message = 'You\'re almost done. All you need to do is create an account so you can view your diary on the web or on your phone. Create an account here:'
+    send_api_helper.send_basic_text_message(current_user.fbid, explain_link_message)
+    message_log.log_message('explain_link_message', current_user, explain_link_message, None)
+
+    # Send account linking message
     sign_up_message = 'Sign Up!'
     send_api_helper.send_account_link_message(current_user.fbid, sign_up_message)
     message_log.log_message('sign_up_message', current_user, sign_up_message, None)

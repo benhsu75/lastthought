@@ -41,7 +41,8 @@ message_mapping = {
     'get_started_message' : 41,
     'categories_explanation_message' : 42,
     'sign_up_message' : 43,
-    'finished_onboarding_message' : 44
+    'finished_onboarding_message' : 44,
+    'explain_link_message' : 45
 }
 
 
