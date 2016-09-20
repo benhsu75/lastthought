@@ -39,7 +39,8 @@ message_mapping = {
     'cancel_log_response' : 39,
     'cancel_log_message' : 40,
     'get_started_message' : 41,
-    'categories_explanation_message' : 42
+    'categories_explanation_message' : 42,
+    'sign_up_message' : 43
 }
 
 

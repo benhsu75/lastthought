@@ -216,6 +216,8 @@ def add_and_apply_new_context(current_user, text):
         None
     )
 
+    # Get user to create account
+    onboarding_domain.send_create_account_message(current_user)
 
 # Applies an existing context to the log
 def apply_context_to_log(current_user, text, payload):
@@ -260,6 +262,10 @@ def apply_context_to_log(current_user, text, payload):
             successful_context_message,
             None
         )
+
+        # Get user to create account
+        onboarding_domain.send_create_account_message(current_user)
+
     elif "add_new_context_flag" in payload:
         new_context_message = (
             "What is the name of the category you want to add?"
@@ -288,3 +294,7 @@ def apply_context_to_log(current_user, text, payload):
             log_confirm_message,
             None
         )
+
+        # Get user to create account
+        onboarding_domain.send_create_account_message(current_user)
+

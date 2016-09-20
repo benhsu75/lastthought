@@ -101,6 +101,11 @@ def messenger_callback(request):
     return HttpResponse(status=200)
 
 
+@csrf_exempt
+def account_link(request):
+    print request.GET
+    
+
 # Sends the user our initial message
 def handle_optin(fbid):
     # Check if user exists, if it does, do nothing

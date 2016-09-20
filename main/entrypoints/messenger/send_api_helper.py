@@ -55,3 +55,30 @@ def send_quick_reply_message(fbid, text, quick_replies):
     url_to_post = constants.FB_SEND_BASE_URL + constants.FB_PAGE_ACCESS_TOKEN
     r = requests.post(url_to_post, json=send_payload)
     print(r.text)
+
+# Sends a message with account linking functionality
+def send_account_link_message(fbid, text):
+    send_payload = {
+        'recipient': {
+            'id': fbid
+        },
+        'message': {
+            'attachment': {
+                'type' : 'template',
+                'payload' : {
+                    'template_type' : 'generic',
+                    'elements' : [{
+                        'title' : 'UserDataGraph Diary',
+                        'image_url' : '',
+                        'buttons' : [{
+                            'type' : 'account_link',
+                            'url' : 'https://userdatagraph.herokuapp.com/messenger_account_link'
+                        }]
+                    }]
+                }
+            }
+        }
+    }
+    url_to_post = constants.FB_SEND_BASE_URL + constants.FB_PAGE_ACCESS_TOKEN
+    r = requests.post(url_to_post, json=send_payload)
+    print(r.text)
