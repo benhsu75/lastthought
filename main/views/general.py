@@ -13,7 +13,8 @@ def fblogin_redirect(request):
     print 'STATE ' + state
 
     # Make request to get access_token
-    access_token_url = 'https://graph.facebook.com/v2.3/oauth/access_token?client_id={}&redirect_uri={}&client_secret={}&code={}'.format(constants.FB_APP_ID, constants.FB_LOGIN_REDIRECT_URI, constants.FB_CLIENT_SECRET, code)
+    constructed_redirect_uri = constants.FB_LOGIN_REDIRECT_URI + "?state=" + state
+    access_token_url = 'https://graph.facebook.com/v2.3/oauth/access_token?client_id={}&redirect_uri={}&client_secret={}&code={}'.format(constants.FB_APP_ID, constructed_redirect_uri, constants.FB_CLIENT_SECRET, code)
 
     r = requests.get(access_token_url)
 
@@ -22,8 +23,8 @@ def fblogin_redirect(request):
     access_token = r.json()['access_token']
 
     # Make request for user profile information e.g. fbid
-    
-    
+
+
     return HttpResponse("hi")
 
 def fblogin_view(request, fbid, redirect_uri):
