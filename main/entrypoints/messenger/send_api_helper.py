@@ -81,4 +81,5 @@ def send_account_link_message(fbid, text):
     }
     url_to_post = constants.FB_SEND_BASE_URL + constants.FB_PAGE_ACCESS_TOKEN
     r = requests.post(url_to_post, json=send_payload)
-    print(r.text)
+    print 'SENDING ACCOUNT LINK MESSAGE'
+    print r.text

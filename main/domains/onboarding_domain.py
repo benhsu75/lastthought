@@ -57,6 +57,8 @@ def send_categories_explanation_message(current_user):
     message_log.log_message('categories_explanation_message', current_user, categories_explanation_message, None)
 
 def send_create_account_message(current_user):
+    print 'SENDING CREATE ACCOUNT MESSAGE'
+    
     sign_up_message = 'Sign Up!'
     send_api_helper.send_account_link_message(current_user.fbid, sign_up_message)
     message_log.log_message('sign_up_message', current_user, sign_up_message, None)
