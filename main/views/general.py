@@ -28,7 +28,7 @@ def fblogin_redirect(request):
     real_fbid = facebook.get_fb_profile_info(access_token)
 
     # Create full account
-    user = User.objects.get(fbid=state)
+    user = User.objects.get(fbid=fbid)
 
     # Tell the user that they finished creating an account
     onboarding_domain.send_finished_onboarding_message(user)
