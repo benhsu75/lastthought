@@ -15,7 +15,7 @@ urlpatterns = [
     url(r'^messenger_account_link/', messenger.account_link),
 
     # Facebook Login
-    url(r'^fblogin_view/', general.fblog_view),
+    url(r'^fblogin_view/', general.fblogin_view),
     url(r'^fblogin_redirect/', general.fblogin_redirect),
 
     # Habit endpoints
