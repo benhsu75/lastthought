@@ -13,6 +13,7 @@ from main.domains import (habits_domain,
                           misunderstood_domain)
 import json
 from django.shortcuts import redirect
+from main.utils import constants
 
 ######################################
 ######### MESSENGER WEBHOOK ##########
