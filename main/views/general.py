@@ -4,16 +4,18 @@ from django.template import RequestContext, loader
 from main.models import *
 from main.utils import helper_util, constants
 import requests
+from django.shortcuts import redirect
+from main.api import facebook
 
 def fblogin_redirect(request):
     code = request.GET['code']
-    state = request.GET['state']
+    fbid = request.GET['state']
 
     print 'IN FB LOGIN REDIRECT'
-    print 'STATE ' + state
+    print 'STATE ' + fbid
 
     # Make request to get access_token
-    constructed_redirect_uri = constants.FB_LOGIN_REDIRECT_URI + "?state=" + state
+    constructed_redirect_uri = constants.FB_LOGIN_REDIRECT_URI + "?state=" + fbid
     access_token_url = 'https://graph.facebook.com/v2.3/oauth/access_token?client_id={}&redirect_uri={}&client_secret={}&code={}'.format(constants.FB_APP_ID, constructed_redirect_uri, constants.FB_CLIENT_SECRET, code)
 
     r = requests.get(access_token_url)
@@ -23,9 +25,15 @@ def fblogin_redirect(request):
     access_token = r.json()['access_token']
 
     # Make request for user profile information e.g. fbid
+    real_fbid = facebook.get_fb_profile_info(access_token)
 
+    # Create full account
+    user = User.objects.get(fbid=state)
 
-    return HttpResponse("hi")
+    # Tell the user that they finished creating an account
+    onboarding_domain.send_finished_onboarding_message(user)
+
+    return redirect('/')
 
 def fblogin_view(request, fbid, redirect_uri):
     context = RequestContext(request, {
