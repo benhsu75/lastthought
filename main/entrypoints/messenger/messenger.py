@@ -12,6 +12,7 @@ from main.domains import (habits_domain,
                           onboarding_domain,
                           misunderstood_domain)
 import json
+from django.shortcuts import redirect
 
 ######################################
 ######### MESSENGER WEBHOOK ##########
@@ -103,8 +104,28 @@ def messenger_callback(request):
 
 @csrf_exempt
 def account_link(request):
-    print request.GET
-    
+    account_linking_token = request.GET['account_linking_token']
+    redirect_uri = request.GET['redirect_uri']
+
+    # Get the PSID with the account_linking_token
+    psid = get_psid_from_account_linking_token(account_linking_token)
+
+    # Create the person's account
+    print 'GOT PSID: ' + str(psid)
+
+    return redirect('/')
+
+
+def get_psid_from_account_linking_token(token):
+    url_to_get = 'https://graph.facebook.com/v2.6/me?access_token={}&fields=recipient&account_linking_token={}'.format(constants.FB_PAGE_ACCESS_TOKEN, token)
+
+    r = requests.get(url_to_get)
+
+    print r.text
+
+    psid = r.json()['recipient']
+
+    return psid
 
 # Sends the user our initial message
 def handle_optin(fbid):
