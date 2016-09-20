@@ -69,7 +69,7 @@ def send_create_account_message(current_user):
     message_log.log_message('sign_up_message', current_user, sign_up_message, None)
 
 def send_finished_onboarding_message(current_user):
-    finished_onboarding_message = "Great - you can now view your diary any time by tapping View Diary in the menu"
+    finished_onboarding_message = "Great - you can now view your diary any time by tapping View Diary in the menu or going to https://userdatagraph.herokuapp.com"
     send_api_helper.send_basic_text_message(current_user.fbid, finished_onboarding_message)
     message_log.log_message('finished_onboarding_message', current_user, finished_onboarding_message, None)
 
