@@ -29,10 +29,10 @@ def fblogin_redirect(request):
     real_fbid = facebook.get_fb_profile_info(access_token)
 
     # Create full account
-    user = User.objects.get(fbid=fbid)
+    profile = Profile.objects.get(fbid=fbid)
 
     # Tell the user that they finished creating an account
-    onboarding_domain.send_finished_onboarding_message(user)
+    onboarding_domain.send_finished_onboarding_message(profile)
 
     return redirect('/')
 
@@ -57,20 +57,20 @@ def learn_more(request):
 def connect(request, fbid):
     if not helper_util.user_exists(fbid):
         return HttpResponse(status=404)
-    user = User.objects.get(fbid=fbid)
+    profile = Profile.objects.get(fbid=fbid)
 
     context = RequestContext(request, {
         'lyft_connected_flag' : user.rideshareinformation.lyft_connected_flag,
-        'foursquare_connected_flag' : hasattr(user,'foursquareconnection') and user.foursquareconnection.is_connected_flag,
-        'lyft_connected_flag' : hasattr(user,'lyftconnection') and user.lyftconnection.is_connected_flag,
-        'uber_connected_flag' : hasattr(user, 'uberconnection') and user.uberconnection.is_connected_flag,
-        'instagram_connected_flag' : hasattr(user, 'instagramconnection') and user.instagramconnection.is_connected_flag,
-        'fitbit_connected_flag' : hasattr(user, 'fitbitconnection') and user.fitbitconnection.is_connected_flag,
-        'gmail_connected_flag' : False,#hasattr(user, 'gmailconnection') and user.gmailconnection.is_connected_flag,
-        'gcal_connected_flag' : False,#hasattr(user, 'gcalconnection') and user.gcalconnection.is_connected_flag,
-        'gdrive_connected_flag' : False,#hasattr(user, 'gdriveconnection') and user.gdriveconnection.is_connected_flag,
-        'facebook_connected_flag' : False,#hasattr(user, 'facebookconnection') and user.facebookconnection.is_connected_flag,
-        'fbid' : user.fbid
+        'foursquare_connected_flag' : hasattr(user,'foursquareconnection') and profile.foursquareconnection.is_connected_flag,
+        'lyft_connected_flag' : hasattr(profile,'lyftconnection') and profile.lyftconnection.is_connected_flag,
+        'uber_connected_flag' : hasattr(profile, 'uberconnection') and profile.uberconnection.is_connected_flag,
+        'instagram_connected_flag' : hasattr(profile, 'instagramconnection') and profile.instagramconnection.is_connected_flag,
+        'fitbit_connected_flag' : hasattr(profile, 'fitbitconnection') and profile.fitbitconnection.is_connected_flag,
+        'gmail_connected_flag' : False,#hasattr(profile, 'gmailconnection') and profile.gmailconnection.is_connected_flag,
+        'gcal_connected_flag' : False,#hasattr(profile, 'gcalconnection') and profile.gcalconnection.is_connected_flag,
+        'gdrive_connected_flag' : False,#hasattr(profile, 'gdriveconnection') and profile.gdriveconnection.is_connected_flag,
+        'facebook_connected_flag' : False,#hasattr(profile, 'facebookconnection') and profile.facebookconnection.is_connected_flag,
+        'fbid' : profile.fbid
         
         })
     template = loader.get_template('main/connect.html')

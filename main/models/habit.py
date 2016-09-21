@@ -5,7 +5,7 @@ class Habit(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    user = models.ForeignKey(Profile)
+    profile = models.ForeignKey(Profile)
     name = models.CharField(max_length=200)
     send_text = models.CharField(max_length=200)
     send_time_utc = models.SmallIntegerField(null=True)

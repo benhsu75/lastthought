@@ -53,8 +53,8 @@ def habits(request, habit_id=None):
 
     elif request.method == 'POST':
         fbid = request.POST['fbid']
-        if helper_util.user_exists(fbid):
-            current_user = User.objects.get(fbid=fbid)
+        if helper_util.profile_exists(fbid):
+            current_profile = Profile.objects.get(fbid=fbid)
         else:
             return HttpResponse(status=200)
 
@@ -64,7 +64,7 @@ def habits(request, habit_id=None):
         response_type = request.POST['response_type']
 
         habit = Habit(
-            user=current_user,
+            profile=current_profile,
             name=name,
             send_text=send_text,
             send_time_utc=send_time_utc,
@@ -75,7 +75,7 @@ def habits(request, habit_id=None):
         # Tell the user that a goal was created
         habit_creation_message = "Congrats, let's help you build this habit :). I'll ask you '" + send_text + "' everyday at " + send_time_utc + " UTC."
         send_api_helper.send_basic_text_message(fbid, habit_creation_message)
-        message_log.log_message('habit_creation_message', current_user, habit_creation_message, None)
+        message_log.log_message('habit_creation_message', current_profile, habit_creation_message, None)
 
         return HttpResponse(status=200)
     # Error 404 Not Found
@@ -89,14 +89,14 @@ def habits(request, habit_id=None):
 
 # List all habits for a given user
 def list(request, fbid):
-    if not helper_util.user_exists(fbid):
+    if not helper_util.profile_exists(fbid):
         return HttpResponse(status=404)
 
-    current_user = User.objects.get(fbid=fbid)
-    if(not current_user):
+    current_profile = Profile.objects.get(fbid=fbid)
+    if(not current_profile):
         return HttpResponse("Invalid user")
 
-    habits_list = Habit.objects.filter(user=current_user)
+    habits_list = Habit.objects.filter(profile=current_profile)
     serialized_response = serializers.serialize('json', habits_list)
 
     context = RequestContext(request, {
@@ -126,11 +126,11 @@ def show(request, fbid, habit_id):
 
 # Allow users to add a habit
 def add_habit_page(request, fbid):
-    if not helper_util.user_exists(fbid):
+    if not helper_util.profile_exists(fbid):
         return HttpResponse(status=404)
 
-    current_user = User.objects.get(fbid=fbid)
-    if(not current_user):
+    current_profile = Profile.objects.get(fbid=fbid)
+    if(not current_profile):
         return HttpResponse("Invalid user")
 
     context = RequestContext(request, {

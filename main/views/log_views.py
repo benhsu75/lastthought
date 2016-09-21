@@ -70,13 +70,13 @@ def log_contexts(request, logcontext_id=None):
 
 def index(request, fbid):
     # Get user
-    if helper_util.user_exists(fbid):
-        current_user = User.objects.get(fbid=fbid)
+    if helper_util.profile_exists(fbid):
+        current_profile = Profile.objects.get(fbid=fbid)
     else:
         return HttpResponse(status=200)
 
     # Get log for this user
-    user_log = Log.find_or_create(current_user)
+    user_log = Log.find_or_create(current_profile)
 
     log_context_list = LogContext.objects.filter(log=user_log)
 
@@ -93,13 +93,13 @@ def index(request, fbid):
 
 def log_context_show(request, fbid, log_context_id):
      # Get user
-    if helper_util.user_exists(fbid):
-        current_user = User.objects.get(fbid=fbid)
+    if helper_util.profile_exists(fbid):
+        current_profile = Profile.objects.get(fbid=fbid)
     else:
         return HttpResponse(status=200)
 
     # Get log for this user
-    user_log = Log.find_or_create(current_user)
+    user_log = Log.find_or_create(current_profile)
 
     # Get objects
     log_context = LogContext.objects.get(id=log_context_id)

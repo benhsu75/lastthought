@@ -2,11 +2,11 @@ from main.models import *
 from datetime import datetime
 from django.utils import timezone
 
-def user_exists(fbid):
+def profile_exists(fbid):
     try:
-        user = User.objects.get(fbid=fbid)
+        profile = Profile.objects.get(fbid=fbid)
         return True
-    except User.DoesNotExist:
+    except Profile.DoesNotExist:
         return False
 
 def same_day_as_now(a):
