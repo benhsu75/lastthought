@@ -6,7 +6,7 @@ BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
 
 def create_new_user(fbid):
     # If user doesn't exist, create user
-    u = User(fbid=fbid)
+    u = Profile(fbid=fbid)
     u.save()
 
     # Get user profile information
@@ -18,10 +18,6 @@ def create_new_user(fbid):
         timezone,
         gender
         ) = fb_profile_helper.get_user_profile_data(fbid)
-
-    # Create background information for user
-    background_information = BackgroundInformation(user=u, locale=locale, profile_pic=profile_pic, timezone=timezone, gender=gender)
-    background_information.save()
 
     # Send user intro message
     welcome_message = "Hey "+ first_name +"! Nice to meet you. I'm Jarvis, here to help you keep a diary of your life!"

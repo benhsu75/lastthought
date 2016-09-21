@@ -131,9 +131,9 @@ def get_psid_from_account_linking_token(token):
 def handle_optin(fbid):
     # Check if user exists, if it does, do nothing
     try:
-        current_user = User.objects.get(fbid=fbid)
+        current_user = Profile.objects.get(fbid=fbid)
         return  # Do nothing
-    except User.DoesNotExist:
+    except Profile.DoesNotExist:
         pass
 
     onboarding_domain.create_new_user(fbid)
@@ -143,7 +143,7 @@ def handle_quick_reply(fbid, text, payload):
     state = payload['state']
 
     if helper_util.user_exists(fbid):
-        current_user = User.objects.get(fbid=fbid)
+        current_user = Profile.objects.get(fbid=fbid)
     else:
         return HttpResponse(status=200)
         # Should never get here
@@ -159,8 +159,8 @@ def handle_quick_reply(fbid, text, payload):
 # Handles postbacks
 def handle_postback(fbid, payload):
     try:
-        current_user = User.objects.get(fbid=fbid)
-    except User.DoesNotExist:
+        current_user = Profile.objects.get(fbid=fbid)
+    except Profile.DoesNotExist:
         send_api_helper.send_basic_text_message(
             fbid, "Something went wrong :("
         )
@@ -180,8 +180,8 @@ def handle_postback(fbid, payload):
 # When the user responds by sending any text message
 def handle_message_received(fbid, text):
     try:
-        current_user = User.objects.get(fbid=fbid)
-    except User.DoesNotExist:
+        current_user = Profile.objects.get(fbid=fbid)
+    except Profile.DoesNotExist:
         send_api_helper.send_basic_text_message(
             fbid, "Something went wrong :("
         )
@@ -203,8 +203,8 @@ def handle_message_received(fbid, text):
 
 def handle_image_received(fbid, image_url):
     try:
-        current_user = User.objects.get(fbid=fbid)
-    except User.DoesNotExist:
+        current_user = Profile.objects.get(fbid=fbid)
+    except Profile.DoesNotExist:
         send_api_helper.send_basic_text_message(
             fbid, "Something went wrong :("
         )

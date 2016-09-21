@@ -7,7 +7,7 @@ class Log(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(Profile)
 
     @staticmethod
     def find_or_create(current_user):
