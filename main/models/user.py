@@ -5,6 +5,7 @@ class Profile(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     fbid = models.CharField(max_length=200)
+    global_fbid = models.CharField(max_length=200, null=True)
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
 
