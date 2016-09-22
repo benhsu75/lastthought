@@ -12,7 +12,7 @@ import datetime
 from main.domains import onboarding_domain
 
 # Global handler for anything logs related
-def handle_logs_text(current_user, text, processed_text):
+def handle_logs_text(current_profile, text, processed_text):
     # Convert to UTF-8 (handles emojis)
     processed_text = processed_text.encode('utf-8')
 
@@ -20,8 +20,8 @@ def handle_logs_text(current_user, text, processed_text):
     print 'processed_text: ' + processed_text
 
     # User is adding new context
-    if nlp.user_is_in_log_context_prompt_state(current_user):
-        add_and_apply_new_context(current_user, text)
+    if nlp.user_is_in_log_context_prompt_state(current_profile):
+        add_and_apply_new_context(current_profile, text)
     # User is logging text or a number
     else:
         # Log the entry
@@ -30,33 +30,33 @@ def handle_logs_text(current_user, text, processed_text):
         if helper_util.is_number(entry_raw_text):
             numeric_value = float(entry_raw_text)
 
-            handle_numeric_log_entry(current_user, entry_raw_text)
+            handle_numeric_log_entry(current_profile, entry_raw_text)
         else:
-            handle_text_log_entry(current_user, entry_raw_text)
+            handle_text_log_entry(current_profile, entry_raw_text)
 
 # Helper method to send message for user to view logs
-def send_view_logs_message(current_user):
+def send_view_logs_message(current_profile):
     # Send user message linking to log
     log_view_message = (
         "Click to view your logs"
     )
-    send_api_helper.send_button_message(current_user.fbid, log_view_message, [
+    send_api_helper.send_button_message(current_profile.fbid, log_view_message, [
         {
             'type': 'web_url',
-            'url': constants.BASE_HEROKU_URL + '/users/'+str(current_user.fbid)+'/logs',
+            'url': constants.BASE_HEROKU_URL + '/users/'+str(current_profile.fbid)+'/logs',
             'title': 'See Logs'    
         }
     ])
     message_log.log_message(
         'log_view_message',
-        current_user,
+        current_profile,
         log_view_message,
         None
     )
 
 # Handles a text log entry
-def handle_text_log_entry(current_user, entry_text):
-    user_log = Log.find_or_create(current_user)
+def handle_text_log_entry(current_profile, entry_text):
+    user_log = Log.find_or_create(current_profile)
 
     num_log_entries = len(LogEntry.objects.filter(log=user_log))
     print "1 num_log_entries " + str(num_log_entries)
@@ -68,21 +68,21 @@ def handle_text_log_entry(current_user, entry_text):
     print "2 num_log_entries " + str(num_log_entries)
 
     # Ask the user to apply a context
-    send_context_message(current_user, "text", text_log_entry.id)
+    send_context_message(current_profile, "text", text_log_entry.id)
 
 # Handles a numeric log entry
-def handle_numeric_log_entry(current_user, numeric_value):
-    user_log = Log.find_or_create(current_user)
+def handle_numeric_log_entry(current_profile, numeric_value):
+    user_log = Log.find_or_create(current_profile)
 
     numeric_log_entry = NumericLogEntry(log=user_log, numeric_value=numeric_value, entry_type=1, occurred_at=datetime.datetime.now())
     numeric_log_entry.save()
 
     # Ask the user to apply a context
-    send_context_message(current_user, "numeric", numeric_log_entry.id)
+    send_context_message(current_profile, "numeric", numeric_log_entry.id)
 
 # Handles an image entry
-def handle_image_log_entry(current_user, image_url):
-    user_log = Log.find_or_create(current_user)
+def handle_image_log_entry(current_profile, image_url):
+    user_log = Log.find_or_create(current_profile)
 
     # Download image from FB
     print 'DOWNLOADING IMAGE FROM FB'
@@ -97,7 +97,7 @@ def handle_image_log_entry(current_user, image_url):
     # Upload to S3
     print 'UPLOADING TO S3'
     s3 = boto3.resource('s3')
-    random_id = str(current_user.fbid) + '-' + str(random.getrandbits(128))
+    random_id = str(current_profile.fbid) + '-' + str(random.getrandbits(128))
     image_file_name = random_id + '.jpg'
     # fp = StringIO(im)
     s3.Bucket('userdatagraph-images').put_object(Key=image_file_name, Body=StringIO(image_response.content))
@@ -111,20 +111,20 @@ def handle_image_log_entry(current_user, image_url):
     image_log_entry.save()
 
     # Ask the user to apply a context
-    send_context_message(current_user, "image", image_log_entry.id)
+    send_context_message(current_profile, "image", image_log_entry.id)
 
 # Helper method that asks the user to categorize their diary entry
-def send_context_message(current_user, entry_type, entry_id):
+def send_context_message(current_profile, entry_type, entry_id):
 
     # If first diary entry, then explain to user how categories work
-    user_log = Log.find_or_create(current_user)
+    user_log = Log.find_or_create(current_profile)
     num_log_entries = len(LogEntry.objects.filter(log=user_log))
     print "num_log_entries " + str(num_log_entries)
     if num_log_entries == 1:
-        onboarding_domain.send_categories_explanation_message(current_user)
+        onboarding_domain.send_categories_explanation_message(current_profile)
 
     # Send message to user to allow them to categorize their diary entry
-    user_log = Log.find_or_create(current_user)
+    user_log = Log.find_or_create(current_profile)
 
     log_contexts = LogContext.objects.filter(log=user_log).order_by('context_name')
 
@@ -170,27 +170,27 @@ def send_context_message(current_user, entry_type, entry_id):
 
     add_context_message = "Categorize your diary entry:"
     send_api_helper.send_quick_reply_message(
-        current_user.fbid,
+        current_profile.fbid,
         add_context_message,
         quick_replies
     )
     message_log.log_message(
         'log_add_context_message',
-        current_user,
+        current_profile,
         add_context_message,
         None
     )
 
 # Adds a new context based on the user response and applies that context to the log
-def add_and_apply_new_context(current_user, text):
+def add_and_apply_new_context(current_profile, text):
     message_log.log_message(
         'log_new_context_response',
-        current_user,
+        current_profile,
         text,
         None
     )
 
-    user_log = Log.objects.filter(user=current_user)[0]
+    user_log = Log.objects.filter(user=current_profile)[0]
     context = LogContext(log=user_log, context_name=text)
     context.save()
 
@@ -206,24 +206,24 @@ def add_and_apply_new_context(current_user, text):
         + " was applied to your log entry."
     )
     send_api_helper.send_basic_text_message(
-        current_user.fbid,
+        current_profile.fbid,
         successful_context_message
     )
     message_log.log_message(
         'log_successful_context_message',
-        current_user,
+        current_profile,
         successful_context_message,
         None
     )
 
     # Get user to create account
-    onboarding_domain.send_create_account_message(current_user)
+    onboarding_domain.send_create_account_message(current_profile)
 
 # Applies an existing context to the log
-def apply_context_to_log(current_user, text, payload):
+def apply_context_to_log(current_profile, text, payload):
     message_log.log_message(
         'log_context_response',
-        current_user,
+        current_profile,
         text,
         None
     )
@@ -253,30 +253,30 @@ def apply_context_to_log(current_user, text, payload):
             + " was applied to your diary entry."
         )
         send_api_helper.send_basic_text_message(
-            current_user.fbid,
+            current_profile.fbid,
             successful_context_message
         )
         message_log.log_message(
             'log_successful_context_message',
-            current_user,
+            current_profile,
             successful_context_message,
             None
         )
 
         # Get user to create account
-        onboarding_domain.send_create_account_message(current_user)
+        onboarding_domain.send_create_account_message(current_profile)
 
     elif "add_new_context_flag" in payload:
         new_context_message = (
             "What is the name of the category you want to add?"
         )
         send_api_helper.send_basic_text_message(
-            current_user.fbid,
+            current_profile.fbid,
             new_context_message
         )
         message_log.log_message(
             'log_new_context_message',
-            current_user,
+            current_profile,
             new_context_message,
             None
         )
@@ -285,16 +285,16 @@ def apply_context_to_log(current_user, text, payload):
             "I logged this for you!"
         )
         send_api_helper.send_basic_text_message(
-            current_user.fbid,
+            current_profile.fbid,
             log_confirm_message
         )
         message_log.log_message(
             'log_confirm_message',
-            current_user,
+            current_profile,
             log_confirm_message,
             None
         )
 
         # Get user to create account
-        onboarding_domain.send_create_account_message(current_user)
+        onboarding_domain.send_create_account_message(current_profile)
 

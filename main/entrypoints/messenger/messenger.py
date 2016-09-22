@@ -46,7 +46,7 @@ def messenger_callback(request):
             fbid = messaging['sender']['id']
 
             # If user doesn't exist, then start onboarding flow and create new user
-            if not helper_util.user_exists(fbid):
+            if not helper_util.profile_exists(fbid):
                 onboarding_domain.create_new_user(fbid)
                 continue
 
@@ -142,7 +142,7 @@ def handle_optin(fbid):
 def handle_quick_reply(fbid, text, payload):
     state = payload['state']
 
-    if helper_util.user_exists(fbid):
+    if helper_util.profile_exists(fbid):
         current_user = Profile.objects.get(fbid=fbid)
     else:
         return HttpResponse(status=200)

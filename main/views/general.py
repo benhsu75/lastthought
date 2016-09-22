@@ -55,7 +55,7 @@ def learn_more(request):
     return HttpResponse(template.render(context))
 
 def connect(request, fbid):
-    if not helper_util.user_exists(fbid):
+    if not helper_util.profile_exists(fbid):
         return HttpResponse(status=404)
     profile = Profile.objects.get(fbid=fbid)
 
