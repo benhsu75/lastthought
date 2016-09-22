@@ -18,7 +18,7 @@ def fblogin_redirect(request):
 
     # Make request to get access_token
     constructed_redirect_uri = constants.FB_LOGIN_REDIRECT_URI + "?state=" + fbid
-    access_token_url = 'https://graph.facebook.com/v2.3/oauth/access_token?client_id={}&redirect_uri={}&client_secret={}&code={}'.format(constants.FB_APP_ID, constructed_redirect_uri, constants.FB_CLIENT_SECRET, code)
+    access_token_url = 'https://graph.facebook.com/v2.6/oauth/access_token?client_id={}&redirect_uri={}&client_secret={}&code={}'.format(constants.FB_APP_ID, constructed_redirect_uri, constants.FB_CLIENT_SECRET, code)
 
     r = requests.get(access_token_url)
 
