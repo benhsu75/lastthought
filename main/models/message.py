@@ -7,7 +7,7 @@ class Message(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    user = models.ForeignKey(Profile)
+    profile = models.ForeignKey(Profile)
 
     # If false, then the message was sent from the user
     sent_to_user = models.BooleanField()
