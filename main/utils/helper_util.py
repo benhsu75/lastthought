@@ -9,6 +9,9 @@ def profile_exists(fbid):
     except Profile.DoesNotExist:
         return False
 
+def user_has_created_account(profile):
+    return hasattr(profile, 'user')
+
 def same_day_as_now(a):
     return (datetime.now(timezone.utc) - a).total_seconds() < 86400
 

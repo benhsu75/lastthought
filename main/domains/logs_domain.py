@@ -217,7 +217,8 @@ def add_and_apply_new_context(current_profile, text):
     )
 
     # Get user to create account
-    onboarding_domain.send_create_account_message(current_profile)
+    if not helper_util.user_has_created_account(current_profile):
+        onboarding_domain.send_create_account_message(current_profile)
 
 # Applies an existing context to the log
 def apply_context_to_log(current_profile, text, payload):
@@ -264,7 +265,8 @@ def apply_context_to_log(current_profile, text, payload):
         )
 
         # Get user to create account
-        onboarding_domain.send_create_account_message(current_profile)
+        if not helper_util.user_has_created_account(current_profile):
+            onboarding_domain.send_create_account_message(current_profile)
 
     elif "add_new_context_flag" in payload:
         new_context_message = (
@@ -296,5 +298,6 @@ def apply_context_to_log(current_profile, text, payload):
         )
 
         # Get user to create account
-        onboarding_domain.send_create_account_message(current_profile)
+        if not helper_util.user_has_created_account(current_profile):
+            onboarding_domain.send_create_account_message(current_profile)
 
