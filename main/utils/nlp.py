@@ -3,18 +3,18 @@ from datetime import datetime
 from main.utils import helper_util
 
 
-def is_habits_domain(current_user, processed_text):
+def is_habits_domain(current_profile, processed_text):
     # NLP Stuff
     if('habits' in processed_text):
         return True
-    elif user_is_in_habit_answer_prompt_state(current_user):
+    elif user_is_in_habit_answer_prompt_state(current_profile):
         return True
     else:
         return False
 
 
-def is_logs_domain(current_user, processed_text):
-    if user_is_in_log_context_prompt_state(current_user):
+def is_logs_domain(current_profile, processed_text):
+    if user_is_in_log_context_prompt_state(current_profile):
         return True
     return False
 
@@ -26,20 +26,20 @@ def is_logs_domain(current_user, processed_text):
 
 # Returns whether or not the last message in the message log
 # was us prompting a response
-def last_message_is_habit_prompt(current_user):
+def last_message_is_habit_prompt(current_profile):
     return Message.objects.filter(
-        user=current_user
+        profile=current_profile
     ).order_by('-id')[0].message_type == 6
 
 # Looks at the message history, and returns whether or not this
 # message is a response to a prompt
-def user_is_in_habit_answer_prompt_state(current_user):
-    if last_message_is_habit_prompt(current_user):
+def user_is_in_habit_answer_prompt_state(current_profile):
+    if last_message_is_habit_prompt(current_profile):
         return True
 
     # Get last prompt message
     prompt_message_list = Message.objects.filter(
-        user=current_user,
+        profile=current_profile,
         message_type=6
     ).order_by('-id')
     if len(prompt_message_list) > 0:
@@ -64,8 +64,8 @@ def user_is_in_habit_answer_prompt_state(current_user):
     return True
 
 
-def user_is_in_log_context_prompt_state(current_user):
+def user_is_in_log_context_prompt_state(current_profile):
     return Message.objects.filter(
-        user=current_user
+        profile=current_profile
     ).order_by('-id')[0].message_type == 30
 
