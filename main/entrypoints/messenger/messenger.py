@@ -7,8 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from main.message_log import message_log
 from main.utils import nlp, helper_util
-from main.domains import (habits_domain,
-                          logs_domain,
+from main.domains import (logs_domain,
                           onboarding_domain,
                           misunderstood_domain)
 import json
@@ -149,9 +148,7 @@ def handle_quick_reply(fbid, text, payload):
         # Should never get here
 
     # Switch on different quick reply states
-    if state == 'habit_binary_response':
-        habits_domain.handle_quick_reply(current_profile, text, payload)
-    elif state == 'log_context_response':
+    if state == 'log_context_response':
         logs_domain.apply_context_to_log(current_profile, text, payload)
     else:
         misunderstood_domain.handle_misunderstood(current_profile, text, text)
@@ -189,17 +186,9 @@ def handle_message_received(fbid, text):
 
     # Standardize text
     processed_text = text.strip().lower()
-
-    # Use nlp to determine which domain it goes under,
-    # then triage to that domain. The domain handles the
-    # sub-triaging within itself
-
-    if nlp.is_habits_domain(current_profile, processed_text):
-        habits_domain.handle_habits_text(current_profile, text, processed_text)
-
-    else:
-        # Handle everything else as a log
-        logs_domain.handle_logs_text(current_profile, text, processed_text)
+    
+    # Handle everything else as a log
+    logs_domain.handle_logs_text(current_profile, text, processed_text)
 
 def handle_image_received(fbid, image_url):
     try:
