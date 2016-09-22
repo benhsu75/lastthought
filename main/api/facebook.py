@@ -24,5 +24,3 @@ def get_fb_profile_with_id(access_token, id):
     r = requests.get(user_profile_url)
 
     print r.text
-
-    return real_fbid
