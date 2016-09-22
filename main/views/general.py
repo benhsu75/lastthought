@@ -30,7 +30,7 @@ def fblogin_redirect(request):
     real_fbid = facebook.get_fb_profile_info(access_token)
 
     # Get email or phone number
-    facebook.get_fb_profile_with_id(real_fbid)
+    facebook.get_fb_profile_with_id(access_token, real_fbid)
 
     # Create full account
     profile = Profile.objects.get(fbid=fbid)

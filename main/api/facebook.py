@@ -16,7 +16,7 @@ def get_fb_profile_info(access_token):
 
     return real_fbid
 
-def get_fb_profile_with_id(id):
+def get_fb_profile_with_id(access_token, id):
     user_profile_url = '{}{}?access_token={}'.format(FB_API_URL, id,access_token)
 
     print 'Going to GET: ' + user_profile_url
