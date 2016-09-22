@@ -42,7 +42,7 @@ def fblogin_redirect(request):
         profile.save()
 
         # Create user
-        user = User(username=, password=real_fbid)
+        # user = User(username=, password=real_fbid)
 
     # Tell the user that they finished creating an account
     onboarding_domain.send_finished_onboarding_message(profile)
