@@ -18,7 +18,7 @@ def fblogin_redirect(request):
 
     # Make request to get access_token
     constructed_redirect_uri = constants.FB_LOGIN_REDIRECT_URI + "?state=" + fbid
-    access_token_url = 'https://graph.facebook.com/v2.6/oauth/access_token?client_id={}&redirect_uri={}&client_secret={}&code={}'.format(constants.FB_APP_ID, constructed_redirect_uri, constants.FB_CLIENT_SECRET, code)
+    access_token_url = 'https://graph.facebook.com/v2.3/oauth/access_token?client_id={}&redirect_uri={}&client_secret={}&code={}'.format(constants.FB_APP_ID, constructed_redirect_uri, constants.FB_CLIENT_SECRET, code)
 
     r = requests.get(access_token_url)
 
@@ -28,6 +28,9 @@ def fblogin_redirect(request):
 
     # Make request for user profile information e.g. fbid
     real_fbid = facebook.get_fb_profile_info(access_token)
+
+    # Get email or phone number
+    facebook.get_fb_profile_with_id(real_fbid)
 
     # Create full account
     profile = Profile.objects.get(fbid=fbid)
