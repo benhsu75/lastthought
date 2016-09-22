@@ -10,6 +10,8 @@ def get_fb_profile_info(access_token):
 
     r = requests.get(user_profile_url)
 
+    print r.text
+
     real_fbid = r.json()['id']
 
     return real_fbid

@@ -7,6 +7,7 @@ import requests
 from django.shortcuts import redirect
 from main.api import facebook
 from main.domains import onboarding_domain
+from django.contrib.auth.models import User
 
 def fblogin_redirect(request):
     code = request.GET['code']
@@ -30,6 +31,18 @@ def fblogin_redirect(request):
 
     # Create full account
     profile = Profile.objects.get(fbid=fbid)
+
+    # Check if profile already has user account
+    if helper_util.user_has_created_account(profile):
+        # Don't do anything
+        x = 1
+    else:
+        # Update profile
+        profile.global_fbid = real_fbid
+        profile.save()
+
+        # Create user
+        user = User(username=, password=real_fbid)
 
     # Tell the user that they finished creating an account
     onboarding_domain.send_finished_onboarding_message(profile)

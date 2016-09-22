@@ -9,6 +9,7 @@ class Profile(models.Model):
 
     fbid = models.CharField(max_length=200)
     global_fbid = models.CharField(max_length=200, null=True)
+    
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
 
