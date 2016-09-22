@@ -131,7 +131,7 @@ def get_psid_from_account_linking_token(token):
 def handle_optin(fbid):
     # Check if user exists, if it does, do nothing
     try:
-        current_user = Profile.objects.get(fbid=fbid)
+        current_profile = Profile.objects.get(fbid=fbid)
         return  # Do nothing
     except Profile.DoesNotExist:
         pass
@@ -143,23 +143,23 @@ def handle_quick_reply(fbid, text, payload):
     state = payload['state']
 
     if helper_util.profile_exists(fbid):
-        current_user = Profile.objects.get(fbid=fbid)
+        current_profile = Profile.objects.get(fbid=fbid)
     else:
         return HttpResponse(status=200)
         # Should never get here
 
     # Switch on different quick reply states
     if state == 'habit_binary_response':
-        habits_domain.handle_quick_reply(current_user, text, payload)
+        habits_domain.handle_quick_reply(current_profile, text, payload)
     elif state == 'log_context_response':
-        logs_domain.apply_context_to_log(current_user, text, payload)
+        logs_domain.apply_context_to_log(current_profile, text, payload)
     else:
-        misunderstood_domain.handle_misunderstood(current_user, text, text)
+        misunderstood_domain.handle_misunderstood(current_profile, text, text)
 
 # Handles postbacks
 def handle_postback(fbid, payload):
     try:
-        current_user = Profile.objects.get(fbid=fbid)
+        current_profile = Profile.objects.get(fbid=fbid)
     except Profile.DoesNotExist:
         send_api_helper.send_basic_text_message(
             fbid, "Something went wrong :("
@@ -172,7 +172,7 @@ def handle_postback(fbid, payload):
     state = json_payload['state']
 
     if state == 'persistent_menu_view_logs':
-        logs_domain.send_view_logs_message(current_user)
+        logs_domain.send_view_logs_message(current_profile)
     else:
         # Error - never should reach here
         return
@@ -180,7 +180,7 @@ def handle_postback(fbid, payload):
 # When the user responds by sending any text message
 def handle_message_received(fbid, text):
     try:
-        current_user = Profile.objects.get(fbid=fbid)
+        current_profile = Profile.objects.get(fbid=fbid)
     except Profile.DoesNotExist:
         send_api_helper.send_basic_text_message(
             fbid, "Something went wrong :("
@@ -194,20 +194,20 @@ def handle_message_received(fbid, text):
     # then triage to that domain. The domain handles the
     # sub-triaging within itself
 
-    if nlp.is_habits_domain(current_user, processed_text):
-        habits_domain.handle_habits_text(current_user, text, processed_text)
+    if nlp.is_habits_domain(current_profile, processed_text):
+        habits_domain.handle_habits_text(current_profile, text, processed_text)
 
     else:
         # Handle everything else as a log
-        logs_domain.handle_logs_text(current_user, text, processed_text)
+        logs_domain.handle_logs_text(current_profile, text, processed_text)
 
 def handle_image_received(fbid, image_url):
     try:
-        current_user = Profile.objects.get(fbid=fbid)
+        current_profile = Profile.objects.get(fbid=fbid)
     except Profile.DoesNotExist:
         send_api_helper.send_basic_text_message(
             fbid, "Something went wrong :("
         )
         return
 
-    logs_domain.handle_image_log_entry(current_user, image_url)
+    logs_domain.handle_image_log_entry(current_profile, image_url)
