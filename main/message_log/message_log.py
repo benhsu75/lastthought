@@ -46,7 +46,7 @@ message_mapping = {
 }
 
 
-def log_message(message_key, user, text, data):
+def log_message(message_key, profile, text, data):
     # Validate that message_key is valid
     if message_key not in message_mapping:
         return False
@@ -59,7 +59,7 @@ def log_message(message_key, user, text, data):
 
     message_type = message_mapping[message_key]
     m = Message(
-        user=user,
+        profile=profile,
         sent_to_user=sent_to_user,
         message_type=message_type,
         text=text
