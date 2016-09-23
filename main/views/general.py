@@ -13,6 +13,7 @@ from django.contrib.auth import login, authenticate
 def fblogin_redirect(request):
     code = request.GET['code']
 
+    # state won't be fbid if the user is logging in
     if 'state' in request.GET:
         fbid = request.GET['state']
     else:
@@ -35,9 +36,21 @@ def fblogin_redirect(request):
     # Make request for user profile information e.g. fbid
     (real_fbid, email) = facebook.get_profile_info(access_token)
 
-    # Check if user already exists (with this real_fbid)
-    profile = Profile.objects.get(global_fbid=real_fbid)
-    if helper_util.user_has_created_account(profile):
+    # Check that getting profile info worked
+    if not real_fbid:
+            # Something wrong happened, error out
+            x = 1
+
+        if email:
+            username = email
+        else:
+            username = real_fbid
+        password = real_fbid
+
+
+    try:
+        profile = Profile.objects.get(global_fbid=real_fbid)
+
         # Log the user in
         user = profile.user
 
@@ -50,42 +63,41 @@ def fblogin_redirect(request):
             x = 1
         return redirect('/')
 
-    if not real_fbid:
-        # Something wrong happened, error out
-        x = 1
+    except Profile.DoesNotExist:
+        if login_flag:
+            # User is trying to login but doesn't have a profile, so redirect them to the messenger bot to link the accounts
 
-    if email:
-        username = email
-    else:
-        username = real_fbid
-    password = real_fbid
+            # TODO
+            return redirect('/')
+        else:
+            # User is linking account
+            
+            # Create user
+            user = User.objects.create_user(username=username, password=password)
 
-    # Create user
-    user = User.objects.create_user(username=username, password=password)
+            # Update profile
+            profile.global_fbid = real_fbid
+            profile.user = user
 
-    # Update profile
-    profile.global_fbid = real_fbid
-    profile.user = user
+            # Set email if we got it
+            if email:
+                profile.email = email
 
-    # Set email if we got it
-    if email:
-        profile.email = email
+            profile.save()
 
-    profile.save()
+            # Log in user
+            user = authenticate(username=user.username, password=real_fbid)
+            print user
+            if user is not None:
+                'LOGGING USER IN'
+                login(request, user)
+            else:
+                print 'USER IS NONE'
 
-    # Log in user
-    user = authenticate(username=user.username, password=real_fbid)
-    print user
-    if user is not None:
-        'LOGGING USER IN'
-        login(request, user)
-    else:
-        print 'USER IS NONE'
+            # Tell the user that they finished creating an account
+            onboarding_domain.send_finished_onboarding_message(profile)
 
-    # Tell the user that they finished creating an account
-    onboarding_domain.send_finished_onboarding_message(profile)
-
-    return redirect('/')
+            return redirect('/')
 
 def fblogin_view(request, fbid, redirect_uri):
     context = RequestContext(request, {

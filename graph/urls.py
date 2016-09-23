@@ -18,6 +18,9 @@ urlpatterns = [
     url(r'^fblogin_view/', general.fblogin_view),
     url(r'^fblogin_redirect/', general.fblogin_redirect),
 
+    # Account management
+    url(r'^logout/', general.logout),
+
     # Log endpoints
     url(r'^logs/(?P<logentry_id>\d+)/$', log_views.logs),
     url(r'^logs/$', log_views.logs),
