@@ -8,7 +8,7 @@ from django.shortcuts import redirect
 from main.api import facebook
 from main.domains import onboarding_domain
 from django.contrib.auth.models import User
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 
 def fblogin_redirect(request):
     code = request.GET['code']
