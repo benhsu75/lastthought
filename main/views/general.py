@@ -14,21 +14,6 @@ def fblogin_redirect(request):
     code = request.GET['code']
     fbid = request.GET['state']
 
-    # Check if user already exists
-    profile = Profile.objects.get(fbid=fbid)
-    if helper_util.user_has_created_account(profile):
-        # Log the user in
-        user = profile.user
-
-        user = authenticate(username=user.username, password=profile.global_fbid)
-
-        if user is not None:
-            login(request, user)
-        else:
-            # TODO
-            x = 1
-        return redirect('/')
-
     # Make request to get access_token
     constructed_redirect_uri = constants.FB_LOGIN_REDIRECT_URI + "?state=" + fbid
     access_token_url = 'https://graph.facebook.com/v2.3/oauth/access_token?client_id={}&redirect_uri={}&client_secret={}&code={}'.format(constants.FB_APP_ID, constructed_redirect_uri, constants.FB_CLIENT_SECRET, code)
@@ -41,6 +26,21 @@ def fblogin_redirect(request):
 
     # Make request for user profile information e.g. fbid
     (real_fbid, email) = facebook.get_profile_info(access_token)
+
+    # Check if user already exists (with this real_fbid)
+    profile = Profile.objects.get(global_fbid=real_fbid)
+    if helper_util.user_has_created_account(profile):
+        # Log the user in
+        user = profile.user
+
+        user = authenticate(username=user.username, password=profile.global_fbid)
+
+        if user is not None:
+            login(request, user)
+        else:
+            # TODO
+            x = 1
+        return redirect('/')
 
     if not real_fbid:
         # Something wrong happened, error out
