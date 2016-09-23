@@ -13,8 +13,11 @@ def fblogin_redirect(request):
     code = request.GET['code']
     fbid = request.GET['state']
 
-    print 'IN FB LOGIN REDIRECT'
-    print 'STATE ' + fbid
+    # Check if user already exists
+    profile = Profile.objects.get(fbid=fbid)
+    if helper_util.user_has_created_account(profile):
+        # Don't do anything
+        x = 1
 
     # Make request to get access_token
     constructed_redirect_uri = constants.FB_LOGIN_REDIRECT_URI + "?state=" + fbid
@@ -27,25 +30,31 @@ def fblogin_redirect(request):
     access_token = r.json()['access_token']
 
     # Make request for user profile information e.g. fbid
-    real_fbid = facebook.get_fb_profile_info(access_token)
+    (real_fbid, email) = facebook.get_profile_info(access_token)
 
-    # Get email or phone number
-    # facebook.get_fb_profile_with_id(access_token, real_fbid)
-
-    # Create full account
-    profile = Profile.objects.get(fbid=fbid)
-
-    # Check if profile already has user account
-    if helper_util.user_has_created_account(profile):
-        # Don't do anything
+    if not real_fbid:
+        # Something wrong happened, error out
         x = 1
-    else:
-        # Update profile
-        profile.global_fbid = real_fbid
-        profile.save()
 
-        # Create user
-        # user = User(username=, password=real_fbid)
+    if email:
+        username = email
+    else:
+        username = real_fbid
+    password = real_fbid
+
+    # Create user
+    user = User(username=username, password=real_fbid)
+    user.save()
+
+    # Update profile
+    profile.global_fbid = real_fbid
+    profile.user = user
+
+    # Set email if we got it
+    if email:
+        profile.email = email
+
+    profile.save()
 
     # Tell the user that they finished creating an account
     onboarding_domain.send_finished_onboarding_message(profile)

@@ -13,6 +13,8 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
 
+    email = models.CharField(max_length=200, null=True)
+
 # Models for third party connection
 class ThirdPartyConnection(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)

@@ -3,24 +3,18 @@ import requests
 FB_API_URL = 'https://graph.facebook.com/v2.7/'
 
 # Hits the /me endpoint to get the user's id
-def get_fb_profile_info(access_token):
+def get_profile_info(access_token):
     user_profile_url = '{}me?access_token={}&fields=email'.format(FB_API_URL, access_token)
 
-    print 'Going to GET: ' + user_profile_url
-
     r = requests.get(user_profile_url)
 
-    print r.text
+    real_fbid = None
+    email = None
 
-    real_fbid = r.json()['id']
+    if 'id' in r.json():
+        real_fbid = r.json()['id']
 
-    return real_fbid
+    if 'email' in r.json():
+        email = r.json()['email']
 
-def get_fb_profile_with_id(access_token, id):
-    user_profile_url = '{}{}?access_token={}'.format(FB_API_URL, id,access_token)
-
-    print 'Going to GET: ' + user_profile_url
-
-    r = requests.get(user_profile_url)
-
-    print r.text
+    return (real_fbid, email)
