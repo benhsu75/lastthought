@@ -152,7 +152,7 @@ def send_context_message(current_profile, entry_type, entry_id):
                 "log_entry_id": entry_id
             })
             quick_replies.append({
-                "content_type": entry_type,
+                "content_type": "text",
                 "title": context.context_name,
                 "payload": payload
             })
