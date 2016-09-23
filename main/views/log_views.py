@@ -68,11 +68,11 @@ def log_contexts(request, logcontext_id=None):
         return HttpResponse(status=404)
 
 # View methods
-
 def index(request, fbid):
     # Check if user is authenticated
-    if not request.user_is_authenticated:
-        redirect('/')
+    if not request.user.is_authenticated():
+        print 'HEREEEE'
+        return redirect('/')
     else:
         # Get user
         if helper_util.profile_exists(fbid):

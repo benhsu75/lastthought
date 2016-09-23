@@ -8,6 +8,7 @@ from django.shortcuts import redirect
 from main.api import facebook
 from main.domains import onboarding_domain
 from django.contrib.auth.models import User
+from django.contrib.auth import login
 
 def fblogin_redirect(request):
     code = request.GET['code']
@@ -73,9 +74,13 @@ def fblogin_view(request, fbid, redirect_uri):
     return HttpResponse(template.render(context))
 
 def index(request):
-    if request.user_is_authenticated:
+    print 'index'
+    if request.user.is_authenticated():
+        print 'username: ' + request.user.username
+        print request.user
+        print request.user.id
         logs_of_user_url = 'users/{}/logs'.format(request.user.profile.fbid)
-        
+
         redirect(logs_of_user_url)
     else:   
         context = RequestContext(request, {})
