@@ -8,8 +8,8 @@ import boto3
 import requests
 from PIL import Image
 import random
-import datetime
 from main.domains import onboarding_domain
+import datetime
 
 # Global handler for anything logs related
 def handle_logs_text(current_profile, text, processed_text):
@@ -152,7 +152,7 @@ def send_context_message(current_profile, entry_type, entry_id):
                 "log_entry_id": entry_id
             })
             quick_replies.append({
-                "content_type": entry_type,
+                "content_type": "text",
                 "title": context.context_name,
                 "payload": payload
             })
@@ -218,6 +218,7 @@ def add_and_apply_new_context(current_profile, text):
 
     # Get user to create account
     if not helper_util.user_has_created_account(current_profile):
+        onboarding_domain.send_almost_done_message(current_profile)
         onboarding_domain.send_create_account_message(current_profile)
 
 # Applies an existing context to the log
@@ -266,6 +267,7 @@ def apply_context_to_log(current_profile, text, payload):
 
         # Get user to create account
         if not helper_util.user_has_created_account(current_profile):
+            onboarding_domain.send_almost_done_message(current_profile)
             onboarding_domain.send_create_account_message(current_profile)
 
     elif "add_new_context_flag" in payload:
@@ -299,5 +301,6 @@ def apply_context_to_log(current_profile, text, payload):
 
         # Get user to create account
         if not helper_util.user_has_created_account(current_profile):
+            onboarding_domain.send_almost_done_message(current_profile)
             onboarding_domain.send_create_account_message(current_profile)
 

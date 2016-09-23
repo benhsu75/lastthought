@@ -54,7 +54,8 @@ def send_quick_reply_message(fbid, text, quick_replies):
     }
     url_to_post = constants.FB_SEND_BASE_URL + constants.FB_PAGE_ACCESS_TOKEN
     r = requests.post(url_to_post, json=send_payload)
-    print(r.text)
+    print 'QUICK REPLY RESPONSE '
+    print r.text
 
 # Sends a message with account linking functionality
 def send_account_link_message(fbid, text):

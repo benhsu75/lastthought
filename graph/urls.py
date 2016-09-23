@@ -7,9 +7,6 @@ from django.conf import settings
 urlpatterns = [
     url(r'^$', general.index),
 
-    # Static pages
-    url(r'^learn_more/', general.learn_more),
-
     # Messenger webhooks
     url(r'^messenger_callback/', messenger.messenger_callback),
     url(r'^messenger_account_link/', messenger.account_link),
@@ -21,6 +18,7 @@ urlpatterns = [
     # Account management
     url(r'^logout/', general.logout_view),
     url(r'^login/', general.login_view),
+    url(r'^try/', general.try_view),
 
     # Log endpoints
     url(r'^logs/(?P<logentry_id>\d+)/$', log_views.logs),

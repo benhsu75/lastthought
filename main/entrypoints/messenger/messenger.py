@@ -95,7 +95,7 @@ def messenger_callback(request):
                     # TODO
             elif 'optin' in messaging:
                 # Plugin authentication webhook
-                handle_optin(fbid)
+                handle_optin(messaging)
             elif 'postback' in messaging:
                 # Postback webhook
                 payload = messaging['postback']['payload']
@@ -126,15 +126,19 @@ def get_psid_from_account_linking_token(token):
     return psid
 
 # Sends the user our initial message
-def handle_optin(fbid):
-    # Check if user exists, if it does, do nothing
-    try:
-        current_profile = Profile.objects.get(fbid=fbid)
-        return  # Do nothing
-    except Profile.DoesNotExist:
-        pass
+def handle_optin(messaging):
+    # Get pass through param
+    pass_through_param = messaging['optin']['ref']
+    fbid = messaging['sender']['id']
 
-    onboarding_domain.create_new_user(fbid)
+    if pass_through_param == 'TRY':
+        # Check if profile exists
+        if helper_util.profile_exists(fbid):
+            profile = Profile.objects.get(fbid=fbid)
+            onboarding_domain.send_almost_done_message(profile)
+            onboarding_domain.send_create_account_message(profile)
+        else:
+            onboarding_domain.create_new_user(fbid)
 
 # When the user responds by tapping a quick reply
 def handle_quick_reply(fbid, text, payload):
@@ -157,18 +161,27 @@ def handle_postback(fbid, payload):
     try:
         current_profile = Profile.objects.get(fbid=fbid)
     except Profile.DoesNotExist:
-        send_api_helper.send_basic_text_message(
-            fbid, "Something went wrong :("
-        )
-        return
+        onboarding_domain.create_new_user(fbid)
 
     json_payload = json.loads(payload)
+    print 'HANDLE POSTBACK'
     print json_payload
 
     state = json_payload['state']
 
     if state == 'persistent_menu_view_logs':
-        logs_domain.send_view_logs_message(current_profile)
+        if helper_util.user_has_created_account(current_profile): 
+            logs_domain.send_view_logs_message(current_profile)
+        else:
+            # Tell user to link account before viewing logs
+            explain_link_message = 'Before you can view your logs, create an account here:'
+            send_api_helper.send_basic_text_message(current_profile.fbid, explain_link_message)
+            message_log.log_message('explain_link_message', current_profile, explain_link_message, None)
+
+            onboarding_domain.send_create_account_message(current_profile)
+    elif state == 'get_started':
+        # Create user
+        onboarding_domain.create_new_user(fbid)
     else:
         # Error - never should reach here
         return
