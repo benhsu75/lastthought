@@ -68,7 +68,7 @@ def fblogin_redirect(request):
             # User is trying to login but doesn't have a profile, so redirect them to the messenger bot to link the accounts
 
             # TODO
-            return redirect('/')
+            return redirect('/try')
         else:
             # User is linking account
             profile = Profile.objects.get(fbid=fbid)
@@ -124,6 +124,17 @@ def logout_view(request):
     # Redirect to home page
     return redirect('/')
  
+def try_view(request):
+    # If user logged in already
+    if request.user.is_authenticated():
+        return redirect('/')
+
+    # Return view
+    context = RequestContext(request, {
+    })
+    template = loader.get_template('main/try.html')
+    return HttpResponse(template.render(context))
+
 def login_view(request):
     # If user logged in already
     if request.user.is_authenticated():
