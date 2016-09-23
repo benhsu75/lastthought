@@ -105,6 +105,11 @@ def fblogin_view(request, fbid, redirect_uri):
     if request.user.is_authenticated():
         return redirect('/')
 
+    # If user already linked account before
+    profile = Profile.objects.get(fbid=fbid)
+    if helper_util.user_has_created_account(profile):
+        return redirect('/login')
+
     context = RequestContext(request, {
         'fbid' : fbid,
         'redirect_uri' : redirect_uri

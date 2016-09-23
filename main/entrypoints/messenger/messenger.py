@@ -112,7 +112,6 @@ def account_link(request):
     # Get the PSID with the account_linking_token
     psid = get_psid_from_account_linking_token(account_linking_token)
 
-    # return redirect('/fblogin_view?fbid={}&redirect_uri={}'.format(psid, redirect_uri))
     return general.fblogin_view(request, psid, redirect_uri)
 
 def get_psid_from_account_linking_token(token):
