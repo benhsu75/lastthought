@@ -16,7 +16,7 @@ def create_new_user(fbid):
         profile_pic,
         locale,
         timezone,
-        gender
+        gender32
         ) = fb_profile_helper.get_user_profile_data(fbid)
 
     # Send user intro message
@@ -32,13 +32,7 @@ def create_new_user(fbid):
 
 def send_learn_more_message(current_profile):
     learn_more_message = "It's super simple - anytime you want to remember something, whether it be a thought, photo, or video, simply send it to me and I'll store it for you!"
-    send_api_helper.send_button_message(current_profile.fbid, learn_more_message, [
-            {
-                'type': 'web_url',
-                'url': 'http://userdatagraph.herokuapp.com/learn_more',
-                'title': 'Learn More'
-            }
-        ])
+    send_api_helper.send_basic_text_message(current_profile.fbid, learn_more_message)
     message_log.log_message('learn_more_message', current_profile, learn_more_message, None)
 
 def send_get_started_message(current_profile):
