@@ -38,15 +38,14 @@ def fblogin_redirect(request):
 
     # Check that getting profile info worked
     if not real_fbid:
-            # Something wrong happened, error out
-            x = 1
+        # Something wrong happened, error out
+        x = 1
 
-        if email:
-            username = email
-        else:
-            username = real_fbid
-        password = real_fbid
-
+    if email:
+        username = email
+    else:
+        username = real_fbid
+    password = real_fbid
 
     try:
         profile = Profile.objects.get(global_fbid=real_fbid)
@@ -71,7 +70,7 @@ def fblogin_redirect(request):
             return redirect('/')
         else:
             # User is linking account
-            
+
             # Create user
             user = User.objects.create_user(username=username, password=password)
 
