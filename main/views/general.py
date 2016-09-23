@@ -55,8 +55,7 @@ def fblogin_redirect(request):
     password = real_fbid
 
     # Create user
-    user = User(username=username, password=real_fbid)
-    user.save()
+    user = User.objects.create_user(username=username, password=password)
 
     # Update profile
     profile.global_fbid = real_fbid
