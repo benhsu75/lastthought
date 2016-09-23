@@ -167,6 +167,7 @@ def handle_postback(fbid, payload):
         return
 
     json_payload = json.loads(payload)
+    print 'HANDLE POSTBACK'
     print json_payload
 
     state = json_payload['state']
@@ -181,6 +182,9 @@ def handle_postback(fbid, payload):
             message_log.log_message('explain_link_message', current_profile, explain_link_message, None)
 
             onboarding_domain.send_create_account_message(current_profile)
+    elif state == 'get_started':
+        # Create user
+        onboarding_domain.create_new_user(fbid)
     else:
         # Error - never should reach here
         return
