@@ -95,6 +95,13 @@ def fblogin_view(request, fbid, redirect_uri):
     template = loader.get_template('main/fblogin_view.html')
     return HttpResponse(template.render(context))
 
+def logout(request):
+    # Log the user out
+    logout(request)
+
+    # Redirect to home page
+    return redirect('/')
+
 def index(request):
     print 'index'
     if request.user.is_authenticated():
