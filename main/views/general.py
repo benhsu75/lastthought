@@ -18,8 +18,10 @@ def fblogin_redirect(request):
     profile = Profile.objects.get(fbid=fbid)
     if helper_util.user_has_created_account(profile):
         # Don't do anything
-        x = 1
-
+        print ' HERE'
+        return redirect('/')
+    print 'OUT HERE'
+    
     # Make request to get access_token
     constructed_redirect_uri = constants.FB_LOGIN_REDIRECT_URI + "?state=" + fbid
     access_token_url = 'https://graph.facebook.com/v2.3/oauth/access_token?client_id={}&redirect_uri={}&client_secret={}&code={}'.format(constants.FB_APP_ID, constructed_redirect_uri, constants.FB_CLIENT_SECRET, code)
@@ -58,8 +60,11 @@ def fblogin_redirect(request):
     profile.save()
 
     # Log in user
-    authenticate(username=user.username, password=real_fbid)
-    login(request, user)
+    user = authenticate(username=user.username, password=real_fbid)
+    if user is not None:
+        login(request, user)
+    else:
+        print 'USER IS NONE'
 
     # Tell the user that they finished creating an account
     onboarding_domain.send_finished_onboarding_message(profile)
