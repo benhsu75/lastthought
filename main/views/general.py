@@ -15,6 +15,7 @@ def fblogin_redirect(request):
 
     # state won't be fbid if the user is logging in
     if 'state' in request.GET:
+        login_flag = False
         fbid = request.GET['state']
     else:
         login_flag = True
