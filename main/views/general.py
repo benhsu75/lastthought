@@ -12,7 +12,11 @@ from django.contrib.auth import login, authenticate
 
 def fblogin_redirect(request):
     code = request.GET['code']
-    fbid = request.GET['state']
+
+    if 'state' in request.GET:
+        fbid = request.GET['state']
+    else:
+        login_flag = True
 
     # Make request to get access_token
     constructed_redirect_uri = constants.FB_LOGIN_REDIRECT_URI + "?state=" + fbid
