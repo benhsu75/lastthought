@@ -9,6 +9,7 @@ import requests
 from PIL import Image
 import random
 from main.domains import onboarding_domain
+import datetime
 
 # Global handler for anything logs related
 def handle_logs_text(current_profile, text, processed_text):
