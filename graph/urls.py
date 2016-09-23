@@ -29,13 +29,23 @@ urlpatterns = [
     url(r'^log_contexts/(?P<logcontext_id>\d+)/$', log_views.log_contexts),
 
     # Display endpoints
-    url(r'^users/(?P<fbid>\d+)/logs', log_views.index),
-    url(r'^users/(?P<fbid>\d+)/log_context/(?P<log_context_id>\d+)', log_views.log_context_show),
+    # url(r'^users/(?P<fbid>\d+)/logs', log_views.index),
+    url(
+        r'^users/(?P<fbid>\d+)/log_context/(?P<log_context_id>\d+)',
+        log_views.log_context_show
+    ),
 
+    # Test endpoints
+    url(r'^users/(?P<fbid>\d+)/logs_test', log_views.indexTest),
 ]
 
 # Ensure static files are accessible
 if True:
-    urlpatterns += patterns('',
-        (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
+    urlpatterns += patterns(
+        '',
+        (
+            r'^static/(?P<path>.*)$',
+            'django.views.static.serve',
+            {'document_root': settings.STATIC_ROOT}
+        ),
     )
