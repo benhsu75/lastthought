@@ -58,6 +58,7 @@ def fblogin_redirect(request):
     profile.save()
 
     # Log in user
+    authenticate(username=user.username, password=real_fbid)
     login(request, user)
 
     # Tell the user that they finished creating an account
