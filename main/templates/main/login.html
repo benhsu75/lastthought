@@ -2,8 +2,33 @@
 <html>
 <head>
     <title>Login</title>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '257720774614110',
+          xfbml      : true,
+          version    : 'v2.7'
+        });
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
 </head>
 <body>
     <a href="https://www.facebook.com/dialog/oauth?client_id=257720774614110&redirect_uri=https://userdatagraph.herokuapp.com/fblogin_redirect&response_type=code&scope=public_profile,email">Login with Facebook</a>
+    <br>
+    <br>
+    <div class="fb-messengermessageus" 
+      messenger_app_id="257720774614110" 
+      page_id="609388442561960" 
+      data-ref="" 
+      color="blue" 
+      size="large"></div>
 </body>
 </html>
