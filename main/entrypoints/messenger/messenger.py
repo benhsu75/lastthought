@@ -161,10 +161,7 @@ def handle_postback(fbid, payload):
     try:
         current_profile = Profile.objects.get(fbid=fbid)
     except Profile.DoesNotExist:
-        send_api_helper.send_basic_text_message(
-            fbid, "Something went wrong :("
-        )
-        return
+        onboarding_domain.create_new_user(fbid)
 
     json_payload = json.loads(payload)
     print 'HANDLE POSTBACK'
