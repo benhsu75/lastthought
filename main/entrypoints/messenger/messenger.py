@@ -95,7 +95,7 @@ def messenger_callback(request):
                     # TODO
             elif 'optin' in messaging:
                 # Plugin authentication webhook
-                handle_optin(fbid)
+                handle_optin(messaging)
             elif 'postback' in messaging:
                 # Postback webhook
                 payload = messaging['postback']['payload']
@@ -126,15 +126,19 @@ def get_psid_from_account_linking_token(token):
     return psid
 
 # Sends the user our initial message
-def handle_optin(fbid):
-    # Check if user exists, if it does, do nothing
-    try:
-        current_profile = Profile.objects.get(fbid=fbid)
-        return  # Do nothing
-    except Profile.DoesNotExist:
-        pass
+def handle_optin(messaging):
+    # Get pass through param
+    pass_through_param = messaging['optin']['ref']
+    fbid = messaging['sender']['id']
 
-    onboarding_domain.create_new_user(fbid)
+    if pass_through_param == 'TRY':
+        # Check if profile exists
+        if helper_util.profile_exists(fbid):
+            profile = Profile.objects.get(fbid=fbid)
+            onboarding_domain.send_almost_done_message(profile)
+            onboarding_domain.send_create_account_message(profile)
+        else:
+            onboarding_domain.create_new_user(fbid)
 
 # When the user responds by tapping a quick reply
 def handle_quick_reply(fbid, text, payload):
