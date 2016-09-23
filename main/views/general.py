@@ -101,6 +101,10 @@ def fblogin_redirect(request):
             return redirect('/')
 
 def fblogin_view(request, fbid, redirect_uri):
+    # If logged in go to '/'
+    if request.user.is_authenticated():
+        return redirect('/')
+
     context = RequestContext(request, {
         'fbid' : fbid,
         'redirect_uri' : redirect_uri
