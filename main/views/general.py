@@ -71,6 +71,7 @@ def fblogin_redirect(request):
             return redirect('/')
         else:
             # User is linking account
+            profile = Profile.objects.get(fbid=fbid)
 
             # Create user
             user = User.objects.create_user(username=username, password=password)
