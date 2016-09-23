@@ -23,13 +23,11 @@ def fblogin_redirect(request):
         user = authenticate(username=user.username, password=profile.global_fbid)
 
         if user is not None:
-            print 'Logging in'
             login(request, user)
         else:
-            print 'Can\'t log in'
-
+            # TODO
+            x = 1
         return redirect('/')
-    print 'OUT HERE'
 
     # Make request to get access_token
     constructed_redirect_uri = constants.FB_LOGIN_REDIRECT_URI + "?state=" + fbid
