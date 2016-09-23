@@ -168,7 +168,15 @@ def handle_postback(fbid, payload):
     state = json_payload['state']
 
     if state == 'persistent_menu_view_logs':
-        logs_domain.send_view_logs_message(current_profile)
+        if helper_util.user_has_created_account(current_profile): 
+            logs_domain.send_view_logs_message(current_profile)
+        else:
+            # Tell user to link account before viewing logs
+            explain_link_message = 'Before you can view your logs, create an account here:'
+            send_api_helper.send_basic_text_message(current_profile.fbid, explain_link_message)
+            message_log.log_message('explain_link_message', current_profile, explain_link_message, None)
+
+            onboarding_domain.send_create_account_message(current_profile)
     else:
         # Error - never should reach here
         return

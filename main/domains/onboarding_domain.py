@@ -30,7 +30,6 @@ def create_new_user(fbid):
     # Send get started message
     send_get_started_message(p)
 
-
 def send_learn_more_message(current_profile):
     learn_more_message = "It's super simple - anytime you want to remember something, whether it be a thought, photo, or video, simply send it to me and I'll store it for you!"
     send_api_helper.send_button_message(current_profile.fbid, learn_more_message, [
@@ -52,13 +51,13 @@ def send_categories_explanation_message(current_profile):
     send_api_helper.send_basic_text_message(current_profile.fbid, categories_explanation_message)
     message_log.log_message('categories_explanation_message', current_profile, categories_explanation_message, None)
 
-def send_create_account_message(current_profile):
-
+def send_almost_done_message(current_profile):
     # Send message explaining
     explain_link_message = 'You\'re almost done. All you need to do is create an account so you can view your diary on the web or on your phone. Create an account here:'
     send_api_helper.send_basic_text_message(current_profile.fbid, explain_link_message)
     message_log.log_message('explain_link_message', current_profile, explain_link_message, None)
 
+def send_create_account_message(current_profile):
     # Send account linking message
     sign_up_message = 'Sign Up!'
     send_api_helper.send_account_link_message(current_profile.fbid, sign_up_message)
