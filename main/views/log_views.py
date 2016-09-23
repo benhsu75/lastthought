@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.template import RequestContext, loader
 from main.models import *
 
+from django.shortcuts import redirect
 import json
 from django.core import serializers
 from main.utils import helper_util
@@ -69,27 +70,31 @@ def log_contexts(request, logcontext_id=None):
 # View methods
 
 def index(request, fbid):
-    # Get user
-    if helper_util.profile_exists(fbid):
-        current_profile = Profile.objects.get(fbid=fbid)
+    # Check if user is authenticated
+    if not request.user_is_authenticated:
+        redirect('/')
     else:
-        return HttpResponse(status=200)
+        # Get user
+        if helper_util.profile_exists(fbid):
+            current_profile = Profile.objects.get(fbid=fbid)
+        else:
+            return HttpResponse(status=200)
 
-    # Get log for this user
-    user_log = Log.find_or_create(current_profile)
+        # Get log for this user
+        user_log = Log.find_or_create(current_profile)
 
-    log_context_list = LogContext.objects.filter(log=user_log)
+        log_context_list = LogContext.objects.filter(log=user_log)
 
-    # TODO PAGINATION, but for interim, limit results so page doesn't load SUPER slowly
-    log_entry_list = LogEntry.objects.filter(log=user_log).order_by('-occurred_at')[:100]  
-    
-    context = RequestContext(request, {
-        'fbid': fbid,
-        'log_context_list' : log_context_list,
-        'log_entry_list' : log_entry_list
-    })
-    template = loader.get_template('log/index.html')
-    return HttpResponse(template.render(context))
+        # TODO PAGINATION, but for interim, limit results so page doesn't load SUPER slowly
+        log_entry_list = LogEntry.objects.filter(log=user_log).order_by('-occurred_at')[:100]  
+        
+        context = RequestContext(request, {
+            'fbid': fbid,
+            'log_context_list' : log_context_list,
+            'log_entry_list' : log_entry_list
+        })
+        template = loader.get_template('log/index.html')
+        return HttpResponse(template.render(context))
 
 def log_context_show(request, fbid, log_context_id):
      # Get user
