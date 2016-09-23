@@ -118,6 +118,17 @@ def logout_view(request):
 
     # Redirect to home page
     return redirect('/')
+ 
+def login_view(request):
+    # If user logged in already
+    if request.user.is_authenticated():
+        return redirect('/')
+
+    # Return view
+    context = RequestContext(request, {
+    })
+    template = loader.get_template('main/login.html')
+    return HttpResponse(template.render(context))
 
 def index(request):
     print 'index'

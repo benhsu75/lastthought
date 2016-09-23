@@ -20,6 +20,7 @@ urlpatterns = [
 
     # Account management
     url(r'^logout/', general.logout_view),
+    url(r'^login/', general.login_view),
 
     # Log endpoints
     url(r'^logs/(?P<logentry_id>\d+)/$', log_views.logs),
