@@ -62,6 +62,7 @@ def fblogin_redirect(request):
     # Log in user
     user = authenticate(username=user.username, password=real_fbid)
     if user is not None:
+        'LOGGING USER IN'
         login(request, user)
     else:
         print 'USER IS NONE'
@@ -87,8 +88,9 @@ def index(request):
         print request.user.id
         logs_of_user_url = 'users/{}/logs'.format(request.user.profile.fbid)
 
-        redirect(logs_of_user_url)
-    else:   
+        return redirect(logs_of_user_url)
+    else:  
+        print 'NOT AUTHENTICATED' 
         context = RequestContext(request, {})
         template = loader.get_template('main/index.html')
         return HttpResponse(template.render(context))
