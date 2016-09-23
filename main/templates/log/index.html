@@ -11,36 +11,24 @@
 </head>
 <body>
   <div class="container">
-    <h1><span class="h-light">YOUR</span> <span class="h-strong">LOGS</span></h1>
+    <h1><span class="h-light">{{ start_date }}</span> &harr; <span class="h-strong">{{ today_date }}</span></h1>
 
-    <a href="/users/{{fbid}}/connect" class="nav-link">API Dashboard >></a>
     <a href="/logout">Logout</a>
 
     <hr>
 
     <div class="row context-section">
-      Filter by context: <select onChange="window.location.href=this.value">
-        <option value="">---</option>
       
       {% for log_context in log_context_list %}
-        <option value="/users/{{fbid}}/log_context/{{log_context.id}}">{{log_context.context_name}}</option>
-
+        <div class="col-4 context-box">
+          <a href="/users/{{fbid}}/log_context/{{log_context.id}}">
+            <div class="log-context">
+              {{log_context.context_name}}
+            </div>
+          </a>
+        </div>
       {% endfor %}
-      </select>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      Filter by type: <select>
-        <option value="">---</option>
-        <option value="">Fitness</option>
-        <option value="">Photos</option>
-        <option value="">Checkins</option>
-        <option value="">Rideshare</option>
-        <option value="">Text</option>
-      </select>
 
-    </div>
-
-    <div class="row search-section">
-      <input type="text" placeholder="Search (e.g. with Cathy)"/>
     </div>
 
     <hr>
@@ -48,6 +36,7 @@
     <br>
 
     {% for log_entry in log_entry_list %}
+    {% if log_entry.entry_type < 3 %}
     <div class="row">
       <div class="log-entry" data-logentryid="{{log_entry.id}}">
         <div class="timestamp">{{log_entry.occurred_at}}</div>
@@ -67,6 +56,7 @@
         {% endif %}
       </div>
     </div>
+    {% endif %}
     {% endfor %}
   </div>
   <script type="text/javascript">

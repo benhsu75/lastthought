@@ -28,6 +28,7 @@ class LogContext(models.Model):
 
     context_name = models.CharField(max_length=200)
 
+
 class LogEntry(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -47,16 +48,20 @@ class LogEntry(models.Model):
     # 6 - Weight
     # 7 - Activity
 
+
 class TextLogEntry(LogEntry):
     text_value = models.CharField(max_length=10000)
 
+
 class NumericLogEntry(LogEntry):
     numeric_value = models.FloatField(default=0)
+
 
 class ImageLogEntry(LogEntry):
     image_url = models.CharField(max_length=1000)
     image_width = models.SmallIntegerField()
     image_height = models.SmallIntegerField()
+
 
 class RideLogEntry(LogEntry):
     requested_at = models.DateTimeField()
@@ -73,7 +78,6 @@ class RideLogEntry(LogEntry):
     start_city_name = models.CharField(max_length=200, null=True)
     start_city_lat = models.FloatField(null=True)
     start_city_lng = models.FloatField(null=True)
-    
 
     # Ride info
     ride_id = models.CharField(max_length=200)
@@ -103,6 +107,7 @@ class RideLogEntry(LogEntry):
     price_in_dollars = models.FloatField(null=True)
     primetime_percentage = models.IntegerField(null=True)
 
+
 class VenueLogEntry(LogEntry):
     source_type = models.SmallIntegerField()
     # 0 - Foursquare
@@ -122,6 +127,7 @@ class VenueLogEntry(LogEntry):
     img_url_suffix = models.CharField(max_length=200, null=True)
     img_dim_width = models.SmallIntegerField(null=True)
     img_dim_height = models.SmallIntegerField(null=True)
+
 
 class InstagramLogEntry(LogEntry):
     instagram_id = models.CharField(max_length=100)
@@ -147,6 +153,7 @@ class InstagramLogEntry(LogEntry):
 
     caption = models.CharField(max_length=1000, null=True)
 
+
 class WeightLogEntry(LogEntry):
     source_type = models.SmallIntegerField()
     # 0 - Fitbit
@@ -156,6 +163,7 @@ class WeightLogEntry(LogEntry):
 
     source_id = models.CharField(max_length=200)
 
+
 class ActivityLogEntry(LogEntry):
     source_type = models.SmallIntegerField()
     # 0 - Fitbit
@@ -164,22 +172,3 @@ class ActivityLogEntry(LogEntry):
     num_steps = models.IntegerField(null=True)
     distance_km = models.FloatField(null=True)
     num_calories = models.IntegerField(null=True)
-    
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
