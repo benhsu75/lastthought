@@ -56,6 +56,9 @@ def fblogin_redirect(request):
 
     profile.save()
 
+    # Log in user
+    login(request, user)
+
     # Tell the user that they finished creating an account
     onboarding_domain.send_finished_onboarding_message(profile)
 
@@ -69,10 +72,15 @@ def fblogin_view(request, fbid, redirect_uri):
     template = loader.get_template('main/fblogin_view.html')
     return HttpResponse(template.render(context))
 
-def index(request):    
-    context = RequestContext(request, {})
-    template = loader.get_template('main/index.html')
-    return HttpResponse(template.render(context))
+def index(request):
+    if request.user_is_authenticated:
+        logs_of_user_url = 'users/{}/logs'.format(request.user.profile.fbid)
+        
+        redirect(logs_of_user_url)
+    else:   
+        context = RequestContext(request, {})
+        template = loader.get_template('main/index.html')
+        return HttpResponse(template.render(context))
 
 def learn_more(request):
     context = RequestContext(request, {})
