@@ -19,7 +19,7 @@ urlpatterns = [
     url(r'^fblogin_redirect/', general.fblogin_redirect),
 
     # Account management
-    url(r'^logout/', general.logout),
+    url(r'^logout/', general.logout_view),
 
     # Log endpoints
     url(r'^logs/(?P<logentry_id>\d+)/$', log_views.logs),
