@@ -108,7 +108,7 @@ def fblogin_view(request, fbid, redirect_uri):
     template = loader.get_template('main/fblogin_view.html')
     return HttpResponse(template.render(context))
 
-def logout(request):
+def logout_view(request):
     # Log the user out
     logout(request)
 
