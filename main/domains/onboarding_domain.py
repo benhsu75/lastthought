@@ -16,7 +16,7 @@ def create_new_user(fbid):
         gender
         ) = fb_profile_helper.get_user_profile_data(fbid)
 
-    print 'Timezone: ' + timezone
+    print 'Timezone: ' + str(timezone)
 
     # If user doesn't exist, create user
     p = Profile(fbid=fbid)
