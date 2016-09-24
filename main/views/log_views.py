@@ -87,7 +87,7 @@ def index(request, fbid):
     # Get log for this user
     user_log = Log.find_or_create(current_profile)
 
-    log_context_list = LogContext.objects.filter(log=user_log)
+    log_context_list = LogContext.objects.filter(log=user_log).order_by('context_name')
 
     today = date.today()
     date_numbers = today.isocalendar()
