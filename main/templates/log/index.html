@@ -53,7 +53,13 @@
         <img class="delete" src="{% static 'img/close.png' %}"/>
         {% if log_entry.entry_type == 0 %}
 
+          {% if log_entry.text_log_entry.is_link %}
+          here
+          <a href="{{log_entry.textlogentry.text_value}}">{{log_entry.textlogentry.text_value}}</a>
+          {% else %}
+          here2
           <p>{{log_entry.textlogentry.text_value}}</p>
+          {% endif %}
 
         {% elif log_entry.entry_type == 1 %}
 

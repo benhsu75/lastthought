@@ -111,12 +111,12 @@ def fblogin_view(request, fbid, redirect_uri):
     if helper_util.user_has_created_account(profile):
         return redirect('/login')
 
-    context = RequestContext(request, {
+    context = {
         'fbid' : fbid,
         'redirect_uri' : redirect_uri
-        })
+        }
     template = loader.get_template('main/fblogin_view.html')
-    return HttpResponse(template.render(context))
+    return HttpResponse(template.render(context, request))
 
 def logout_view(request):
     # Log the user out
@@ -131,10 +131,9 @@ def try_view(request):
         return redirect('/')
 
     # Return view
-    context = RequestContext(request, {
-    })
+    context = {}
     template = loader.get_template('main/try.html')
-    return HttpResponse(template.render(context))
+    return HttpResponse(template.render(context, request))
 
 def login_view(request):
     # If user logged in already
@@ -142,10 +141,9 @@ def login_view(request):
         return redirect('/')
 
     # Return view
-    context = RequestContext(request, {
-    })
+    context = {}
     template = loader.get_template('main/login.html')
-    return HttpResponse(template.render(context))
+    return HttpResponse(template.render(context, request))
 
 def settings(request):
     # If user logged in already
@@ -153,10 +151,9 @@ def settings(request):
     #     return redirect('/login')
 
     # Return view
-    context = RequestContext(request, {
-    })
+    context = {}
     template = loader.get_template('main/settings.html')
-    return HttpResponse(template.render(context))
+    return HttpResponse(template.render(context, request))
 
 def index(request):
     if 'page' in request.GET:
@@ -169,19 +166,17 @@ def index(request):
         if hasattr(request.user, 'profile'):
             fbid = request.user.profile.fbid
             return log_views.index(request, fbid, page_no)
-            # logs_of_user_url = 'users/{}/logs'.format(request.user.profile.fbid)
-            # return redirect(logs_of_user_url)
 
-    context = RequestContext(request, {})
+    context = {}
     template = loader.get_template('main/index.html')
-    return HttpResponse(template.render(context))
+    return HttpResponse(template.render(context, request))
 
 def connect(request, fbid):
     if not helper_util.profile_exists(fbid):
         return HttpResponse(status=404)
     profile = Profile.objects.get(fbid=fbid)
 
-    context = RequestContext(request, {
+    context = {
         'lyft_connected_flag' : user.rideshareinformation.lyft_connected_flag,
         'foursquare_connected_flag' : hasattr(user,'foursquareconnection') and profile.foursquareconnection.is_connected_flag,
         'lyft_connected_flag' : hasattr(profile,'lyftconnection') and profile.lyftconnection.is_connected_flag,
@@ -193,7 +188,7 @@ def connect(request, fbid):
         'gdrive_connected_flag' : False,#hasattr(profile, 'gdriveconnection') and profile.gdriveconnection.is_connected_flag,
         'facebook_connected_flag' : False,#hasattr(profile, 'facebookconnection') and profile.facebookconnection.is_connected_flag,
         'fbid' : profile.fbid
-        
-        })
+        }
+
     template = loader.get_template('main/connect.html')
-    return HttpResponse(template.render(context))
+    return HttpResponse(template.render(context, request))

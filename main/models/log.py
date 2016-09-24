@@ -106,6 +106,13 @@ class LogEntry(models.Model):
 class TextLogEntry(LogEntry):
     text_value = models.CharField(max_length=10000)
 
+    def is_link(self):
+        print "Trying to match: " + self.text_value
+        import re
+        regex = re.compile('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', re.IGNORECASE)
+
+        return regex.match(self.text_value) is not None
+
 
 class NumericLogEntry(LogEntry):
     numeric_value = models.FloatField(default=0)

@@ -76,7 +76,7 @@ def log_contexts(request, logcontext_id=None):
 NUM_ENTRIES_PER_PAGE = 20
 
 # View methods
-def index(request, fbid, page_no):
+def index(request, fbid, page_no=1):
     # Check if user is authenticated
     # if not request.user.is_authenticated():
     #     return redirect('/')
@@ -114,7 +114,7 @@ def index(request, fbid, page_no):
 
     current_log_entry_list = current_page.object_list
 
-    context = RequestContext(request, {
+    context = {
         'fbid': fbid,
         'log_context_list': log_context_list,
         'log_entry_list': current_log_entry_list,
@@ -122,9 +122,9 @@ def index(request, fbid, page_no):
         'has_next' : has_next,
         'prev_page_no' : prev_page_no,
         'next_page_no' : next_page_no
-    })
+    }
     template = loader.get_template('log/index.html')
-    return HttpResponse(template.render(context))
+    return HttpResponse(template.render(context, request))
 
 
 # View methods
@@ -160,15 +160,15 @@ def indexTest(request, fbid):
         log=user_log
     ).order_by('-occurred_at')
 
-    context = RequestContext(request, {
+    context = {
         'fbid': fbid,
         'log_context_list': log_context_list,
         'log_entry_list': log_entry_list,
         'start_date': beg_week.strftime("%B %d, %Y"),
         'today_date': today.strftime("%B %d, %Y"),
-    })
+    }
     template = loader.get_template('log/index.html')
-    return HttpResponse(template.render(context))
+    return HttpResponse(template.render(context, request))
 
 
 def log_context_show(request, log_context_id):
@@ -217,7 +217,7 @@ def log_context_show(request, log_context_id):
 
     current_log_entry_list = current_page.object_list
 
-    context = RequestContext(request, {
+    context = {
         'log_context': log_context,
         'fbid': fbid,
         'log_entry_list': current_log_entry_list,
@@ -225,6 +225,6 @@ def log_context_show(request, log_context_id):
         'has_next' : has_next,
         'prev_page_no' : prev_page_no,
         'next_page_no' : next_page_no
-    })
+    }
     template = loader.get_template('log/log_context.html')
-    return HttpResponse(template.render(context))
+    return HttpResponse(template.render(context, request))
