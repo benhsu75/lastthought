@@ -189,7 +189,7 @@ def add_and_apply_new_context(current_profile, text):
         None
     )
 
-    user_log = Log.objects.filter(user=current_profile)[0]
+    user_log = Log.objects.filter(profile=current_profile)[0]
     context = LogContext(log=user_log, context_name=text)
     context.save()
 
