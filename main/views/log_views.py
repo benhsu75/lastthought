@@ -76,7 +76,7 @@ def log_contexts(request, logcontext_id=None):
 NUM_ENTRIES_PER_PAGE = 20
 
 # View methods
-def index(request, fbid):
+def index(request, fbid, page_no):
     # Check if user is authenticated
     # if not request.user.is_authenticated():
     #     return redirect('/')
@@ -91,10 +91,10 @@ def index(request, fbid):
     user_log = Log.find_or_create(current_profile)
 
     # Get page number
-    if 'page' in request.GET:
-        page_no = request.GET['page']
-    else:
-        page_no = 1
+    # if 'page' in request.GET:
+    #     page_no = request.GET['page']
+    # else:
+    #     page_no = 1
 
     # Get all the categories of the user
     log_context_list = LogContext.objects.filter(log=user_log).order_by('context_name')

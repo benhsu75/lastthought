@@ -158,11 +158,17 @@ def settings(request):
     return HttpResponse(template.render(context))
 
 def index(request):
+    if 'page' in request.GET:
+        page_no = request.GET['page']
+    else:
+        page_no = 1
+
     if helper_util.authenticated_and_profile_exists(request):
 
         if hasattr(request.user, 'profile'):
-            logs_of_user_url = 'users/{}/logs'.format(request.user.profile.fbid)
-            return redirect(logs_of_user_url)
+            return log_views.index(request, fbid, page_no)
+            # logs_of_user_url = 'users/{}/logs'.format(request.user.profile.fbid)
+            # return redirect(logs_of_user_url)
 
     context = RequestContext(request, {})
     template = loader.get_template('main/index.html')
