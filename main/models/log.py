@@ -43,7 +43,7 @@ class LogEntry(models.Model):
     # 1 - numeric
     # 2 - image
     # 3 - Lyft ride
-    # 4 - Venue checkin
+    # 4 - Venue checkin 
     # 5 - Instagram
     # 6 - Weight
     # 7 - Activity
