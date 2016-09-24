@@ -147,11 +147,8 @@ def login_view(request):
     return HttpResponse(template.render(context))
 
 def index(request):
-    print 'index'
     if request.user.is_authenticated():
-        print 'username: ' + request.user.username
-        print request.user
-        print request.user.id
+
         logs_of_user_url = 'users/{}/logs'.format(request.user.profile.fbid)
 
         return redirect(logs_of_user_url)
