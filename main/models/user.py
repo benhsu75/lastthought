@@ -17,6 +17,8 @@ class Profile(models.Model):
 
     utc_offset = models.IntegerField()
 
+    send_reminders_flag = models.BooleanField(default=True)
+
 # Models for third party connection
 class ThirdPartyConnection(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)

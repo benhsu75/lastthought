@@ -19,7 +19,7 @@ def create_new_user(fbid):
     print 'Timezone: ' + str(timezone)
 
     # If user doesn't exist, create user
-    p = Profile(fbid=fbid, utc_offset=timezone)
+    p = Profile(fbid=fbid, utc_offset=timezone, send_reminders_flag=True)
     p.save()
 
     # Send user intro message
