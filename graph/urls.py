@@ -29,7 +29,7 @@ urlpatterns = [
     # Display endpoints
     url(r'^users/(?P<fbid>\d+)/logs', log_views.index),
     url(
-        r'^/categories/(?P<log_context_id>\d+)',
+        r'^categories/(?P<log_context_id>\d+)',
         log_views.log_context_show
     ),
 
