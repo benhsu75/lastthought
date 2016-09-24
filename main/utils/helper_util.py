@@ -15,7 +15,7 @@ def user_has_created_account(profile):
 def authenticated_and_profile_exists(request):
     if not request.user.is_authenticated():
         return False
-    if not hasattr(request.user, profile):
+    if not hasattr(request.user, 'profile'):
         return False
     return True
 
