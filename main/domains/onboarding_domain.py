@@ -5,9 +5,6 @@ from main.models import *
 BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
 
 def create_new_user(fbid):
-    # If user doesn't exist, create user
-    p = Profile(fbid=fbid)
-    p.save()
 
     # Get user profile information
     (
@@ -16,8 +13,14 @@ def create_new_user(fbid):
         profile_pic,
         locale,
         timezone,
-        gender32
+        gender
         ) = fb_profile_helper.get_user_profile_data(fbid)
+
+    print 'Timezone: ' + timezone
+
+    # If user doesn't exist, create user
+    p = Profile(fbid=fbid)
+    p.save()
 
     # Send user intro message
     welcome_message = "Hey "+ first_name +"! LastThought is a bot that helps you keep track of the little things you want to remember!"

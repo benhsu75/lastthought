@@ -48,6 +48,9 @@ class LogEntry(models.Model):
     # 6 - Weight
     # 7 - Activity
 
+    def occurred_at_display_string(self):
+        return self.occurred_at
+
 
 class TextLogEntry(LogEntry):
     text_value = models.CharField(max_length=10000)
