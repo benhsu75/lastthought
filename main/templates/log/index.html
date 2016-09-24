@@ -49,7 +49,6 @@
       <div class="log-entry" data-logentryid="{{log_entry.id}}">
         {% load tz %}
         <div class="timestamp">{{log_entry.occurred_at_display_string}}</div>
-        <div class="timestamp">{{log_entry.occurred_at}}</div>
 
         <img class="delete" src="{% static 'img/close.png' %}"/>
         {% if log_entry.entry_type == 0 %}
