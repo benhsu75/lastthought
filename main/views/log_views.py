@@ -176,7 +176,11 @@ def log_context_show(request, log_context_id):
     # if not helper_util.authenticated_and_profile_exists(request):
     #     return redirect('/')
 
-     # Get user
+    # Get user
+    if not helper_util.authenticated_and_profile_exists(request):
+        return redirect('/')
+    
+    fbid = request.user.profile.fbid
     if helper_util.profile_exists(fbid):
         current_profile = Profile.objects.get(fbid=fbid)
     else:
