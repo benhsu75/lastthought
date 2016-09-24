@@ -102,7 +102,7 @@ def fblogin_redirect(request):
 
 def fblogin_view(request, fbid, redirect_uri):
     # If logged in go to '/'
-    if request.user.is_authenticated():
+    if helper_util.authenticated_and_profile_exists(request):
         return redirect('/')
 
     # If user already linked account before
@@ -126,7 +126,7 @@ def logout_view(request):
  
 def try_view(request):
     # If user logged in already
-    if request.user.is_authenticated():
+    if helper_util.authenticated_and_profile_exists(request)
         return redirect('/')
 
     # Return view
@@ -137,7 +137,7 @@ def try_view(request):
 
 def login_view(request):
     # If user logged in already
-    if request.user.is_authenticated():
+    if helper_util.authenticated_and_profile_exists(request):
         return redirect('/')
 
     # Return view
@@ -148,7 +148,7 @@ def login_view(request):
 
 def settings(request):
     # If user logged in already
-    # if not request.user.is_authenticated():
+    # if not helper_util.authenticated_and_profile_exists(request):
     #     return redirect('/login')
 
     # Return view
@@ -158,7 +158,7 @@ def settings(request):
     return HttpResponse(template.render(context))
 
 def index(request):
-    if request.user.is_authenticated():
+    if helper_util.authenticated_and_profile_exists(request):
 
         if hasattr(request.user, 'profile'):
             logs_of_user_url = 'users/{}/logs'.format(request.user.profile.fbid)

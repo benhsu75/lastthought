@@ -12,6 +12,13 @@ def profile_exists(fbid):
 def user_has_created_account(profile):
     return profile.user is not None
 
+def authenticated_and_profile_exists(request):
+    if not request.user.is_authenticated():
+        return False
+    if not hasattr(request.user, profile):
+        return False
+    return True
+
 def same_day_as_now(a):
     return (datetime.now(timezone.utc) - a).total_seconds() < 86400
 
