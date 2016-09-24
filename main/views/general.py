@@ -167,6 +167,7 @@ def index(request):
     if helper_util.authenticated_and_profile_exists(request):
 
         if hasattr(request.user, 'profile'):
+            fbid = request.user.profile.fbid
             return log_views.index(request, fbid, page_no)
             # logs_of_user_url = 'users/{}/logs'.format(request.user.profile.fbid)
             # return redirect(logs_of_user_url)
