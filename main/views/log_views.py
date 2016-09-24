@@ -172,14 +172,17 @@ def indexTest(request, fbid):
 
 
 def log_context_show(request, log_context_id):
-    # Check if user is authenticated
-    # if not helper_util.authenticated_and_profile_exists(request):
-    #     return redirect('/')
-
     # Get user
     if not helper_util.authenticated_and_profile_exists(request):
         return redirect('/')
     
+    # Get page number
+    if 'page' in request.GET:
+        page_no = request.GET['page']
+    else:
+        page_no = 1
+
+    # Authenticate
     fbid = request.user.profile.fbid
     if helper_util.profile_exists(fbid):
         current_profile = Profile.objects.get(fbid=fbid)
