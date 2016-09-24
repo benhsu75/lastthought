@@ -146,6 +146,17 @@ def login_view(request):
     template = loader.get_template('main/login.html')
     return HttpResponse(template.render(context))
 
+def settings(request):
+    # If user logged in already
+    # if not request.user.is_authenticated():
+    #     return redirect('/login')
+
+    # Return view
+    context = RequestContext(request, {
+    })
+    template = loader.get_template('main/settings.html')
+    return HttpResponse(template.render(context))
+
 def index(request):
     if request.user.is_authenticated():
 
@@ -157,11 +168,6 @@ def index(request):
         context = RequestContext(request, {})
         template = loader.get_template('main/index.html')
         return HttpResponse(template.render(context))
-
-def learn_more(request):
-    context = RequestContext(request, {})
-    template = loader.get_template('main/learn_more.html')
-    return HttpResponse(template.render(context))
 
 def connect(request, fbid):
     if not helper_util.profile_exists(fbid):
