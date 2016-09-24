@@ -51,6 +51,41 @@ class LogEntry(models.Model):
     def occurred_at_display_string(self):
         # imports
         from datetime import datetime, timedelta
+        import pytz
+
+        difference = datetime.utcnow().replace(tzinfo=pytz.utc) - self.occurred_at
+
+        # If within 60 min, show "X min ago"
+        if difference < timedelta(hours=1):
+            min_diff = difference.seconds // 60
+            if min_diff == 1:
+                min_string = 'minute'
+            else:
+                min_string = 'minutes'
+            display_string = '{} {} ago'.format(min_diff, min_string)
+            return display_string
+
+        # If within 24 hours, show "X hours ago"
+        elif difference < timedelta(hours=24):
+            hours_diff = difference.seconds // 3600
+            if hours_diff == 1:
+                hour_string = 'hour'
+            else:
+                hour_string = 'hours'
+            display_string = '{} {} ago'.format(hours_diff, hour_string)
+            return display_string
+
+        # If within 1 week, show "X days ago"
+        elif difference < timedelta(days=7):
+            days_diff = difference.days
+            if days_diff == 1:
+                day_string = 'day'
+            else:
+                day_string = 'days'
+            display_string = '{} {} ago'.format(days_diff, day_string)
+            return display_string
+
+        # Else, show the day
 
         # Get utc_offset from profile
 
@@ -59,9 +94,13 @@ class LogEntry(models.Model):
 
         old_occurred_at = self.occurred_at
 
+        localized_occurred_at = old_occurred_at + offset_timedelta
 
+        local_date = localized_occurred_at
 
-        return self.occurred_at
+        display_string = local_date.strftime("%B %d, %Y")
+
+        return display_string
 
 
 class TextLogEntry(LogEntry):
