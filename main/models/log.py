@@ -7,17 +7,17 @@ class Log(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    user = models.ForeignKey(Profile)
+    profile = models.ForeignKey(Profile)
 
     @staticmethod
-    def find_or_create(current_user):
-        user_log = Log.objects.filter(user=current_user)
-        if len(user_log) == 1:
-            user_log = user_log[0]
-        elif len(user_log) == 0:
-            user_log = Log(user=current_user)
-            user_log.save()
-        return user_log
+    def find_or_create(current_profile):
+        profile_log = Log.objects.filter(profile=current_profile)
+        if len(profile_log) == 1:
+            profile_log = profile_log[0]
+        elif len(profile_log) == 0:
+            profile_log = Log(user=current_profile)
+            profile_log.save()
+        return profile_log
 
 
 class LogContext(models.Model):
@@ -49,6 +49,8 @@ class LogEntry(models.Model):
     # 7 - Activity
 
     def occurred_at_display_string(self):
+        # Get utc_offset from profile
+
         return self.occurred_at
 
 

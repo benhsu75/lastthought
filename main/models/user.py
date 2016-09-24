@@ -15,6 +15,8 @@ class Profile(models.Model):
 
     email = models.CharField(max_length=200, null=True)
 
+    utc_offset = models.IntegerField()
+
 # Models for third party connection
 class ThirdPartyConnection(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
