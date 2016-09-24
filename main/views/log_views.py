@@ -80,7 +80,7 @@ def index(request, fbid, page_no):
     # Check if user is authenticated
     # if not request.user.is_authenticated():
     #     return redirect('/')
-    # else:
+
     # Get user
     if helper_util.profile_exists(fbid):
         current_profile = Profile.objects.get(fbid=fbid)
@@ -90,13 +90,6 @@ def index(request, fbid, page_no):
     # Get log for this user
     user_log = Log.find_or_create(current_profile)
 
-    # Get page number
-    # if 'page' in request.GET:
-    #     page_no = request.GET['page']
-    # else:
-    #     page_no = 1
-
-    # Get all the categories of the user
     log_context_list = LogContext.objects.filter(log=user_log).order_by('context_name')
 
     # Pagination
@@ -178,7 +171,11 @@ def indexTest(request, fbid):
     return HttpResponse(template.render(context))
 
 
-def log_context_show(request, fbid, log_context_id):
+def log_context_show(request, log_context_id):
+    # Check if user is authenticated
+    # if not helper_util.authenticated_and_profile_exists(request):
+    #     return redirect('/')
+
      # Get user
     if helper_util.profile_exists(fbid):
         current_profile = Profile.objects.get(fbid=fbid)
@@ -191,15 +188,36 @@ def log_context_show(request, fbid, log_context_id):
     # Get objects
     log_context = LogContext.objects.get(id=log_context_id)
 
+    # Pagination
     log_entry_list = LogEntry.objects.filter(
         log=user_log,
         log_context=log_context
     ).order_by('-occurred_at')
 
+    p = Paginator(log_entry_list, NUM_ENTRIES_PER_PAGE)
+    num_pages = p.num_pages
+    current_page = p.page(page_no)
+
+    has_prev = current_page.has_previous()
+    has_next = current_page.has_next()
+
+    prev_page_no = -1
+    next_page_no = -1
+    if has_prev:
+        prev_page_no = current_page.previous_page_number()
+    if has_next:
+        next_page_no = current_page.next_page_number()
+
+    current_log_entry_list = current_page.object_list
+
     context = RequestContext(request, {
-        'fbid': fbid,
         'log_context': log_context,
-        'log_entry_list': log_entry_list
+        'fbid': fbid,
+        'log_entry_list': current_log_entry_list,
+        'has_prev' : has_prev,
+        'has_next' : has_next,
+        'prev_page_no' : prev_page_no,
+        'next_page_no' : next_page_no
     })
     template = loader.get_template('log/log_context.html')
     return HttpResponse(template.render(context))
