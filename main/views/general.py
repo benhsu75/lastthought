@@ -9,6 +9,7 @@ from main.api import facebook
 from main.domains import onboarding_domain
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
+from main.views import log_views
 
 def fblogin_redirect(request):
     code = request.GET['code']
