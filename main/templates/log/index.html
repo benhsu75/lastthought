@@ -69,10 +69,12 @@
           method: 'DELETE',
           url: '/logs/' + logEntryId,
           success: function() {
-              // Clear fields
-              location.reload();
-          }
-      })
+              // Delete the html
+              var selector = '.log-entry[data-logentryid='+logEntryId+']'
+              var logEntryDiv = $(selector).parent().slideUp("iterm", function() {
+                  $(this).delete();
+              });
+          }})
       });
   </script>
 </body>
