@@ -15,7 +15,7 @@ class Log(models.Model):
         if len(profile_log) == 1:
             profile_log = profile_log[0]
         elif len(profile_log) == 0:
-            profile_log = Log(user=current_profile)
+            profile_log = Log(profile=current_profile)
             profile_log.save()
         return profile_log
 
@@ -49,7 +49,17 @@ class LogEntry(models.Model):
     # 7 - Activity
 
     def occurred_at_display_string(self):
+        # imports
+        from datetime import datetime, timedelta
+
         # Get utc_offset from profile
+
+        utc_offset = self.log.profile.utc_offset
+        offset_timedelta = timedelta(hours=utc_offset)
+
+        old_occurred_at = self.occurred_at
+
+
 
         return self.occurred_at
 
