@@ -160,14 +160,13 @@ def settings(request):
 def index(request):
     if request.user.is_authenticated():
 
-        logs_of_user_url = 'users/{}/logs'.format(request.user.profile.fbid)
+        if hasattr(request.user, 'profile'):
+            logs_of_user_url = 'users/{}/logs'.format(request.user.profile.fbid)
+            return redirect(logs_of_user_url)
 
-        return redirect(logs_of_user_url)
-    else:  
-        print 'NOT AUTHENTICATED' 
-        context = RequestContext(request, {})
-        template = loader.get_template('main/index.html')
-        return HttpResponse(template.render(context))
+    context = RequestContext(request, {})
+    template = loader.get_template('main/index.html')
+    return HttpResponse(template.render(context))
 
 def connect(request, fbid):
     if not helper_util.profile_exists(fbid):
