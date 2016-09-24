@@ -126,7 +126,7 @@ def logout_view(request):
  
 def try_view(request):
     # If user logged in already
-    if helper_util.authenticated_and_profile_exists(request)
+    if helper_util.authenticated_and_profile_exists(request):
         return redirect('/')
 
     # Return view
