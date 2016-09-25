@@ -64,7 +64,7 @@
           var text = paragraphEl.innerHTML;
           var boldedText = '<b>'+query_term+'</b>';
           var newText = text.replace(query_term, boldedText);
-          $(this).text(newText);
+          $(this).html(newText);
         }
         
       });
