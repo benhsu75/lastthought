@@ -148,7 +148,7 @@ def search(request, fbid, query_term):
     # Pagination
     log_entry_list = LogEntry.objects.filter(
         log=user_log,
-        textlogentry___text_value__icontains=query_term
+        textlogentry__text_value__icontains=query_term
     ).order_by('-occurred_at')
 
     context = {
