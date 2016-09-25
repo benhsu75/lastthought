@@ -199,10 +199,12 @@ def index(request):
     template = loader.get_template('main/index.html')
     return HttpResponse(template.render(context, request))
 
+
 def terms(request):
     context = {}
     template = loader.get_template('main/terms.html')
     return HttpResponse(template.render(context, request))
+
 
 def connect(request, fbid):
     if not helper_util.profile_exists(fbid):
