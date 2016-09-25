@@ -153,6 +153,7 @@ def search(request, fbid, query_term):
 
     context = {
         'log_entry_list': log_entry_list,
+        'query_term' : query_term
     }
     template = loader.get_template('log/search.html')
     return HttpResponse(template.render(context, request))
