@@ -10,9 +10,9 @@
 </head>
 <body>
   
-  <a href="/users/{{fbid}}/logs">
+  <a href="/">
     <div class="log-back">
-      Back to all logs
+      Back Home
     </div>
   </a>
 
@@ -21,37 +21,49 @@
     <input type="hidden" name="log-context-id" value="{{log_context.id}}">
     <button class="log-context-delete-button">Delete Context</button><br><br>
 
-    {% for log_entry in log_entry_list %}
-    <div class="row">
-
-      {% if log_entry.entry_type == 0 %}
-      <div class="log-entry">
-        <div class="timestamp">{{log_entry.ocurred_at}}</div>
-        <p>{{log_entry.textlogentry.text_value}}</p>
-      </div>
-
-      {% elif log_entry.entry_type == 1 %}
-      <div class="log-entry">
-        <div class="timestamp">{{log_entry.ocurred_at}}</div>
-        <p>{{log_entry.numericlogentry.numeric_value}}</p>
-      </div>  
-
-      {% elif log_entry.entry_type == 2 %}
-      <div class="log-entry">
-        <div class="timestamp">{{log_entry.ocurred_at}}</div>
-        <!-- <a href="{{ log_entry.imagelogentry.image_url }}"> -->
-          <div class="log-img" style="background-image: url('{{ log_entry.imagelogentry.image_url }}'); height: {{log_entry.imagelogentry.image_height}}px; width: {{log_entry.imagelogentry.image_width}}px;"></div>
-        <!-- </a> -->
-      </div>
-      {% elif log_entry.entry_type == 3 %}
-      <div class="log-entry">
-        <div class="timestamp">{{log_entry.occurred_at}}</div>
-        You took a {{log_entry.ridelogentry.ride_type}} from {{log_entry.ridelogentry.origin_address}} to {{log_entry.ridelogentry.dropoff_address}}. It cost ${{log_entry.ridelogentry.price_in_dollars}}. 
-      </div>
+    <div>
+      {% if has_prev %}
+      <a href="/categories/{{log_context.id}}/?page={{prev_page_no}}">Newer</a>
+      {% endif %}
+      {% if has_next %}
+      <a href="/categories/{{log_context.id}}/?page={{next_page_no}}">Older</a>
       {% endif %}
     </div>
+
+    {% for log_entry in log_entry_list %}
+    {% if log_entry.entry_type < 3 %}
+    <div class="row">
+      <div class="log-entry" data-logentryid="{{log_entry.id}}">
+        {% load tz %}
+        <div class="timestamp">{{log_entry.occurred_at}}</div>
+        <img class="delete" src="{% static 'img/close.png' %}"/>
+        {% if log_entry.entry_type == 0 %}
+
+          <p>{{log_entry.textlogentry.text_value}}</p>
+
+        {% elif log_entry.entry_type == 1 %}
+
+          <p>{{log_entry.numericlogentry.numeric_value}}</p>
+
+        {% elif log_entry.entry_type == 2 %}
+
+          <img src="{{ log_entry.imagelogentry.image_url }}" class="log-img"/>
+
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
     {% endfor %}
+    <div>
+      {% if has_prev %}
+      <a href="/categories/{{log_context.id}}/?page={{prev_page_no}}">Newer</a>
+      {% endif %}
+      {% if has_next %}
+      <a href="/categories/{{log_context.id}}/?page={{next_page_no}}">Older</a>
+      {% endif %}
+    </div>
   </div>
+
 
   <script type="text/javascript">
     $(document).ready(function() {
@@ -71,6 +83,23 @@
         })
       });
     });
+
+    $('.delete').click(function() {
+      var logEntryId = $(this).parent().data('logentryid');
+
+      // DELETE to /logs
+      $.ajax({
+          method: 'DELETE',
+          url: '/logs/' + logEntryId,
+          success: function() {
+              // Delete the html
+              var selector = '.log-entry[data-logentryid='+logEntryId+']'
+              var logEntryDiv = $(selector).parent().slideUp("iterm", function() {
+                  $(this).delete();
+              });
+          }
+      })
+      });
     
   </script>
 </body>

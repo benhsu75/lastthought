@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^logout/', general.logout_view),
     url(r'^login/', general.login_view),
     url(r'^try/', general.try_view),
+    url(r'^settings/', general.settings),
 
     # Log endpoints
     url(r'^logs/(?P<logentry_id>\d+)/$', log_views.logs),
@@ -28,7 +29,7 @@ urlpatterns = [
     # Display endpoints
     url(r'^users/(?P<fbid>\d+)/logs', log_views.index),
     url(
-        r'^users/(?P<fbid>\d+)/log_context/(?P<log_context_id>\d+)',
+        r'^categories/(?P<log_context_id>\d+)',
         log_views.log_context_show
     ),
 ]

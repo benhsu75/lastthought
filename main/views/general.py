@@ -9,6 +9,7 @@ from main.api import facebook
 from main.domains import onboarding_domain
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
+from main.views import log_views
 
 def fblogin_redirect(request):
     code = request.GET['code']
@@ -102,7 +103,7 @@ def fblogin_redirect(request):
 
 def fblogin_view(request, fbid, redirect_uri):
     # If logged in go to '/'
-    if request.user.is_authenticated():
+    if helper_util.authenticated_and_profile_exists(request):
         return redirect('/')
 
     # If user already linked account before
@@ -110,12 +111,12 @@ def fblogin_view(request, fbid, redirect_uri):
     if helper_util.user_has_created_account(profile):
         return redirect('/login')
 
-    context = RequestContext(request, {
+    context = {
         'fbid' : fbid,
         'redirect_uri' : redirect_uri
-        })
+        }
     template = loader.get_template('main/fblogin_view.html')
-    return HttpResponse(template.render(context))
+    return HttpResponse(template.render(context, request))
 
 def logout_view(request):
     # Log the user out
@@ -126,52 +127,56 @@ def logout_view(request):
  
 def try_view(request):
     # If user logged in already
-    if request.user.is_authenticated():
+    if helper_util.authenticated_and_profile_exists(request):
         return redirect('/')
 
     # Return view
-    context = RequestContext(request, {
-    })
+    context = {}
     template = loader.get_template('main/try.html')
-    return HttpResponse(template.render(context))
+    return HttpResponse(template.render(context, request))
 
 def login_view(request):
     # If user logged in already
-    if request.user.is_authenticated():
+    if helper_util.authenticated_and_profile_exists(request):
         return redirect('/')
 
     # Return view
-    context = RequestContext(request, {
-    })
+    context = {}
     template = loader.get_template('main/login.html')
-    return HttpResponse(template.render(context))
+    return HttpResponse(template.render(context, request))
+
+def settings(request):
+    # If user logged in already
+    # if not helper_util.authenticated_and_profile_exists(request):
+    #     return redirect('/login')
+
+    # Return view
+    context = {}
+    template = loader.get_template('main/settings.html')
+    return HttpResponse(template.render(context, request))
 
 def index(request):
-    print 'index'
-    if request.user.is_authenticated():
-        print 'username: ' + request.user.username
-        print request.user
-        print request.user.id
-        logs_of_user_url = 'users/{}/logs'.format(request.user.profile.fbid)
+    if 'page' in request.GET:
+        page_no = request.GET['page']
+    else:
+        page_no = 1
 
-        return redirect(logs_of_user_url)
-    else:  
-        print 'NOT AUTHENTICATED' 
-        context = RequestContext(request, {})
-        template = loader.get_template('main/index.html')
-        return HttpResponse(template.render(context))
+    if helper_util.authenticated_and_profile_exists(request):
 
-def learn_more(request):
-    context = RequestContext(request, {})
-    template = loader.get_template('main/learn_more.html')
-    return HttpResponse(template.render(context))
+        if hasattr(request.user, 'profile'):
+            fbid = request.user.profile.fbid
+            return log_views.index(request, fbid, page_no)
+
+    context = {}
+    template = loader.get_template('main/index.html')
+    return HttpResponse(template.render(context, request))
 
 def connect(request, fbid):
     if not helper_util.profile_exists(fbid):
         return HttpResponse(status=404)
     profile = Profile.objects.get(fbid=fbid)
 
-    context = RequestContext(request, {
+    context = {
         'lyft_connected_flag' : user.rideshareinformation.lyft_connected_flag,
         'foursquare_connected_flag' : hasattr(user,'foursquareconnection') and profile.foursquareconnection.is_connected_flag,
         'lyft_connected_flag' : hasattr(profile,'lyftconnection') and profile.lyftconnection.is_connected_flag,
@@ -183,7 +188,7 @@ def connect(request, fbid):
         'gdrive_connected_flag' : False,#hasattr(profile, 'gdriveconnection') and profile.gdriveconnection.is_connected_flag,
         'facebook_connected_flag' : False,#hasattr(profile, 'facebookconnection') and profile.facebookconnection.is_connected_flag,
         'fbid' : profile.fbid
-        
-        })
+        }
+
     template = loader.get_template('main/connect.html')
-    return HttpResponse(template.render(context))
+    return HttpResponse(template.render(context, request))

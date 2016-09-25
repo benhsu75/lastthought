@@ -21,7 +21,7 @@
       
       {% for log_context in log_context_list %}
         <div class="col-4 context-box">
-          <a href="/users/{{fbid}}/log_context/{{log_context.id}}">
+          <a href="/categories/{{log_context.id}}">
             <div class="log-context">
               {{log_context.context_name}}
             </div>
@@ -35,15 +35,29 @@
 
     <br>
 
+    <div>
+      {% if has_prev %}
+      <a href="/?page={{prev_page_no}}">Newer</a>
+      {% endif %}
+      {% if has_next %}
+      <a href="/?page={{next_page_no}}">Older</a>
+      {% endif %}
+    </div>
     {% for log_entry in log_entry_list %}
     {% if log_entry.entry_type < 3 %}
     <div class="row">
       <div class="log-entry" data-logentryid="{{log_entry.id}}">
-        <div class="timestamp">{{log_entry.occurred_at}}</div>
+        {% load tz %}
+        <div class="timestamp">{{log_entry.occurred_at_display_string}}</div>
+
         <img class="delete" src="{% static 'img/close.png' %}"/>
         {% if log_entry.entry_type == 0 %}
 
+          {% if log_entry.textlogentry.is_link %}
+          <a href="{{log_entry.textlogentry.text_value}}">{{log_entry.textlogentry.text_value}}</a>
+          {% else %}
           <p>{{log_entry.textlogentry.text_value}}</p>
+          {% endif %}
 
         {% elif log_entry.entry_type == 1 %}
 
@@ -58,6 +72,14 @@
     </div>
     {% endif %}
     {% endfor %}
+    <div>
+      {% if has_prev %}
+      <a href="/?page={{prev_page_no}}">Newer</a>
+      {% endif %}
+      {% if has_next %}
+      <a href="/?page={{next_page_no}}">Older</a>
+      {% endif %}
+    </div>
   </div>
   <script type="text/javascript">
     $('.delete').click(function() {
@@ -68,10 +90,12 @@
           method: 'DELETE',
           url: '/logs/' + logEntryId,
           success: function() {
-              // Clear fields
-              location.reload();
-          }
-      })
+              // Delete the html
+              var selector = '.log-entry[data-logentryid='+logEntryId+']'
+              var logEntryDiv = $(selector).parent().slideUp("iterm", function() {
+                  $(this).delete();
+              });
+          }})
       });
   </script>
 </body>

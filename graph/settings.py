@@ -115,9 +115,9 @@ DATABASES['default'].update(db_from_env)
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'US/Central'
 
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'en-us'
 
 USE_I18N = True
 

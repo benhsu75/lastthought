@@ -10,6 +10,7 @@ from PIL import Image
 import random
 from main.domains import onboarding_domain
 import datetime
+from django.utils import timezone
 
 # Global handler for anything logs related
 def handle_logs_text(current_profile, text, processed_text):
@@ -43,7 +44,7 @@ def send_view_logs_message(current_profile):
     send_api_helper.send_button_message(current_profile.fbid, log_view_message, [
         {
             'type': 'web_url',
-            'url': constants.BASE_HEROKU_URL + '/users/'+str(current_profile.fbid)+'/logs',
+            'url': constants.BASE_HEROKU_URL,
             'title': 'See Logs'    
         }
     ])
@@ -59,13 +60,11 @@ def handle_text_log_entry(current_profile, entry_text):
     user_log = Log.find_or_create(current_profile)
 
     num_log_entries = len(LogEntry.objects.filter(log=user_log))
-    print "1 num_log_entries " + str(num_log_entries)
 
-    text_log_entry = TextLogEntry(log=user_log, text_value=entry_text, entry_type=0, occurred_at=datetime.datetime.now())
+    text_log_entry = TextLogEntry(log=user_log, text_value=entry_text, entry_type=0, occurred_at=timezone.now())
     text_log_entry.save()
 
     num_log_entries = len(LogEntry.objects.filter(log=user_log))
-    print "2 num_log_entries " + str(num_log_entries)
 
     # Ask the user to apply a context
     send_context_message(current_profile, "text", text_log_entry.id)
@@ -190,7 +189,7 @@ def add_and_apply_new_context(current_profile, text):
         None
     )
 
-    user_log = Log.objects.filter(user=current_profile)[0]
+    user_log = Log.objects.filter(profile=current_profile)[0]
     context = LogContext(log=user_log, context_name=text)
     context.save()
 

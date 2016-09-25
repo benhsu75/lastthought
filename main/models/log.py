@@ -7,17 +7,17 @@ class Log(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    user = models.ForeignKey(Profile)
+    profile = models.ForeignKey(Profile)
 
     @staticmethod
-    def find_or_create(current_user):
-        user_log = Log.objects.filter(user=current_user)
-        if len(user_log) == 1:
-            user_log = user_log[0]
-        elif len(user_log) == 0:
-            user_log = Log(user=current_user)
-            user_log.save()
-        return user_log
+    def find_or_create(current_profile):
+        profile_log = Log.objects.filter(profile=current_profile)
+        if len(profile_log) == 1:
+            profile_log = profile_log[0]
+        elif len(profile_log) == 0:
+            profile_log = Log(profile=current_profile)
+            profile_log.save()
+        return profile_log
 
 
 class LogContext(models.Model):
@@ -43,14 +43,75 @@ class LogEntry(models.Model):
     # 1 - numeric
     # 2 - image
     # 3 - Lyft ride
-    # 4 - Venue checkin
+    # 4 - Venue checkin 
     # 5 - Instagram
     # 6 - Weight
     # 7 - Activity
 
+    def occurred_at_display_string(self):
+        # imports
+        from datetime import datetime, timedelta
+        import pytz
+
+        difference = datetime.utcnow().replace(tzinfo=pytz.utc) - self.occurred_at
+
+        # If within 60 min, show "X min ago"
+        if difference < timedelta(hours=1):
+            min_diff = difference.seconds // 60
+            if min_diff == 1:
+                min_string = 'minute'
+            else:
+                min_string = 'minutes'
+            display_string = '{} {} ago'.format(min_diff, min_string)
+            return display_string
+
+        # If within 24 hours, show "X hours ago"
+        elif difference < timedelta(hours=24):
+            hours_diff = difference.seconds // 3600
+            if hours_diff == 1:
+                hour_string = 'hour'
+            else:
+                hour_string = 'hours'
+            display_string = '{} {} ago'.format(hours_diff, hour_string)
+            return display_string
+
+        # If within 1 week, show "X days ago"
+        elif difference < timedelta(days=7):
+            days_diff = difference.days
+            if days_diff == 1:
+                day_string = 'day'
+            else:
+                day_string = 'days'
+            display_string = '{} {} ago'.format(days_diff, day_string)
+            return display_string
+
+        # Else, show the day
+
+        # Get utc_offset from profile
+
+        utc_offset = self.log.profile.utc_offset
+        offset_timedelta = timedelta(hours=utc_offset)
+
+        old_occurred_at = self.occurred_at
+
+        localized_occurred_at = old_occurred_at + offset_timedelta
+
+        local_date = localized_occurred_at
+
+        display_string = local_date.strftime("%B %d, %Y")
+
+        return display_string
+
 
 class TextLogEntry(LogEntry):
     text_value = models.CharField(max_length=10000)
+
+    def is_link(self):
+        print "Trying to match: " + self.text_value
+        import re
+        regex = re.compile('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', re.IGNORECASE)
+
+        return regex.match(self.text_value) is not None
 
 
 class NumericLogEntry(LogEntry):
