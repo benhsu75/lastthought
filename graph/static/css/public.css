@@ -1,4 +1,4 @@
-* { 
+!* { 
 	margin: 0;
 	padding: 0;
 }
@@ -109,6 +109,25 @@ a:hover {
 .get-started {
 	/*margin: 20px 0px;*/
 	height: 38px
+}
+
+.get-started-button {
+	background-color: #1787FB;
+	border-radius: 5px;
+	width: 300px;
+	height: 100px;
+	color: white;
+	line-height: 100px;
+	text-align: center;
+	font-size: 20px;
+}
+
+.get-started-button > img {
+	width: 30px;
+}
+
+.get-started-button > span {
+
 }
 
 .get-text {
