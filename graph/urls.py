@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^login/', general.login_view),
     url(r'^try/', general.try_view),
     url(r'^settings/', general.settings),
+    url(r'^terms/', general.terms),
 
     # Log endpoints
     url(r'^logs/(?P<logentry_id>\d+)/$', log_views.logs),
