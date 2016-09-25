@@ -29,13 +29,13 @@ body {
     float: left;
     min-height: 1px;
     height: 100%;
-    text-align: center; 
     display:block;
     position: relative;
 }
 
 .col-2 {
     width: calc(50% - 2px);
+    /*border: 1px solid black;*/
 }
 
 .landing-section {
@@ -67,25 +67,38 @@ a:hover {
     vertical-align: middle;
 }
 
+.phone-eg {
+	text-align: center;
+}
+
 .demo-phone {
 	height: 80%;
 	width: auto;
 	vertical-align: middle;
-	text-align: right;
 }
+
+.h-center {
+	width: calc(100% - 40px);
+	height: calc(100% - 40px);
+	margin: 20px;
+	text-align: center;
+}
+
 
 h1 {
 
 }
 
 h2 {
-
+	display: inline-block !important;
+	margin-bottom: 20px;
 }
 
 
 .cta {
 	text-align: left;
 	height: 100%;
+	display: inline-block;
 }
 
 .inner-cta {
@@ -117,6 +130,9 @@ h2 {
 @media all and (max-width:800px){
 	.phone-eg {
 		display: none;
+	}
+	.cta-section {
+		text-align: center;
 	}
 	.col-2 {
 		width: 100%;
