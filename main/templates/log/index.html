@@ -36,6 +36,10 @@
     <br>
 
     <div>
+      <input type="text" name="search">
+      <button class="search">Search</button>
+    </div>
+    <div>
       {% if has_prev %}
       <a href="/?page={{prev_page_no}}">Newer</a>
       {% endif %}
@@ -95,8 +99,12 @@
               var logEntryDiv = $(selector).parent().slideUp("iterm", function() {
                   $(this).delete();
               });
-          }})
-      });
+      }});
+    });
+
+    $('').();
+
+
   </script>
 </body>
 </html>

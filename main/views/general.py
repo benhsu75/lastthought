@@ -24,9 +24,9 @@ def fblogin_redirect(request):
 
     # Make request to get access_token
     if not login_flag:
-        constructed_redirect_uri = constants.FB_LOGIN_REDIRECT_URI
-        + "?state="
-        + fbid
+        print constant.FB_LOGIN_REDIRECT_URI
+        print fbid
+        constructed_redirect_uri = constants.FB_LOGIN_REDIRECT_URI + "?state=" + fbid
     else:
         constructed_redirect_uri = constants.FB_LOGIN_REDIRECT_URI
 
