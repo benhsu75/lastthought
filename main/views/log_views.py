@@ -130,6 +130,33 @@ def index(request, fbid, page_no=1):
     return HttpResponse(template.render(context, request))
 
 
+# View methods
+def search(request, fbid, query_term):
+    # Check if user is authenticated
+    # if not request.user.is_authenticated():
+    #     return redirect('/')
+
+    # Get user
+    if helper_util.profile_exists(fbid):
+        current_profile = Profile.objects.get(fbid=fbid)
+    else:
+        return HttpResponse(status=200)
+
+    # Get log for this user
+    user_log = Log.find_or_create(current_profile)
+
+    # Pagination
+    log_entry_list = LogEntry.objects.filter(
+        log=user_log,
+        TextLogEntry___text_value__icontains=query_term
+    ).order_by('-occurred_at')
+
+    context = {
+        'log_entry_list': current_log_entry_list,
+    }
+    template = loader.get_template('log/search.html')
+    return HttpResponse(template.render(context, request))
+
 def log_context_show(request, log_context_id):
     # Get user
     if not helper_util.authenticated_and_profile_exists(request):

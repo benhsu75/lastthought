@@ -179,26 +179,35 @@ def settings(request):
 
 
 def index(request):
-    if 'page' in request.GET:
-        page_no = request.GET['page']
-    else:
-        page_no = 1
-
-    if 'query' in request.GET:
-        query_term = request.GET['query']
-    else:
-        query_term = None
+    
 
     if helper_util.authenticated_and_profile_exists(request):
+        # Get page number
+        if 'page' in request.GET:
+            page_no = request.GET['page']
+        else:
+            page_no = 1
 
         if hasattr(request.user, 'profile'):
             fbid = request.user.profile.fbid
-            return log_views.search(request, fbid, query_term)
+            return log_views.index(request, fbid, page_no)
 
     context = {}
     template = loader.get_template('main/index.html')
     return HttpResponse(template.render(context, request))
 
+def search(request):
+    if 'query' in request.GET:
+        query_term = request.GET['query']
+    else:
+        redirect('/')
+
+    if helper_util.authenticated_and_profile_exists(request):
+        if hasattr(request.user, 'profile'):
+            fbid = request.user.profile.fbid
+            return log_views.search(request, fbid, query_term)
+
+    redirect('/')
 
 def terms(request):
     context = {}

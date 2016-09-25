@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^try/', general.try_view),
     url(r'^settings/', general.settings),
     url(r'^terms/', general.terms),
+    url(r'^search/', general.search),
 
     # Log endpoints
     url(r'^logs/(?P<logentry_id>\d+)/$', log_views.logs),
