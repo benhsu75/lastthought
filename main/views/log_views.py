@@ -152,7 +152,7 @@ def search(request, fbid, query_term):
     ).order_by('-occurred_at')
 
     context = {
-        'log_entry_list': current_log_entry_list,
+        'log_entry_list': log_entry_list,
     }
     template = loader.get_template('log/search.html')
     return HttpResponse(template.render(context, request))
