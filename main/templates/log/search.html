@@ -55,6 +55,17 @@
     
   </div>
   <script type="text/javascript">
+
+    $(document).ready(function() {
+      var query_term = '{{query_term}}';
+      $('.log-entry').each(function(index, value) {
+        var paragraphEl = $(this).find('p');
+        var text = paragraphEl.text;
+        var newText = paragraphEl.replace(query_term, '<b>'+query_term+'</b>');
+        $(this).text(newText);
+      });
+    });
+
     $('.delete').click(function() {
       var logEntryId = $(this).parent().data('logentryid');
 
