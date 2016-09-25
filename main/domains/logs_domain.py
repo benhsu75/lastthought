@@ -44,7 +44,7 @@ def send_view_logs_message(current_profile):
     send_api_helper.send_button_message(current_profile.fbid, log_view_message, [
         {
             'type': 'web_url',
-            'url': constants.BASE_HEROKU_URL + '/users/'+str(current_profile.fbid)+'/logs',
+            'url': constants.BASE_HEROKU_URL,
             'title': 'See Logs'    
         }
     ])
