@@ -151,9 +151,14 @@ def search(request, fbid, query_term):
         textlogentry__text_value__icontains=query_term
     ).order_by('-occurred_at')
 
+    # Check if there is at least one result
+    results_found_flag = (len(log_entry_list) > 0)
+
+
     context = {
         'log_entry_list': log_entry_list,
-        'query_term' : query_term
+        'query_term' : query_term,
+        'results_found_flag' : results_found_flag
     }
     template = loader.get_template('log/search.html')
     return HttpResponse(template.render(context, request))
