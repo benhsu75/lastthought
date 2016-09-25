@@ -63,7 +63,7 @@
         if(paragraphEl != null) {
           var text = paragraphEl.innerHTML;
           var boldedText = '<b>'+query_term+'</b>';
-          var newText = paragraphEl.replace(query_term, boldedText);
+          var newText = text.replace(query_term, boldedText);
           $(this).text(newText);
         }
         
