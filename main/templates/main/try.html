@@ -1,32 +1,43 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Try</title>
+  <title>LastThought | Try</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/public.css' %}"/>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,900" rel="stylesheet">
 </head>
 <body>
-    <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '257720774614110',
-          xfbml      : true,
-          version    : 'v2.7'
-        });
-      };
-
-      (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "//connect.facebook.net/en_US/sdk.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
-    </script>
-    <span>Before you can login, start using us in Messenger:</span><br>
-    <div class="fb-send-to-messenger" 
-      messenger_app_id="257720774614110" 
-      page_id="609388442561960" 
-      data-ref="TRY"
-      color="blue" 
-      size="large"></div>
+  <div class="h-center">
+    <div class="cta">
+      <div class="inner-cta">
+        <h2>Before you can login, start using us in Messenger:</h2>
+        <br>
+        <div class="fb-send-to-messenger" 
+        messenger_app_id="257720774614110" 
+        page_id="609388442561960" 
+        data-ref="TRY"
+        color="blue" 
+        size="large"></div>
+      </div>
+    </div>
+  </div>
 </body>
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+    appId      : '257720774614110',
+    xfbml      : true,
+    version    : 'v2.7'
+    });
+  };
+
+  (function(d, s, id){
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
 </html>
