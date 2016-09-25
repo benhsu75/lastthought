@@ -1,3 +1,8 @@
+html {  
+    -webkit-font-smoothing: antialiased;
+}
+
+
 * { 
 	margin: 0;
 	padding: 0;
@@ -92,6 +97,8 @@ h1 {
 h2 {
 	display: inline-block !important;
 	margin-bottom: 20px;
+	-webkit-text-stroke: rgba(255,255,255,0.01) 0.1px;
+	-webkit-text-stroke-width: 0.1px;
 }
 
 
