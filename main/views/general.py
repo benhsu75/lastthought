@@ -184,11 +184,16 @@ def index(request):
     else:
         page_no = 1
 
+    if 'query' in request.GET:
+        query_term = request.GET['query']
+    else:
+        query_term = None
+
     if helper_util.authenticated_and_profile_exists(request):
 
         if hasattr(request.user, 'profile'):
             fbid = request.user.profile.fbid
-            return log_views.index(request, fbid, page_no)
+            return log_views.index(request, fbid, page_no, query_term)
 
     context = {}
     template = loader.get_template('main/index.html')

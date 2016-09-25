@@ -106,15 +106,19 @@ def messenger_callback(request):
 
 @csrf_exempt
 def account_link(request):
+    print 'in account_link'
     account_linking_token = request.GET['account_linking_token']
     redirect_uri = request.GET['redirect_uri']
 
     # Get the PSID with the account_linking_token
     psid = get_psid_from_account_linking_token(account_linking_token)
 
+    print 'PSID: ' + psid
+
     return general.fblogin_view(request, psid, redirect_uri)
 
 def get_psid_from_account_linking_token(token):
+    print 'get_psid_from_account_linking_token'
     url_to_get = 'https://graph.facebook.com/v2.6/me?access_token={}&fields=recipient&account_linking_token={}'.format(constants.FB_PAGE_ACCESS_TOKEN, token)
 
     r = requests.get(url_to_get)
