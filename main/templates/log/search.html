@@ -86,11 +86,16 @@
       }});
     });
 
-    $('search-button').click(function() {
+    $('.search-button').click(function() {
       var searchTerm = $.trim($('input[name=search]').val());
       window.location.href = "/search?query=" + searchTerm;
     });
 
+    $('input[name=search]').keyup(function(event){
+        if(event.keyCode == 13){
+            $('.search-button').click();
+        }
+    });
 
   </script>
 </body>
