@@ -134,7 +134,7 @@ def fblogin_view(request, fbid, redirect_uri):
         'redirect_uri': redirect_uri
     }
     template = loader.get_template('main/fblogin_view.html')
-    return HttpResponse(template.render({}, request))
+    return HttpResponse(template.render(context, request))
 
 
 def logout_view(request):
