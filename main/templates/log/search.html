@@ -11,7 +11,6 @@
 </head>
 <body>
   <div class="container">
-    <h1><span class="h-strong">{{ start_date }} &harr; {{ end_date }}</span></h1>
 
     <a href="/logout" class="nav-link">Logout >></a>
 
@@ -25,14 +24,7 @@
       <input type="text" name="search">
       <button class="search-button">Search</button>
     </div>
-    <div>
-      {% if has_prev %}
-      <a href="/?page={{prev_page_no}}">Newer</a>
-      {% endif %}
-      {% if has_next %}
-      <a href="/?page={{next_page_no}}">Older</a>
-      {% endif %}
-    </div>
+    
     {% for log_entry in log_entry_list %}
     {% if log_entry.entry_type < 3 %}
     <div class="row">
@@ -62,14 +54,7 @@
     </div>
     {% endif %}
     {% endfor %}
-    <div>
-      {% if has_prev %}
-      <a href="/?page={{prev_page_no}}">Newer</a>
-      {% endif %}
-      {% if has_next %}
-      <a href="/?page={{next_page_no}}">Older</a>
-      {% endif %}
-    </div>
+    
   </div>
   <script type="text/javascript">
     $('.delete').click(function() {
