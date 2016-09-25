@@ -130,47 +130,6 @@ def index(request, fbid, page_no=1):
     return HttpResponse(template.render(context, request))
 
 
-def get_weekly_log_entries(week_offset):
-    if week_offset == -1:
-        return
-    else:
-        return HttpResponse(status=200)
-
-    # Get log for this user
-    user_log = Log.find_or_create(current_profile)
-
-    log_context_list = LogContext.objects.filter(log=user_log)
-
-    today = date.today()
-    date_numbers = today.isocalendar()
-    beg_week = datetime.strptime(
-        str(date_numbers[0]) + '-W' + str(date_numbers[1]-1) + '-0',
-        "%Y-W%W-%w"
-    )
-    end_week = datetime.strptime(
-        str(date_numbers[0]) + '-W' + str(date_numbers[1]) + '-0',
-        "%Y-W%W-%w"
-    )
-
-    print(beg_week.strftime("%B %d, %Y"))
-    print(end_week)
-    print(today.strftime("%B %d, %Y"))
-
-    log_entry_list = LogEntry.objects.filter(
-        log=user_log
-    ).order_by('-occurred_at')
-
-    context = {
-        'fbid': fbid,
-        'log_context_list': log_context_list,
-        'log_entry_list': log_entry_list,
-        'start_date': beg_week.strftime("%B %d, %Y"),
-        'today_date': today.strftime("%B %d, %Y"),
-    }
-    template = loader.get_template('log/index.html')
-    return HttpResponse(template.render(context, request))
-
-
 def log_context_show(request, log_context_id):
     # Get user
     if not helper_util.authenticated_and_profile_exists(request):
