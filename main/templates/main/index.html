@@ -1,41 +1,65 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>User Data Graph</title>
+  <title>LastThought</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/public.css' %}"/>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,900" rel="stylesheet">
 </head>
 <body>
-    <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '257720774614110',
-          xfbml      : true,
-          version    : 'v2.7'
-        });
-      };
+    
 
-      (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "//connect.facebook.net/en_US/sdk.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
-    </script>
+  <div class="landing-section">
+    <div class="row">
+      <div class="col-2 phone-eg">
+        <span class="helper"></span>
+        <img class="demo-phone" src="{% static 'img/wireframe-placeholder.png' %}"/>
+      </div>
+      <div class="col-2">
+        <div class="cta">
+          <div class="inner-cta">
+          <h1>Never forget a thought again.</h1>
+          <div class="get-started">
+            <div class="fb-messengermessageus" id="message-us" 
+              messenger_app_id="257720774614110" 
+              page_id="609388442561960" 
+              color="blue" 
+              size="large"></div><div class="get-text">to get started.</div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <!-- Messenger Message Us Button -->
-<!--     <div class="fb-messengermessageus" 
-      messenger_app_id="257720774614110" 
-      page_id="609388442561960"
-      color="blue"
-      size="standard" ></div> -->
-    <div class="fb-messengermessageus" 
-      messenger_app_id="257720774614110" 
-      page_id="609388442561960" 
-      color="blue" 
-      size="large"></div>
-      <br>
-      <br>
-      <a href="https://www.facebook.com/dialog/oauth?client_id=257720774614110&redirect_uri=https://userdatagraph.herokuapp.com/fblogin_redirect&response_type=code&scope=public_profile,email">Login with Facebook</a>
+  <div class="login">
+    Already a user? <a href="https://www.facebook.com/dialog/oauth?client_id=257720774614110&redirect_uri=https://userdatagraph.herokuapp.com/fblogin_redirect&response_type=code&scope=public_profile,email">Login with Facebook</a> to see your thoughts.
+  </div>
+  
+  <div class="info-section">
+
+  </div>
+
+  
       
 </body>
+
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '257720774614110',
+      xfbml      : true,
+      version    : 'v2.7'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
 </html>

@@ -75,6 +75,7 @@ def log_contexts(request, logcontext_id=None):
 # For pagination
 NUM_ENTRIES_PER_PAGE = 20
 
+
 # View methods
 def index(request, fbid, page_no=1):
     # Check if user is authenticated
@@ -90,7 +91,9 @@ def index(request, fbid, page_no=1):
     # Get log for this user
     user_log = Log.find_or_create(current_profile)
 
-    log_context_list = LogContext.objects.filter(log=user_log).order_by('context_name')
+    log_context_list = LogContext.objects.filter(
+        log=user_log
+    ).order_by('context_name')
 
     # Pagination
     log_entry_list = LogEntry.objects.filter(
@@ -99,7 +102,7 @@ def index(request, fbid, page_no=1):
 
     p = Paginator(log_entry_list, NUM_ENTRIES_PER_PAGE)
     num_pages = p.num_pages
-    print 'Num Pages: ' + str(num_pages) 
+    print 'Num Pages: ' + str(num_pages)
     current_page = p.page(page_no)
 
     has_prev = current_page.has_previous()
@@ -118,54 +121,10 @@ def index(request, fbid, page_no=1):
         'fbid': fbid,
         'log_context_list': log_context_list,
         'log_entry_list': current_log_entry_list,
-        'has_prev' : has_prev,
-        'has_next' : has_next,
-        'prev_page_no' : prev_page_no,
-        'next_page_no' : next_page_no
-    }
-    template = loader.get_template('log/index.html')
-    return HttpResponse(template.render(context, request))
-
-
-# View methods
-def indexTest(request, fbid):
-
-    # Get user
-    if helper_util.profile_exists(fbid):
-        current_profile = Profile.objects.get(fbid=fbid)
-    else:
-        return HttpResponse(status=200)
-
-    # Get log for this user
-    user_log = Log.find_or_create(current_profile)
-
-    log_context_list = LogContext.objects.filter(log=user_log)
-
-    today = date.today()
-    date_numbers = today.isocalendar()
-    beg_week = datetime.strptime(
-        str(date_numbers[0]) + '-W' + str(date_numbers[1]-1) + '-0',
-        "%Y-W%W-%w"
-    )
-    end_week = datetime.strptime(
-        str(date_numbers[0]) + '-W' + str(date_numbers[1]) + '-0',
-        "%Y-W%W-%w"
-    )
-
-    print(beg_week.strftime("%B %d, %Y"))
-    print(end_week)
-    print(today.strftime("%B %d, %Y"))
-
-    log_entry_list = LogEntry.objects.filter(
-        log=user_log
-    ).order_by('-occurred_at')
-
-    context = {
-        'fbid': fbid,
-        'log_context_list': log_context_list,
-        'log_entry_list': log_entry_list,
-        'start_date': beg_week.strftime("%B %d, %Y"),
-        'today_date': today.strftime("%B %d, %Y"),
+        'has_prev': has_prev,
+        'has_next': has_next,
+        'prev_page_no': prev_page_no,
+        'next_page_no': next_page_no
     }
     template = loader.get_template('log/index.html')
     return HttpResponse(template.render(context, request))
@@ -175,7 +134,7 @@ def log_context_show(request, log_context_id):
     # Get user
     if not helper_util.authenticated_and_profile_exists(request):
         return redirect('/')
-    
+
     # Get page number
     if 'page' in request.GET:
         page_no = request.GET['page']
@@ -221,10 +180,10 @@ def log_context_show(request, log_context_id):
         'log_context': log_context,
         'fbid': fbid,
         'log_entry_list': current_log_entry_list,
-        'has_prev' : has_prev,
-        'has_next' : has_next,
-        'prev_page_no' : prev_page_no,
-        'next_page_no' : next_page_no
+        'has_prev': has_prev,
+        'has_next': has_next,
+        'prev_page_no': prev_page_no,
+        'next_page_no': next_page_no
     }
     template = loader.get_template('log/log_context.html')
     return HttpResponse(template.render(context, request))

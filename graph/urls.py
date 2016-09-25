@@ -32,9 +32,6 @@ urlpatterns = [
         r'^categories/(?P<log_context_id>\d+)',
         log_views.log_context_show
     ),
-
-    # Test endpoints
-    url(r'^users/(?P<fbid>\d+)/logs_test', log_views.indexTest),
 ]
 
 # Ensure static files are accessible
