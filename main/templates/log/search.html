@@ -56,19 +56,19 @@
   </div>
   <script type="text/javascript">
 
-    $(document).ready(function() {
-      var query_term = '{{query_term}}';
-      $('.log-entry').each(function(index, value) {
-        var paragraphEl = $(this).find('p')[0];
-        if(paragraphEl != null) {
-          var text = paragraphEl.innerHTML;
-          var boldedText = '<b>'+query_term+'</b>';
-          var newText = text.replace(query_term, boldedText);
-          $(this).html(newText);
-        }
+    // $(document).ready(function() {
+    //   var query_term = '{{query_term}}';
+    //   $('.log-entry').each(function(index, value) {
+    //     var paragraphEl = $(this).find('p')[0];
+    //     if(paragraphEl != null) {
+    //       var text = paragraphEl.innerHTML;
+    //       var boldedText = '<b>'+query_term+'</b>';
+    //       var newText = text.replace(query_term, boldedText);
+    //       paragraphEl.html(newText);
+    //     }
         
-      });
-    });
+    //   });
+    // });
 
     $('.delete').click(function() {
       var logEntryId = $(this).parent().data('logentryid');
