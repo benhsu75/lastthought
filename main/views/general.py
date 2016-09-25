@@ -193,7 +193,7 @@ def index(request):
 
         if hasattr(request.user, 'profile'):
             fbid = request.user.profile.fbid
-            return log_views.index(request, fbid, page_no, query_term)
+            return log_views.search(request, fbid, query_term)
 
     context = {}
     template = loader.get_template('main/index.html')

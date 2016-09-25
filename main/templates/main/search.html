@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>View logs</title>
+  <title>Search</title>
   <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}"/>
   <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Lato:300,400,900" rel="stylesheet">
@@ -16,20 +16,6 @@
     <a href="/logout" class="nav-link">Logout >></a>
 
     <hr>
-
-    <div class="row context-section">
-      
-      {% for log_context in log_context_list %}
-        <div class="col-4 context-box">
-          <a href="/categories/{{log_context.id}}">
-            <div class="log-context">
-              {{log_context.context_name}}
-            </div>
-          </a>
-        </div>
-      {% endfor %}
-
-    </div>
 
     <hr>
 
@@ -102,16 +88,11 @@
       }});
     });
 
-    $('.search-button').click(function() {
+    $('search-button').click(function() {
       var searchTerm = $.trim($('input[name=search]').val());
-      window.location.href = "/?query=" + searchTerm;
+      window.location.href = "/search?query=" + searchTerm;
     });
 
-    $('input[name=search]').keyup(function(event){
-        if(event.keyCode == 13){
-            $('.search-button').click();
-        }
-    });
 
   </script>
 </body>
