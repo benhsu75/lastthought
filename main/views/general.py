@@ -200,14 +200,14 @@ def search(request):
     if 'query' in request.GET:
         query_term = request.GET['query']
     else:
-        redirect('/')
+        return redirect('/')
 
     if helper_util.authenticated_and_profile_exists(request):
         if hasattr(request.user, 'profile'):
             fbid = request.user.profile.fbid
             return log_views.search(request, fbid, query_term)
 
-    redirect('/')
+    return redirect('/')
 
 def terms(request):
     context = {}
