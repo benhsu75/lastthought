@@ -43,7 +43,8 @@ message_mapping = {
     'sign_up_message' : 43,
     'finished_onboarding_message' : 44,
     'explain_link_message' : 45,
-    'reminder_message' : 46
+    'reminder_message' : 46,
+    'max_number_categories_message' : 47
 }
 
 

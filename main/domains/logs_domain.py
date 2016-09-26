@@ -45,7 +45,7 @@ def send_view_logs_message(current_profile):
         {
             'type': 'web_url',
             'url': constants.BASE_HEROKU_URL,
-            'title': 'See Logs'    
+            'title': 'View Thoughts'    
         }
     ])
     message_log.log_message(
@@ -127,17 +127,6 @@ def send_context_message(current_profile, entry_type, entry_id):
 
     log_contexts = LogContext.objects.filter(log=user_log).order_by('context_name')
 
-    quick_replies = [{
-        "content_type": "text",
-        "title": "None",
-        "payload": json.dumps({
-            "state": "log_context_response",
-            "entry_type": entry_type,
-            "no_context_flag" : 1,
-            "log_entry_id": entry_id
-        })
-    }]
-
     count = 0
     for context in log_contexts:
         count += 1
@@ -159,6 +148,7 @@ def send_context_message(current_profile, entry_type, entry_id):
     quick_replies.append({
         "content_type": "text",
         "title": "Add a new category",
+        "image_url" : "http://imgur.com/a/93Ndy",
         "payload": json.dumps({
             "state": "log_context_response",
             "entry_type": entry_type,
@@ -180,6 +170,19 @@ def send_context_message(current_profile, entry_type, entry_id):
         None
     )
 
+def send_max_number_categories_message(current_profile):
+    # Send message explaining
+    max_number_categories_message = 'You\'ve already reached the maximum of 8 categories. To add a new category, first go to our website and delete an existing category.'
+    send_api_helper.send_basic_text_message(current_profile.fbid, max_number_categories_message, [
+        {
+            'type': 'web_url',
+            'url': constants.BASE_HEROKU_URL,
+            'title': 'View Thoughts'    
+        }
+    ])
+    message_log.log_message('max_number_categories_message', current_profile, max_number_categories_message, None)
+
+
 # Adds a new context based on the user response and applies that context to the log
 def add_and_apply_new_context(current_profile, text):
     message_log.log_message(
@@ -190,6 +193,15 @@ def add_and_apply_new_context(current_profile, text):
     )
 
     user_log = Log.objects.filter(profile=current_profile)[0]
+
+    # Check how many categories the user has
+    categories = LogContext.objects.filter(log=user_log)
+
+    # Tell the user they can't add anymore
+    if len(categories) >= 8:
+        send_max_number_categories_message(current_profile)
+        return
+
     context = LogContext(log=user_log, context_name=text)
     context.save()
 
