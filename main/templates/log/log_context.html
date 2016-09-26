@@ -22,6 +22,11 @@
     <button class="log-context-delete-button">Delete Context</button><br><br>
 
     <div>
+      <input type="text" name="search">
+      <button class="search-button">Search</button>
+    </div>
+
+    <div>
       {% if has_prev %}
       <a href="/categories/{{log_context.id}}/?page={{prev_page_no}}">Newer</a>
       {% endif %}
@@ -94,12 +99,23 @@
           success: function() {
               // Delete the html
               var selector = '.log-entry[data-logentryid='+logEntryId+']'
-              var logEntryDiv = $(selector).parent().slideUp("iterm", function() {
+              var logEntryDiv = $(selector).parent().slideUp("fast", function() {
                   $(this).delete();
               });
           }
       })
       });
+
+    $('.search-button').click(function() {
+      var searchTerm = $.trim($('input[name=search]').val());
+      window.location.href = "/categories/{{log_context.id}}/search?query=" + searchTerm;
+    });
+
+    $('input[name=search]').keyup(function(event){
+        if(event.keyCode == 13){
+            $('.search-button').click();
+        }
+    });
     
   </script>
 </body>

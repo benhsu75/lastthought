@@ -174,12 +174,15 @@ def log_context_show(request, log_context_id):
     else:
         page_no = 1
 
+    # Get query
+    if 'query' in request.GET:
+        query_term = request.GET['query']
+    else:
+        query_term = None
+
     # Authenticate
     fbid = request.user.profile.fbid
-    if helper_util.profile_exists(fbid):
-        current_profile = Profile.objects.get(fbid=fbid)
-    else:
-        return HttpResponse(status=200)
+    current_profile = Profile.objects.get(fbid=fbid)
 
     # Get log for this user
     user_log = Log.find_or_create(current_profile)
@@ -187,11 +190,19 @@ def log_context_show(request, log_context_id):
     # Get objects
     log_context = LogContext.objects.get(id=log_context_id)
 
+    # Check if category is owned by this user
+    if log_context.log != user_log:
+        return redirect('/')
+
     # Pagination
     log_entry_list = LogEntry.objects.filter(
         log=user_log,
         log_context=log_context
     ).order_by('-occurred_at')
+
+    # Filter by search term
+    if query_term is not None:
+        log_entry_list = log_entry_list.filter(textlogentry__text_value__icontains=query_term)
 
     p = Paginator(log_entry_list, NUM_ENTRIES_PER_PAGE)
     num_pages = p.num_pages

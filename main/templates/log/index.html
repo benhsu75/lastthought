@@ -97,7 +97,7 @@
           success: function() {
               // Delete the html
               var selector = '.log-entry[data-logentryid='+logEntryId+']'
-              var logEntryDiv = $(selector).parent().slideUp("iterm", function() {
+              var logEntryDiv = $(selector).parent().slideUp("fast", function() {
                   $(this).delete();
               });
       }});
