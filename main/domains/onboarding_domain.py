@@ -20,6 +20,15 @@ def create_new_user(fbid):
     p = Profile(fbid=fbid, utc_offset=timezone, send_reminders_flag=True)
     p.save()
 
+    # Create default categories
+    user_log = Log.find_or_create(p)
+    thoughts_context = LogContext(log=user_log, context_name="Thoughts")
+    thoughts_context.save()
+
+    links_context = LogContext(log=user_log, context_name="Links")
+    links_context.save()
+
+
     # Send user intro message
     welcome_message = "Hey "+ first_name +"! LastThought is a bot that helps you keep track of the little things you want to remember!"
     send_api_helper.send_basic_text_message(fbid, welcome_message)
