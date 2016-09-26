@@ -150,7 +150,7 @@ def send_context_message(current_profile, entry_type, entry_id):
     quick_replies.append({
         "content_type": "text",
         "title": "Add a new category",
-        "image_url" : "http://imgur.com/a/93Ndy",
+        "image_url" : "http://i.imgur.com/x7TulFM.png",
         "payload": json.dumps({
             "state": "log_context_response",
             "entry_type": entry_type,
