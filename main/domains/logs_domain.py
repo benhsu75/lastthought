@@ -127,6 +127,8 @@ def send_context_message(current_profile, entry_type, entry_id):
 
     log_contexts = LogContext.objects.filter(log=user_log).order_by('context_name')
 
+    quick_replies = []
+
     count = 0
     for context in log_contexts:
         count += 1
