@@ -174,7 +174,7 @@ def send_context_message(current_profile, entry_type, entry_id):
 def send_max_number_categories_message(current_profile):
     # Send message explaining
     max_number_categories_message = 'You\'ve already reached the maximum of 8 categories. To add a new category, first go to our website and delete an existing category.'
-    send_api_helper.send_basic_text_message(current_profile.fbid, max_number_categories_message, [
+    send_api_helper.send_button_message(current_profile.fbid, max_number_categories_message, [
         {
             'type': 'web_url',
             'url': constants.BASE_HEROKU_URL,
