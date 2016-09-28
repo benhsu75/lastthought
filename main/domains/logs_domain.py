@@ -17,6 +17,8 @@ def handle_logs_text(current_profile, text, processed_text):
     # Convert to UTF-8 (handles emojis)
     processed_text = processed_text.encode('utf-8')
 
+    print 'Processing Text: ' + processed_text
+
     # User is adding new context
     if nlp.user_is_in_log_context_prompt_state(current_profile):
         add_and_apply_new_context(current_profile, text)

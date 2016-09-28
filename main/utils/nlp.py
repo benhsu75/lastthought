@@ -23,5 +23,7 @@ def user_is_in_log_context_prompt_state(current_profile):
     )
     if len(messages_for_profile) == 0:
         return False
-    return messages_for_profile.order_by('-id')[0].message_type == 30
+
+    last_message_type = messages_for_profile.order_by('-id')[0].message_type
+    return last_message_type == 30
 
