@@ -24,8 +24,6 @@ def fblogin_redirect(request):
 
     # Make request to get access_token
     if not login_flag:
-        print constants.FB_LOGIN_REDIRECT_URI
-        print fbid
         constructed_redirect_uri = constants.FB_LOGIN_REDIRECT_URI + "?state=" + fbid
     else:
         constructed_redirect_uri = constants.FB_LOGIN_REDIRECT_URI
@@ -40,8 +38,6 @@ def fblogin_redirect(request):
         code)
 
     r = requests.get(access_token_url)
-
-    print r.text
 
     access_token = r.json()['access_token']
 
@@ -106,12 +102,11 @@ def fblogin_redirect(request):
 
             # Log in user
             user = authenticate(username=user.username, password=real_fbid)
-            print user
             if user is not None:
                 'LOGGING USER IN'
                 login(request, user)
             else:
-                print 'USER IS NONE'
+                redirect('/')
 
             # Tell the user that they finished creating an account
             onboarding_domain.send_finished_onboarding_message(profile)

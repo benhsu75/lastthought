@@ -102,7 +102,6 @@ def index(request, fbid, page_no=1):
 
     p = Paginator(log_entry_list, NUM_ENTRIES_PER_PAGE)
     num_pages = p.num_pages
-    print 'Num Pages: ' + str(num_pages)
     current_page = p.page(page_no)
 
     has_prev = current_page.has_previous()

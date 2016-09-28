@@ -29,9 +29,9 @@ def messenger_callback(request):
     body = json.loads(request.body)
 
     # Print request for debugging
-    print("------RECEIVED MESSAGE (BODY BELOW)------")
-    print(body)
-    print("------DONE PRINTING------------")
+    print "------RECEIVED MESSAGE (BODY BELOW)------" 
+    print body 
+    print '\n'
 
     # Loop through multiple entries
     entry_list = body['entry']
@@ -74,16 +74,13 @@ def messenger_callback(request):
                             continue
                     # Video
                     elif attachment_type == 'video':
-                        # TODO
-                        x = 1
+                        send_cant_handle_message_type_message(fbid, "video")
                     elif attachment_type == 'audio':
-                        # TODO
-                        x = 1
+                        send_cant_handle_message_type_message(fbid, "audio")
                     elif attachment_type == 'location':
-                        # TODO 
-                        x = 1
+                        send_cant_handle_message_type_message(fbid, "locations")
                     else:
-                        print 'COULD NOT HANDLE THIS ATTACHMENT TYPE: ' + attachment_type
+                        send_cant_handle_message_type_message(fbid, "this content type")
                     continue
                 # Is normal message received
                 elif 'text' in messaging['message']:
@@ -91,8 +88,7 @@ def messenger_callback(request):
                     handle_message_received(fbid, message_text)
                     continue
                 else:
-                    print 'COULD NOT HANDLE'
-                    # TODO
+                    send_cant_handle_message_type_message(fbid, "this content type")
             elif 'optin' in messaging:
                 # Plugin authentication webhook
                 handle_optin(messaging)
@@ -103,27 +99,25 @@ def messenger_callback(request):
 
     return HttpResponse(status=200)
 
+def send_cant_handle_message_type_message(fbid, message_type):
+    cant_handle_message_type_message = "Unfortunately, we can't yet handle {} :(. Please send me text or an image and keep that for you!".format(message_type)
+    send_api_helper.send_basic_text_message(fbid, cant_handle_message_type_message)
+    message_log.log_message('cant_handle_message_type_message', current_profile, get_started_message, None)
 
 @csrf_exempt
 def account_link(request):
-    print 'in account_link'
     account_linking_token = request.GET['account_linking_token']
     redirect_uri = request.GET['redirect_uri']
 
     # Get the PSID with the account_linking_token
     psid = get_psid_from_account_linking_token(account_linking_token)
 
-    print 'PSID: ' + psid
-
     return general.fblogin_view(request, psid, redirect_uri)
 
 def get_psid_from_account_linking_token(token):
-    print 'get_psid_from_account_linking_token'
     url_to_get = 'https://graph.facebook.com/v2.6/me?access_token={}&fields=recipient&account_linking_token={}'.format(constants.FB_PAGE_ACCESS_TOKEN, token)
 
     r = requests.get(url_to_get)
-
-    print r.text
 
     psid = r.json()['recipient']
 
@@ -168,8 +162,6 @@ def handle_postback(fbid, payload):
         onboarding_domain.create_new_user(fbid)
 
     json_payload = json.loads(payload)
-    print 'HANDLE POSTBACK'
-    print json_payload
 
     state = json_payload['state']
 

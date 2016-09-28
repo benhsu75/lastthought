@@ -7,6 +7,11 @@ def is_logs_domain(current_profile, processed_text):
         return True
     return False
 
+def is_view_domain(current_profile, processed_text):
+    if processed_text == 'view':
+        return True
+    return False
+
 
 ##############################################
 ############### HELPER METHODS ###############
