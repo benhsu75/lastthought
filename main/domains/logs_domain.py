@@ -208,7 +208,7 @@ def add_and_apply_new_context(current_profile, text):
     recent_entry.save()
 
     message_text = "\"" + context.context_name + "\"" + " was applied to your log entry."
-    send_category_applied_message(current_profile, text)
+    send_category_applied_message(current_profile, message_text)
 
     # Get user to create account
     if not helper_util.user_has_created_account(current_profile):
