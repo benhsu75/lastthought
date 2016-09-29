@@ -111,6 +111,9 @@ def fblogin_redirect(request):
             # Tell the user that they finished creating an account
             onboarding_domain.send_finished_onboarding_message(profile)
 
+            # Get the user to share the LastThought bot
+            onboarding_domain.send_share_message(profile)
+
             return redirect('/')
 
 
