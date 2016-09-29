@@ -330,5 +330,5 @@ def apply_context_to_log(current_profile, text, payload):
 
 def send_successful_new_category_cancel(profile):
     send_successful_new_category_cancel = "OK - your thought wasn't categorized"
-    send_api_helper.send_basic_text_message(current_profile.fbid, send_successful_new_category_cancel)
-    message_log.log_message('send_successful_new_category_cancel', current_profile, send_successful_new_category_cancel, None)
+    send_api_helper.send_basic_text_message(profile.fbid, send_successful_new_category_cancel)
+    message_log.log_message('send_successful_new_category_cancel', profile, send_successful_new_category_cancel, None)
