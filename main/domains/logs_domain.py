@@ -40,6 +40,12 @@ def handle_text_log_entry(current_profile, entry_text):
 
     num_log_entries = len(LogEntry.objects.filter(log=user_log))
 
+    # Check if text log entry is too long (over 10000)
+    TEXT_MAX_LENGTH = 10000
+    if len(entry_text) > TEXT_MAX_LENGTH:
+        send_log_too_long_message(current_profile)
+        return
+
     text_log_entry = TextLogEntry(log=user_log, text_value=entry_text, entry_type=0, occurred_at=timezone.now())
     text_log_entry.save()
 
@@ -320,6 +326,11 @@ def send_ask_for_category_name_message(profile, new_context_message):
         new_context_message,
         None
     )
+
+def send_log_too_long_message(current_profile):
+    log_too_long_message = "We cannot store that much text! Please enter less than 10,000 characters!"
+    send_api_helper.send_basic_text_message(current_profile.fbid, log_too_long_message)
+    message_log.log_message('log_too_long_message', current_profile, log_too_long_message, None)
 
 def send_successful_new_category_cancel(profile):
     send_successful_new_category_cancel = "OK - we saved your thought but no category was applied."
