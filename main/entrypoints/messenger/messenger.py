@@ -199,7 +199,7 @@ def handle_message_received(fbid, text):
     processed_text = text.strip().lower()
     
     # Use NLP to route
-    if nlp.is_logs_domain(current_profile, processed_text):
+    if nlp.is_view_domain(current_profile, processed_text):
         view_logs_domain.send_view_logs_message(current_profile)
     else:
         logs_domain.handle_logs_text(current_profile, text, processed_text)
