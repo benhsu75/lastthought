@@ -103,7 +103,11 @@ def messenger_callback(request):
 def send_cant_handle_message_type_message(fbid, message_type):
     cant_handle_message_type_message = "Unfortunately, we can't yet handle {} :(. Please send me text or an image and keep that for you!".format(message_type)
     send_api_helper.send_basic_text_message(fbid, cant_handle_message_type_message)
-    message_log.log_message('cant_handle_message_type_message', current_profile, get_started_message, None)
+    try:
+        current_profile = Profile.objects.get(id=fbid)
+        message_log.log_message('cant_handle_message_type_message', current_profile, get_started_message, None)
+    except Profile.DoesNotExist:
+        return
 
 @csrf_exempt
 def account_link(request):
