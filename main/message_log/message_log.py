@@ -32,7 +32,8 @@ message_mapping = {
     'cant_handle_message_type_message' : 48,
     'weekly_message' : 49,
     'send_successful_new_category_cancel' : 50,
-    'share_message' : 51
+    'share_message' : 51,
+    'category_name_too_long_message' : 52
 }
 
 

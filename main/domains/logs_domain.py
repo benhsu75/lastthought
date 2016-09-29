@@ -164,6 +164,13 @@ def send_max_number_categories_message(current_profile):
     message_log.log_message('max_number_categories_message', current_profile, max_number_categories_message, None)
 
 
+def send_category_name_too_long_message(current_profile):
+    # Send message explaining
+    category_name_too_long_message = 'Please try again'
+    send_api_helper.send_basic_text_message(current_profile.fbid)
+    message_log.log_message('category_name_too_long_message', current_profile, category_name_too_long_message, None)
+
+
 # Adds a new context based on the user response and applies that context to the log
 def add_and_apply_new_context(current_profile, text):
     message_log.log_message(
@@ -183,6 +190,13 @@ def add_and_apply_new_context(current_profile, text):
         send_max_number_categories_message(current_profile)
         return
 
+    # Category has max_length
+    MAX_LENGTH = 15
+    if len(text) > MAX_LENGTH:
+        message_text = "That's too long, please enter a category name shorter than {} characters:".format(MAX_LENGTH)
+        send_ask_for_category_name_message(current_profile, message_text)
+        return
+
     context = LogContext(log=user_log, context_name=text)
     context.save()
 
@@ -193,20 +207,8 @@ def add_and_apply_new_context(current_profile, text):
     recent_entry.log_context = context
     recent_entry.save()
 
-    successful_context_message = (
-        "\"" + context.context_name + "\""
-        + " was applied to your log entry."
-    )
-    send_api_helper.send_basic_text_message(
-        current_profile.fbid,
-        successful_context_message
-    )
-    message_log.log_message(
-        'log_successful_context_message',
-        current_profile,
-        successful_context_message,
-        None
-    )
+    message_text = "\"" + context.context_name + "\"" + " was applied to your log entry."
+    send_category_applied_message(profile, text)
 
     # Get user to create account
     if not helper_util.user_has_created_account(current_profile):
@@ -242,20 +244,9 @@ def apply_context_to_log(current_profile, text, payload):
         log_entry.log_context = context
         log_entry.save()
 
-        successful_context_message = (
-            "\"" + context.context_name + "\""
-            + " was applied to your diary entry."
-        )
-        send_api_helper.send_basic_text_message(
-            current_profile.fbid,
-            successful_context_message
-        )
-        message_log.log_message(
-            'log_successful_context_message',
-            current_profile,
-            successful_context_message,
-            None
-        )
+        message_text = "\"" + context.context_name + "\"" + " was applied to your diary entry."
+
+        send_category_applied_message(current_profile, message_text)
 
         # Get user to create account
         if not helper_util.user_has_created_account(current_profile):
@@ -263,50 +254,72 @@ def apply_context_to_log(current_profile, text, payload):
             onboarding_domain.send_create_account_message(current_profile)
 
     elif "add_new_context_flag" in payload:
-        # Create "Cancel" quick reply
-        quick_replies = []
-        quick_replies.append({
-                "content_type": "text",
-                "title": "Cancel",
-                "payload": json.dumps({
-                    "state": "cancel_new_category"
-                })
-            })
 
-        # Send message
-        new_context_message = (
-            "What is the name of the category you want to add?"
-        )
-        send_api_helper.send_quick_reply_message(
-            current_profile.fbid,
-            new_context_message,
-            quick_replies
-        )
-        message_log.log_message(
-            'log_new_context_message',
-            current_profile,
-            new_context_message,
-            None
-        )
+        message_text = "What is the name of the category you want to add?"
+        send_ask_for_category_name_message(current_profile, message_text)
+
     elif "no_context_flag" in payload:
-        log_confirm_message = (
-            "I logged this for you!"
-        )
-        send_api_helper.send_basic_text_message(
-            current_profile.fbid,
-            log_confirm_message
-        )
-        message_log.log_message(
-            'log_confirm_message',
-            current_profile,
-            log_confirm_message,
-            None
-        )
+
+        send_no_category_message(current_profile)
 
         # Get user to create account
         if not helper_util.user_has_created_account(current_profile):
             onboarding_domain.send_almost_done_message(current_profile)
             onboarding_domain.send_create_account_message(current_profile)
+
+# MESSAGE HELPER METHODS
+
+def send_category_applied_message(profile, text):
+    successful_context_message = text
+    send_api_helper.send_basic_text_message(
+        profile.fbid,
+        successful_context_message
+    )
+    message_log.log_message(
+        'log_successful_context_message',
+        profile,
+        successful_context_message,
+        None
+    )
+
+def send_no_category_message(profile):
+    log_confirm_message = (
+            "I logged this for you!"
+        )
+    send_api_helper.send_basic_text_message(
+        profile.fbid,
+        log_confirm_message
+    )
+    message_log.log_message(
+        'log_confirm_message',
+        profile,
+        log_confirm_message,
+        None
+    )
+
+def send_ask_for_category_name_message(profile, new_context_message):
+    # Create "Cancel" quick reply
+    quick_replies = []
+    quick_replies.append({
+            "content_type": "text",
+            "title": "Cancel",
+            "payload": json.dumps({
+                "state": "cancel_new_category"
+            })
+        })
+
+    # Send message
+    send_api_helper.send_quick_reply_message(
+        profile.fbid,
+        new_context_message,
+        quick_replies
+    )
+    message_log.log_message(
+        'log_new_context_message',
+        profile,
+        new_context_message,
+        None
+    )
 
 def send_successful_new_category_cancel(profile):
     send_successful_new_category_cancel = "OK - we saved your thought but no category was applied."
