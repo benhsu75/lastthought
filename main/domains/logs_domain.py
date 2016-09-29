@@ -283,12 +283,24 @@ def apply_context_to_log(current_profile, text, payload):
             onboarding_domain.send_create_account_message(current_profile)
 
     elif "add_new_context_flag" in payload:
+        # Create "Cancel" quick reply
+        quick_replies = []
+        quick_replies.append({
+                "content_type": "text",
+                "title": "Cancel",
+                "payload": json.dumps({
+                    "state": "cancel_new_category"
+                })
+            })
+
+        # Send message
         new_context_message = (
             "What is the name of the category you want to add?"
         )
-        send_api_helper.send_basic_text_message(
+        send_api_helper.send_quick_reply_message(
             current_profile.fbid,
-            new_context_message
+            new_context_message,
+            quick_replies
         )
         message_log.log_message(
             'log_new_context_message',
@@ -316,3 +328,7 @@ def apply_context_to_log(current_profile, text, payload):
             onboarding_domain.send_almost_done_message(current_profile)
             onboarding_domain.send_create_account_message(current_profile)
 
+def send_successful_new_category_cancel():
+    send_successful_new_category_cancel = "OK - your thought wasn't categorized"
+    send_api_helper.send_basic_text_message(current_profile.fbid, send_successful_new_category_cancel)
+    message_log.log_message('send_successful_new_category_cancel', current_profile, send_successful_new_category_cancel, None)

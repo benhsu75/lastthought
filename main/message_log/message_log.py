@@ -30,7 +30,8 @@ message_mapping = {
     'reminder_message' : 46,
     'max_number_categories_message' : 47,
     'cant_handle_message_type_message' : 48,
-    'weekly_message' : 49
+    'weekly_message' : 49,
+    'send_successful_new_category_cancel' : 50
 }
 
 
