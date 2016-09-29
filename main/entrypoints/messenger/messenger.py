@@ -9,7 +9,8 @@ from main.message_log import message_log
 from main.utils import nlp, helper_util
 from main.domains import (logs_domain,
                           onboarding_domain,
-                          misunderstood_domain)
+                          misunderstood_domain,
+                          view_logs_domain)
 import json
 from django.shortcuts import redirect
 from main.utils import constants
@@ -169,7 +170,7 @@ def handle_postback(fbid, payload):
 
     if state == 'persistent_menu_view_logs':
         if helper_util.user_has_created_account(current_profile): 
-            logs_domain.send_view_logs_message(current_profile)
+            view_logs_domain.send_view_logs_message(current_profile)
         else:
             # Tell user to link account before viewing logs
             explain_link_message = 'Before you can view your logs, create an account here:'
@@ -197,8 +198,11 @@ def handle_message_received(fbid, text):
     # Standardize text
     processed_text = text.strip().lower()
     
-    # Handle everything else as a log
-    logs_domain.handle_logs_text(current_profile, text, processed_text)
+    # Use NLP to route
+    if nlp.is_logs_domain(current_profile, processed_text):
+        view_logs_domain.send_view_logs_message(current_profile)
+    else:
+        logs_domain.handle_logs_text(current_profile, text, processed_text)
 
 def handle_image_received(fbid, image_url):
     try:

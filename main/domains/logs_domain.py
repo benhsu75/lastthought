@@ -34,26 +34,6 @@ def handle_logs_text(current_profile, text, processed_text):
         else:
             handle_text_log_entry(current_profile, entry_raw_text)
 
-# Helper method to send message for user to view logs
-def send_view_logs_message(current_profile):
-    # Send user message linking to log
-    log_view_message = (
-        "Click to view your logs"
-    )
-    send_api_helper.send_button_message(current_profile.fbid, log_view_message, [
-        {
-            'type': 'web_url',
-            'url': constants.BASE_HEROKU_URL,
-            'title': 'View Thoughts'    
-        }
-    ])
-    message_log.log_message(
-        'log_view_message',
-        current_profile,
-        log_view_message,
-        None
-    )
-
 # Handles a text log entry
 def handle_text_log_entry(current_profile, entry_text):
     user_log = Log.find_or_create(current_profile)
