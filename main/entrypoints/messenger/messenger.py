@@ -152,7 +152,7 @@ def handle_quick_reply(fbid, text, payload):
     if state == 'log_context_response':
         logs_domain.apply_context_to_log(current_profile, text, payload)
     elif state == 'cancel_new_category':
-        logs_domain.send_successful_new_category_cancel()
+        logs_domain.send_successful_new_category_cancel(current_profile)
     else:
         misunderstood_domain.handle_misunderstood(current_profile, text, text)
 
