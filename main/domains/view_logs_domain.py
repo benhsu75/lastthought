@@ -28,7 +28,7 @@ def send_view_category_message(current_profile, category):
     log_view_message = (
         "Click to view your {} category".format(category.context_name)
     )
-    link_to_view_category = constants.BASE_HEROKU_URL + '/categories/' + category.id
+    link_to_view_category = '{}/categories/{}'.format(constants.BASE_HEROKU_URL, category.id)
     send_api_helper.send_button_message(current_profile.fbid, log_view_message, [
         {
             'type': 'web_url',
