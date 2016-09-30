@@ -1,27 +1,13 @@
+{% extends 'main/main_base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-  <title>LastThought | Try</title>
-  <link rel="stylesheet" type="text/css" href="{% static 'css/public.css' %}"/>
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,900" rel="stylesheet">
-</head>
-<body>
-  <div class="h-center">
-    <div class="cta">
-      <div class="inner-cta">
-        <div class="h1">Before you can login, start using us in Messenger:</div>
-        <div class="fb-send-to-messenger" id="send-to"
-        messenger_app_id="257720774614110" 
-        page_id="609388442561960" 
-        data-ref="TRY"
-        color="blue" 
-        size="xlarge"></div>
-      </div>
-    </div>
-  </div>
-</body>
+{% block content %}
+<div class="h1">Before you can login, start using us in Messenger:</div>
+<div class="fb-send-to-messenger" id="send-to"
+messenger_app_id="257720774614110" 
+page_id="609388442561960" 
+data-ref="TRY"
+color="blue" 
+size="xlarge"></div>
 <script>
   window.fbAsyncInit = function() {
     FB.init({
@@ -39,4 +25,4 @@
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
 </script>
-</html>
+{% endblock %}

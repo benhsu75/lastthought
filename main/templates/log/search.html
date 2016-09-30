@@ -1,40 +1,21 @@
 {% extends 'log/user_base.html' %}
 {% load static %}
 {% block content %}
-
-<div class="row search-section">
-  <input type="text" placeholder="Search for your thoughts..." name="search"/>
-  <div class="search-button">Search</div>
-</div>
-
-<h3 class="h-filter">Or filter by:</h3>
-<div class="row context-section">
-
-  {% for log_context in log_context_list %}
-    <div class="col-4 context-box">
-      <a href="/categories/{{log_context.id}}">
-        <div class="log-context">
-          {{log_context.context_name}}
-        </div>
-      </a>
-    </div>
-  {% endfor %}
-
-</div>
-
+<hr>
 
 <br>
 
-<hr>
+<a href="/">
+  <div class="log-back">
+    Back Home
+  </div>
+</a>
 
-<div class="row pagination-section">
-  {% if has_prev %}
-  <a href="/?page={{prev_page_no}}"><div class="new-nav">Newer ></div></a>
-  {% endif %}
-  {% if has_next %}
-  <a href="/?page={{next_page_no}}"><div class="old-nav">< Older</div></a>
-  {% endif %}
+<div class="row search-section">
+  <input type="text" placeholder="Search for your thoughts..." value="{{query_term}}" name="search"/>
+  <div class="search-button">Search</div>
 </div>
+
 
 {% for log_entry in log_entry_list %}
 {% if log_entry.entry_type < 3 %}
@@ -65,26 +46,35 @@
 
     {% elif log_entry.entry_type == 1 %}
 
-      <p>{{log_entry.numericlogentry.numeric_value}}</p>
+    <p>{{log_entry.numericlogentry.numeric_value}}</p>
 
     {% elif log_entry.entry_type == 2 %}
 
-      <img src="{{ log_entry.imagelogentry.image_url }}" class="log-img"/>
+    <img src="{{ log_entry.imagelogentry.image_url }}" class="log-img"/>
 
     {% endif %}
   </div>
 </div>
 {% endif %}
 {% endfor %}
-<div class="row pagination-section">
-  {% if has_prev %}
-  <a href="/?page={{prev_page_no}}"><div class="new-nav">Newer ></div></a>
-  {% endif %}
-  {% if has_next %}
-  <a href="/?page={{next_page_no}}"><div class="old-nav">< Older</div></a>
-  {% endif %}
-</div>
+<div style="height: 50px;"></div>
+
 <script type="text/javascript">
+
+    // $(document).ready(function() {
+    //   var query_term = '{{query_term}}';
+    //   $('.log-entry').each(function(index, value) {
+    //     var paragraphEl = $(this).find('p')[0];
+    //     if(paragraphEl != null) {
+    //       var text = paragraphEl.innerHTML;
+    //       var boldedText = '<b>'+query_term+'</b>';
+    //       var newText = text.replace(query_term, boldedText);
+    //       paragraphEl.html(newText);
+    //     }
+
+    //   });
+    // });
+
 $('.delete').click(function() {
   var logEntryId = $(this).parent().data('logentryid');
 
@@ -95,7 +85,7 @@ $('.delete').click(function() {
         success: function() {
               // Delete the html
               var selector = '.log-entry[data-logentryid='+logEntryId+']'
-              var logEntryDiv = $(selector).parent().slideUp("fast", function() {
+              var logEntryDiv = $(selector).parent().slideUp("iterm", function() {
                 $(this).delete();
               });
             }});
@@ -111,5 +101,6 @@ $('input[name=search]').keyup(function(event){
     $('.search-button').click();
   }
 });
+
 </script>
 {% endblock %}

@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LastThought</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/user.css' %}"/>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100, 300" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,900" rel="stylesheet">
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <a href="/"><h1><span class="h-light">LAST</span><span class="h-strong" style="margin-left: 1px;">THOUGHT</span></h1></a>
+
+    <div class="nav-link">
+      <a href="/settings">Settings</a>
+      &nbsp;|&nbsp;
+      <a href="/logout">Logout</a>
+    </div>
+    <!-- <hr> -->
+    {% block content %}
+    {% endblock %}
+  </div>
+</body>
+</html>

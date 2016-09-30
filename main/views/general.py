@@ -24,8 +24,6 @@ def fblogin_redirect(request):
 
     # Make request to get access_token
     if not login_flag:
-        print constants.FB_LOGIN_REDIRECT_URI
-        print fbid
         constructed_redirect_uri = constants.FB_LOGIN_REDIRECT_URI + "?state=" + fbid
     else:
         constructed_redirect_uri = constants.FB_LOGIN_REDIRECT_URI
@@ -40,8 +38,6 @@ def fblogin_redirect(request):
         code)
 
     r = requests.get(access_token_url)
-
-    print r.text
 
     access_token = r.json()['access_token']
 
@@ -106,15 +102,17 @@ def fblogin_redirect(request):
 
             # Log in user
             user = authenticate(username=user.username, password=real_fbid)
-            print user
             if user is not None:
                 'LOGGING USER IN'
                 login(request, user)
             else:
-                print 'USER IS NONE'
+                redirect('/')
 
             # Tell the user that they finished creating an account
             onboarding_domain.send_finished_onboarding_message(profile)
+
+            # Get the user to share the LastThought bot
+            onboarding_domain.send_share_message(profile)
 
             return redirect('/')
 
@@ -169,8 +167,8 @@ def login_view(request):
 
 def settings(request):
     # If user logged in already
-    if not helper_util.authenticated_and_profile_exists(request):
-        return redirect('/login')
+    # if not helper_util.authenticated_and_profile_exists(request):
+    #     return redirect('/login')
 
     # Return view
     context = {}
@@ -179,26 +177,35 @@ def settings(request):
 
 
 def index(request):
-    if 'page' in request.GET:
-        page_no = request.GET['page']
-    else:
-        page_no = 1
-
-    if 'query' in request.GET:
-        query_term = request.GET['query']
-    else:
-        query_term = None
+    
 
     if helper_util.authenticated_and_profile_exists(request):
+        # Get page number
+        if 'page' in request.GET:
+            page_no = request.GET['page']
+        else:
+            page_no = 1
 
         if hasattr(request.user, 'profile'):
             fbid = request.user.profile.fbid
-            return log_views.index(request, fbid, page_no, query_term)
+            return log_views.index(request, fbid, page_no)
 
     context = {}
     template = loader.get_template('main/index.html')
     return HttpResponse(template.render(context, request))
 
+def search(request):
+    if 'query' in request.GET:
+        query_term = request.GET['query']
+    else:
+        return redirect('/')
+
+    if helper_util.authenticated_and_profile_exists(request):
+        if hasattr(request.user, 'profile'):
+            fbid = request.user.profile.fbid
+            return log_views.search(request, fbid, query_term)
+
+    return redirect('/')
 
 def terms(request):
     context = {}

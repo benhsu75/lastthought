@@ -1,20 +1,6 @@
+{% extends 'main/main_base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-  <title>LastThought | Login</title>
-  <link rel="stylesheet" type="text/css" href="{% static 'css/public.css' %}"/>
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,900" rel="stylesheet">
-</head>
-<body>
-	<div class="h-center">
-    <div class="cta">
-      <div class="inner-cta">
-        <div class="h1">You're almost done - just 
-			  <a href="https://www.facebook.com/dialog/oauth?client_id=257720774614110&redirect_uri=https://userdatagraph.herokuapp.com/fblogin_redirect?state={{fbid}}&response_type=code&scope=public_profile,email">sign up with your facebook account</a>!</div>
-      </div>
-    </div>
-  </div>
-</body>
-</html>
+{% block content %}
+<div class="h1">You're almost done - just 
+<a href="https://www.facebook.com/dialog/oauth?client_id=257720774614110&redirect_uri=https://userdatagraph.herokuapp.com/fblogin_redirect?state={{fbid}}&response_type=code&scope=public_profile,email">sign up with your facebook account</a>!</div>
+{% endblock %}

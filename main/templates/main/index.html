@@ -3,9 +3,13 @@
 <html>
 <head>
   <title>LastThought</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}"/>
   <link rel="stylesheet" type="text/css" href="{% static 'css/public.css' %}"/>
   <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Lato:300,400,900" rel="stylesheet">
+
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 <body>
     
@@ -21,12 +25,8 @@
           <div class="inner-cta">
             <div class="h1">Never forget a thought again.</div>
             <div class="get-started">
-              <div class="fb-messengermessageus" id="message-us" 
-                messenger_app_id="257720774614110" 
-                page_id="609388442561960" 
-                color="blue" 
-                size="xlarge"></div><div class="get-text">to get started.</div>
-            </div>
+              <div class="get-started-button"><img src="{% static 'img/facebook-messenger-logo.png' %}"><span>Get Started</span></div>
+            </div> 
           </div>
         </div>
       </div>
@@ -46,20 +46,10 @@
 </body>
 
 <script>
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '257720774614110',
-      xfbml      : true,
-      version    : 'v2.7'
+  $(document).ready(function() {
+    $('.get-started-button').click(function() {
+      window.location.href = 'https://m.me/609388442561960';
     });
-  };
-
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
+  });
 </script>
 </html>
