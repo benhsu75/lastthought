@@ -205,7 +205,7 @@ def handle_message_received(fbid, text):
     # Use NLP to route
     if nlp.is_view_domain(current_profile, processed_text):
 
-        category_id = id_of_triggered_view_category(current_profile, processed_text)
+        category_id = nlp.id_of_triggered_view_category(current_profile, processed_text)
 
         if processed_text == 'view':
             view_logs_domain.send_view_logs_message(current_profile)
