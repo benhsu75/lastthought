@@ -158,6 +158,10 @@ def handle_quick_reply(fbid, text, payload):
         logs_domain.apply_context_to_log(current_profile, text, payload)
     elif state == 'cancel_new_category':
         logs_domain.send_successful_new_category_cancel(current_profile)
+    elif state == 'view_specific_category':
+        category_id = payload['category_id']
+        category = LogContext.objects.get(id=category_id)
+        view_logs_domain.send_view_specific_category_message(current_profile, category)
     else:
         misunderstood_domain.handle_misunderstood(current_profile, text, text)
 
@@ -212,7 +216,7 @@ def handle_message_received(fbid, text):
         elif category_id != -1:
             category = LogContext.objects.get(id=category_id)
 
-            view_logs_domain.send_view_category_message(current_profile, category)
+            view_logs_domain.send_view_specific_category_message(current_profile, category)
         else:
             view_logs_domain.send_view_logs_message(current_profile)
     else:
