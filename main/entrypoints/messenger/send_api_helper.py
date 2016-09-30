@@ -1,7 +1,7 @@
 import requests
 from main.utils import constants
 
-# Helper method to send message
+# Helper method to send different types of messages
 
 
 # Send's a normal messenger text message
@@ -54,8 +54,6 @@ def send_quick_reply_message(fbid, text, quick_replies):
     }
     url_to_post = constants.FB_SEND_BASE_URL + constants.FB_PAGE_ACCESS_TOKEN
     r = requests.post(url_to_post, json=send_payload)
-    print 'QUICK REPLY RESPONSE '
-    print r.text
 
 # Sends a message with account linking functionality
 def send_account_link_message(fbid, text):
@@ -82,5 +80,29 @@ def send_account_link_message(fbid, text):
     }
     url_to_post = constants.FB_SEND_BASE_URL + constants.FB_PAGE_ACCESS_TOKEN
     r = requests.post(url_to_post, json=send_payload)
-    print 'SENDING ACCOUNT LINK MESSAGE'
-    print r.text
+
+def send_share_message(fbid, text):
+    send_payload = {
+        'recipient': {
+            'id': fbid
+        },
+        'message': {
+            'attachment': {
+                'type' : 'template',
+                'payload' : {
+                    'template_type' : 'generic',
+                    'elements' : [{
+                        'title' : "Share LastThought",
+                        'subtitle' : text,
+                        'image_url' : '',
+                        'buttons' : [{
+                            'type' : 'element_share'
+                        }]
+                    }]
+                }
+            }
+        }
+    }
+    url_to_post = constants.FB_SEND_BASE_URL + constants.FB_PAGE_ACCESS_TOKEN
+    r = requests.post(url_to_post, json=send_payload)
+

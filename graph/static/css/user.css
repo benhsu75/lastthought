@@ -313,6 +313,12 @@ input {
 	.timestamp {
 		font-size: 25px;
 	}
+	.log-category {
+		font-size: 20px;
+		border: 3px dotted #DDD;
+		padding: 5px;
+		border-radius: 8px;
+	}
 	.delete {
 		height: 35px;
 		opacity: 0.2;

@@ -17,8 +17,7 @@ def handle_logs_text(current_profile, text, processed_text):
     # Convert to UTF-8 (handles emojis)
     processed_text = processed_text.encode('utf-8')
 
-    print 'in handle_logs_text'
-    print 'processed_text: ' + processed_text
+    print 'Processing Text: ' + processed_text
 
     # User is adding new context
     if nlp.user_is_in_log_context_prompt_state(current_profile):
@@ -35,31 +34,17 @@ def handle_logs_text(current_profile, text, processed_text):
         else:
             handle_text_log_entry(current_profile, entry_raw_text)
 
-# Helper method to send message for user to view logs
-def send_view_logs_message(current_profile):
-    # Send user message linking to log
-    log_view_message = (
-        "Click to view your logs"
-    )
-    send_api_helper.send_button_message(current_profile.fbid, log_view_message, [
-        {
-            'type': 'web_url',
-            'url': constants.BASE_HEROKU_URL,
-            'title': 'See Logs'    
-        }
-    ])
-    message_log.log_message(
-        'log_view_message',
-        current_profile,
-        log_view_message,
-        None
-    )
-
 # Handles a text log entry
 def handle_text_log_entry(current_profile, entry_text):
     user_log = Log.find_or_create(current_profile)
 
     num_log_entries = len(LogEntry.objects.filter(log=user_log))
+
+    # Check if text log entry is too long (over 10000)
+    TEXT_MAX_LENGTH = 10000
+    if len(entry_text) > TEXT_MAX_LENGTH:
+        send_log_too_long_message(current_profile)
+        return
 
     text_log_entry = TextLogEntry(log=user_log, text_value=entry_text, entry_type=0, occurred_at=timezone.now())
     text_log_entry.save()
@@ -127,16 +112,7 @@ def send_context_message(current_profile, entry_type, entry_id):
 
     log_contexts = LogContext.objects.filter(log=user_log).order_by('context_name')
 
-    quick_replies = [{
-        "content_type": "text",
-        "title": "None",
-        "payload": json.dumps({
-            "state": "log_context_response",
-            "entry_type": entry_type,
-            "no_context_flag" : 1,
-            "log_entry_id": entry_id
-        })
-    }]
+    quick_replies = []
 
     count = 0
     for context in log_contexts:
@@ -159,6 +135,7 @@ def send_context_message(current_profile, entry_type, entry_id):
     quick_replies.append({
         "content_type": "text",
         "title": "Add a new category",
+        "image_url" : "http://i.imgur.com/x7TulFM.png",
         "payload": json.dumps({
             "state": "log_context_response",
             "entry_type": entry_type,
@@ -180,6 +157,26 @@ def send_context_message(current_profile, entry_type, entry_id):
         None
     )
 
+def send_max_number_categories_message(current_profile):
+    # Send message explaining
+    max_number_categories_message = 'You\'ve already reached the maximum of 8 categories. To add a new category, first go to our website and delete an existing category.'
+    send_api_helper.send_button_message(current_profile.fbid, max_number_categories_message, [
+        {
+            'type': 'web_url',
+            'url': constants.BASE_HEROKU_URL,
+            'title': 'View Thoughts'    
+        }
+    ])
+    message_log.log_message('max_number_categories_message', current_profile, max_number_categories_message, None)
+
+
+def send_category_name_too_long_message(current_profile):
+    # Send message explaining
+    category_name_too_long_message = 'Please try again'
+    send_api_helper.send_basic_text_message(current_profile.fbid)
+    message_log.log_message('category_name_too_long_message', current_profile, category_name_too_long_message, None)
+
+
 # Adds a new context based on the user response and applies that context to the log
 def add_and_apply_new_context(current_profile, text):
     message_log.log_message(
@@ -190,6 +187,22 @@ def add_and_apply_new_context(current_profile, text):
     )
 
     user_log = Log.objects.filter(profile=current_profile)[0]
+
+    # Check how many categories the user has
+    categories = LogContext.objects.filter(log=user_log)
+
+    # Tell the user they can't add anymore
+    if len(categories) >= 8:
+        send_max_number_categories_message(current_profile)
+        return
+
+    # Category has max_length
+    MAX_LENGTH = 15
+    if len(text) > MAX_LENGTH:
+        message_text = "That's too long, please enter a category name shorter than {} characters:".format(MAX_LENGTH)
+        send_ask_for_category_name_message(current_profile, message_text)
+        return
+
     context = LogContext(log=user_log, context_name=text)
     context.save()
 
@@ -200,20 +213,8 @@ def add_and_apply_new_context(current_profile, text):
     recent_entry.log_context = context
     recent_entry.save()
 
-    successful_context_message = (
-        "\"" + context.context_name + "\""
-        + " was applied to your log entry."
-    )
-    send_api_helper.send_basic_text_message(
-        current_profile.fbid,
-        successful_context_message
-    )
-    message_log.log_message(
-        'log_successful_context_message',
-        current_profile,
-        successful_context_message,
-        None
-    )
+    message_text = "\"" + context.context_name + "\"" + " was applied to your log entry."
+    send_category_applied_message(current_profile, message_text)
 
     # Get user to create account
     if not helper_util.user_has_created_account(current_profile):
@@ -249,20 +250,9 @@ def apply_context_to_log(current_profile, text, payload):
         log_entry.log_context = context
         log_entry.save()
 
-        successful_context_message = (
-            "\"" + context.context_name + "\""
-            + " was applied to your diary entry."
-        )
-        send_api_helper.send_basic_text_message(
-            current_profile.fbid,
-            successful_context_message
-        )
-        message_log.log_message(
-            'log_successful_context_message',
-            current_profile,
-            successful_context_message,
-            None
-        )
+        message_text = "\"" + context.context_name + "\"" + " was applied to your diary entry."
+
+        send_category_applied_message(current_profile, message_text)
 
         # Get user to create account
         if not helper_util.user_has_created_account(current_profile):
@@ -270,36 +260,79 @@ def apply_context_to_log(current_profile, text, payload):
             onboarding_domain.send_create_account_message(current_profile)
 
     elif "add_new_context_flag" in payload:
-        new_context_message = (
-            "What is the name of the category you want to add?"
-        )
-        send_api_helper.send_basic_text_message(
-            current_profile.fbid,
-            new_context_message
-        )
-        message_log.log_message(
-            'log_new_context_message',
-            current_profile,
-            new_context_message,
-            None
-        )
+
+        message_text = "What is the name of the category you want to add?"
+        send_ask_for_category_name_message(current_profile, message_text)
+
     elif "no_context_flag" in payload:
-        log_confirm_message = (
-            "I logged this for you!"
-        )
-        send_api_helper.send_basic_text_message(
-            current_profile.fbid,
-            log_confirm_message
-        )
-        message_log.log_message(
-            'log_confirm_message',
-            current_profile,
-            log_confirm_message,
-            None
-        )
+
+        send_no_category_message(current_profile)
 
         # Get user to create account
         if not helper_util.user_has_created_account(current_profile):
             onboarding_domain.send_almost_done_message(current_profile)
             onboarding_domain.send_create_account_message(current_profile)
 
+# MESSAGE HELPER METHODS
+
+def send_category_applied_message(profile, text):
+    successful_context_message = text
+    send_api_helper.send_basic_text_message(
+        profile.fbid,
+        successful_context_message
+    )
+    message_log.log_message(
+        'log_successful_context_message',
+        profile,
+        successful_context_message,
+        None
+    )
+
+def send_no_category_message(profile):
+    log_confirm_message = (
+            "I logged this for you!"
+        )
+    send_api_helper.send_basic_text_message(
+        profile.fbid,
+        log_confirm_message
+    )
+    message_log.log_message(
+        'log_confirm_message',
+        profile,
+        log_confirm_message,
+        None
+    )
+
+def send_ask_for_category_name_message(profile, new_context_message):
+    # Create "Cancel" quick reply
+    quick_replies = []
+    quick_replies.append({
+            "content_type": "text",
+            "title": "Cancel",
+            "payload": json.dumps({
+                "state": "cancel_new_category"
+            })
+        })
+
+    # Send message
+    send_api_helper.send_quick_reply_message(
+        profile.fbid,
+        new_context_message,
+        quick_replies
+    )
+    message_log.log_message(
+        'log_new_context_message',
+        profile,
+        new_context_message,
+        None
+    )
+
+def send_log_too_long_message(current_profile):
+    log_too_long_message = "We cannot store that much text! Please enter less than 10,000 characters!"
+    send_api_helper.send_basic_text_message(current_profile.fbid, log_too_long_message)
+    message_log.log_message('log_too_long_message', current_profile, log_too_long_message, None)
+
+def send_successful_new_category_cancel(profile):
+    send_successful_new_category_cancel = "OK - we saved your thought but no category was applied."
+    send_api_helper.send_basic_text_message(profile.fbid, send_successful_new_category_cancel)
+    message_log.log_message('send_successful_new_category_cancel', profile, send_successful_new_category_cancel, None)

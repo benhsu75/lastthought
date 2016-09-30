@@ -87,6 +87,11 @@ a:hover {
 	font-size: 13px;
 }
 
+.get-started-button:hover {
+	opacity: .8;
+	cursor: pointer;
+}
+
 .get-started-button > img {
 	width: auto;
 	height: 20px;

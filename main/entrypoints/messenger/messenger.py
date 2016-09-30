@@ -9,7 +9,8 @@ from main.message_log import message_log
 from main.utils import nlp, helper_util
 from main.domains import (logs_domain,
                           onboarding_domain,
-                          misunderstood_domain)
+                          misunderstood_domain,
+                          view_logs_domain)
 import json
 from django.shortcuts import redirect
 from main.utils import constants
@@ -29,9 +30,9 @@ def messenger_callback(request):
     body = json.loads(request.body)
 
     # Print request for debugging
-    print("------RECEIVED MESSAGE (BODY BELOW)------")
-    print(body)
-    print("------DONE PRINTING------------")
+    print "------RECEIVED MESSAGE (BODY BELOW)------" 
+    print body 
+    print '\n'
 
     # Loop through multiple entries
     entry_list = body['entry']
@@ -74,16 +75,13 @@ def messenger_callback(request):
                             continue
                     # Video
                     elif attachment_type == 'video':
-                        # TODO
-                        x = 1
+                        send_cant_handle_message_type_message(fbid, "video")
                     elif attachment_type == 'audio':
-                        # TODO
-                        x = 1
+                        send_cant_handle_message_type_message(fbid, "audio")
                     elif attachment_type == 'location':
-                        # TODO 
-                        x = 1
+                        send_cant_handle_message_type_message(fbid, "locations")
                     else:
-                        print 'COULD NOT HANDLE THIS ATTACHMENT TYPE: ' + attachment_type
+                        send_cant_handle_message_type_message(fbid, "this content type")
                     continue
                 # Is normal message received
                 elif 'text' in messaging['message']:
@@ -91,8 +89,7 @@ def messenger_callback(request):
                     handle_message_received(fbid, message_text)
                     continue
                 else:
-                    print 'COULD NOT HANDLE'
-                    # TODO
+                    send_cant_handle_message_type_message(fbid, "this content type")
             elif 'optin' in messaging:
                 # Plugin authentication webhook
                 handle_optin(messaging)
@@ -103,27 +100,29 @@ def messenger_callback(request):
 
     return HttpResponse(status=200)
 
+def send_cant_handle_message_type_message(fbid, message_type):
+    cant_handle_message_type_message = "Unfortunately, we can't yet handle {} :(. Please send me text or an image and I'll remember that for you!".format(message_type)
+    send_api_helper.send_basic_text_message(fbid, cant_handle_message_type_message)
+    try:
+        current_profile = Profile.objects.get(id=fbid)
+        message_log.log_message('cant_handle_message_type_message', current_profile, get_started_message, None)
+    except Profile.DoesNotExist:
+        return
 
 @csrf_exempt
 def account_link(request):
-    print 'in account_link'
     account_linking_token = request.GET['account_linking_token']
     redirect_uri = request.GET['redirect_uri']
 
     # Get the PSID with the account_linking_token
     psid = get_psid_from_account_linking_token(account_linking_token)
 
-    print 'PSID: ' + psid
-
     return general.fblogin_view(request, psid, redirect_uri)
 
 def get_psid_from_account_linking_token(token):
-    print 'get_psid_from_account_linking_token'
     url_to_get = 'https://graph.facebook.com/v2.6/me?access_token={}&fields=recipient&account_linking_token={}'.format(constants.FB_PAGE_ACCESS_TOKEN, token)
 
     r = requests.get(url_to_get)
-
-    print r.text
 
     psid = r.json()['recipient']
 
@@ -157,6 +156,12 @@ def handle_quick_reply(fbid, text, payload):
     # Switch on different quick reply states
     if state == 'log_context_response':
         logs_domain.apply_context_to_log(current_profile, text, payload)
+    elif state == 'cancel_new_category':
+        logs_domain.send_successful_new_category_cancel(current_profile)
+    elif state == 'view_specific_category':
+        category_id = payload['category_id']
+        category = LogContext.objects.get(id=category_id)
+        view_logs_domain.send_view_specific_category_message(current_profile, category)
     else:
         misunderstood_domain.handle_misunderstood(current_profile, text, text)
 
@@ -168,14 +173,13 @@ def handle_postback(fbid, payload):
         onboarding_domain.create_new_user(fbid)
 
     json_payload = json.loads(payload)
-    print 'HANDLE POSTBACK'
-    print json_payload
 
     state = json_payload['state']
 
     if state == 'persistent_menu_view_logs':
         if helper_util.user_has_created_account(current_profile): 
-            logs_domain.send_view_logs_message(current_profile)
+            view_logs_domain.send_view_logs_message(current_profile)
+            view_logs_domain.send_choose_category_message(current_profile)
         else:
             # Tell user to link account before viewing logs
             explain_link_message = 'Before you can view your logs, create an account here:'
@@ -203,8 +207,23 @@ def handle_message_received(fbid, text):
     # Standardize text
     processed_text = text.strip().lower()
     
-    # Handle everything else as a log
-    logs_domain.handle_logs_text(current_profile, text, processed_text)
+    # Use NLP to route
+    if nlp.is_view_domain(current_profile, processed_text):
+
+        category_id = nlp.id_of_triggered_view_category(current_profile, processed_text)
+
+        if processed_text == 'view':
+            view_logs_domain.send_view_logs_message(current_profile)
+            view_logs_domain.send_choose_category_message(current_profile)
+        elif category_id != -1:
+            category = LogContext.objects.get(id=category_id)
+
+            view_logs_domain.send_view_specific_category_message(current_profile, category)
+        else:
+            view_logs_domain.send_view_logs_message(current_profile)
+            view_logs_domain.send_choose_category_message(current_profile)
+    else:
+        logs_domain.handle_logs_text(current_profile, text, processed_text)
 
 def handle_image_received(fbid, image_url):
     try:
