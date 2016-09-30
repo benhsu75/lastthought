@@ -1,32 +1,18 @@
+{% extends 'main/main_base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-  <title>LastThought | Login</title>
-  <link rel="stylesheet" type="text/css" href="{% static 'css/public.css' %}"/>
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,900" rel="stylesheet">
-</head>
-<body>
-  <div class="h-center">
-    <div class="cta">
-      <div class="inner-cta">
-        <div class="h1">Want to view your thoughts? - just 
-        <a href="https://www.facebook.com/dialog/oauth?client_id=257720774614110&redirect_uri=https://userdatagraph.herokuapp.com/fblogin_redirect&response_type=code&scope=public_profile,email">log in with your facebook account</a>!</div>
-        <hr>
-        <br>
-        <div class="h1">If you haven't used signed up yet and chatted with the bot we need to link your account first:</div>
-        <br>
-        <div class="fb-send-to-messenger" 
-        messenger_app_id="257720774614110" 
-        page_id="609388442561960" 
-        data-ref="TRY"
-        color="blue" 
-        size="large"></div>
-      </div>
-    </div>
-  </div>
-</body>
+{% block content %}
+<div class="h1">Want to view your thoughts? - just 
+<a href="https://www.facebook.com/dialog/oauth?client_id=257720774614110&redirect_uri=https://userdatagraph.herokuapp.com/fblogin_redirect&response_type=code&scope=public_profile,email">log in with your facebook account</a>!</div>
+<hr>
+<br>
+<div class="h1">If you haven't used signed up yet and chatted with the bot we need to link your account first:</div>
+<br>
+<div class="fb-send-to-messenger" 
+messenger_app_id="257720774614110" 
+page_id="609388442561960" 
+data-ref="TRY"
+color="blue" 
+size="large"></div>
 <script>
   window.fbAsyncInit = function() {
     FB.init({
@@ -44,4 +30,4 @@
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
 </script>
-</html>
+{% endblock %}

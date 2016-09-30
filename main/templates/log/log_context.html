@@ -1,122 +1,121 @@
+{% extends 'log/user_base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-  <title>View {{ log_context.context_name }} logs</title>
-  <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}"/>
-  <link href="https://fonts.googleapis.com/css?family=Raleway|Roboto:300" rel="stylesheet">
-  <!-- jQuery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-</head>
-<body>
-  
-  <a href="/">
-    <div class="log-back">
-      Back Home
-    </div>
-  </a>
+{% block content %}
 
-  <div class="container nav-shift">
-    <h1>Your <span class="context-title">{{ log_context.context_name }}</span> logs</h1>
-    <input type="hidden" name="log-context-id" value="{{log_context.id}}">
-    <button class="log-context-delete-button">Delete Context</button><br><br>
 
-    <div>
-      <input type="text" name="search">
-      <button class="search-button">Search</button>
-    </div>
-
-    <div>
-      {% if has_prev %}
-      <a href="/categories/{{log_context.id}}/?page={{prev_page_no}}">Newer</a>
-      {% endif %}
-      {% if has_next %}
-      <a href="/categories/{{log_context.id}}/?page={{next_page_no}}">Older</a>
-      {% endif %}
-    </div>
-
-    {% for log_entry in log_entry_list %}
-    {% if log_entry.entry_type < 3 %}
-    <div class="row">
-      <div class="log-entry" data-logentryid="{{log_entry.id}}">
-        {% load tz %}
-        <div class="timestamp">{{log_entry.occurred_at}}</div>
-        <img class="delete" src="{% static 'img/close.png' %}"/>
-        {% if log_entry.entry_type == 0 %}
-
-          <p>{{log_entry.textlogentry.text_value}}</p>
-
-        {% elif log_entry.entry_type == 1 %}
-
-          <p>{{log_entry.numericlogentry.numeric_value}}</p>
-
-        {% elif log_entry.entry_type == 2 %}
-
-          <img src="{{ log_entry.imagelogentry.image_url }}" class="log-img"/>
-
-        {% endif %}
-      </div>
-    </div>
-    {% endif %}
-    {% endfor %}
-    <div>
-      {% if has_prev %}
-      <a href="/categories/{{log_context.id}}/?page={{prev_page_no}}">Newer</a>
-      {% endif %}
-      {% if has_next %}
-      <a href="/categories/{{log_context.id}}/?page={{next_page_no}}">Older</a>
-      {% endif %}
-    </div>
+<a href="/">
+  <div class="log-back">
+    Back Home
   </div>
+</a>
+
+<hr>
+
+<div class="row title-section">
+  <h2>Category: <span class="context-title">{{ log_context.context_name }}</span></h2>
+  <input type="hidden" name="log-context-id" value="{{log_context.id}}">
+  <div class="log-context-delete-button">(Delete)</div>
+</div>
+
+<div class="row search-section">
+  <input type="text" placeholder="Search for your thoughts..." name="search"/>
+  <div class="search-button">Search</div>
+</div>
+
+ <hr>
+
+<div class="row pagination-section">
+  {% if has_prev %}
+  <a href="/categories/{{log_context.id}}/?page={{prev_page_no}}"><div class="new-nav">Newer ></div></a>
+  {% endif %}
+  {% if has_next %}
+  <a href="/categories/{{log_context.id}}/?page={{next_page_no}}"><div class="old-nav">< Older</div></a>
+  {% endif %}
+</div>
+
+{% for log_entry in log_entry_list %}
+{% if log_entry.entry_type < 3 %}
+<div class="row">
+  <div class="log-entry" data-logentryid="{{log_entry.id}}">
+    {% load tz %}
+    <div class="timestamp">{{log_entry.occurred_at}}</div>
+    <img class="delete" src="{% static 'img/close.png' %}"/>
+    {% if log_entry.entry_type == 0 %}
+
+    <p>{{log_entry.textlogentry.text_value}}</p>
+
+    {% elif log_entry.entry_type == 1 %}
+
+    <p>{{log_entry.numericlogentry.numeric_value}}</p>
+
+    {% elif log_entry.entry_type == 2 %}
+
+    <img src="{{ log_entry.imagelogentry.image_url }}" class="log-img"/>
+
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+{% endfor %}
+<div style="height: 50px;"></div>
+<div>
+  {% if has_prev %}
+  <a href="/categories/{{log_context.id}}/?page={{prev_page_no}}">Newer</a>
+  {% endif %}
+  {% if has_next %}
+  <a href="/categories/{{log_context.id}}/?page={{next_page_no}}">Older</a>
+  {% endif %}
+</div>
 
 
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $('.log-context-delete-button').click(function() {
-        var logContextId = $('input[name=log-context-id]').val();
-        console.log("asdf: " + logContextId);
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $('.log-context-delete-button').click(function() {
+    var logContextId = $('input[name=log-context-id]').val();
+    console.log("asdf: " + logContextId);
 
         // POST to delete context
 
         $.ajax({
-            method: 'DELETE',
-            url: '/log_contexts/' + logContextId,
-            success: function() {
+          method: 'DELETE',
+          url: '/log_contexts/' + logContextId,
+          success: function() {
                 // Clear fields
                 window.location.href = "/users/{{fbid}}/logs";
-            }
-        })
+              }
+            })
       });
-    });
+});
 
-    $('.delete').click(function() {
-      var logEntryId = $(this).parent().data('logentryid');
+$('.delete').click(function() {
+  var logEntryId = $(this).parent().data('logentryid');
 
       // DELETE to /logs
       $.ajax({
-          method: 'DELETE',
-          url: '/logs/' + logEntryId,
-          success: function() {
+        method: 'DELETE',
+        url: '/logs/' + logEntryId,
+        success: function() {
               // Delete the html
               var selector = '.log-entry[data-logentryid='+logEntryId+']'
               var logEntryDiv = $(selector).parent().slideUp("fast", function() {
-                  $(this).delete();
+                $(this).delete();
               });
-          }
-      })
-      });
-
-    $('.search-button').click(function() {
-      var searchTerm = $.trim($('input[name=search]').val());
-      window.location.href = "/categories/{{log_context.id}}/search?query=" + searchTerm;
+            }
+          })
     });
 
-    $('input[name=search]').keyup(function(event){
-        if(event.keyCode == 13){
-            $('.search-button').click();
-        }
-    });
-    
-  </script>
-</body>
-</html>
+$('.search-button').click(function() {
+  var searchTerm = $.trim($('input[name=search]').val());
+  window.location.href = "/categories/{{log_context.id}}/search?query=" + searchTerm;
+});
+
+$('input[name=search]').keyup(function(event){
+  if(event.keyCode == 13){
+    $('.search-button').click();
+  }
+});
+
+</script>
+
+{% endblock %}
