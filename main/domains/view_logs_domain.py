@@ -2,6 +2,7 @@ from main.message_log import message_log
 from main.entrypoints.messenger import send_api_helper
 from main.utils import helper_util, constants
 from main.models import *
+import json
 
 # Helper method to send message for user to view logs
 def send_view_logs_message(current_profile):
