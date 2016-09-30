@@ -43,7 +43,7 @@ class LogEntry(models.Model):
     # 1 - numeric
     # 2 - image
     # 3 - Lyft ride
-    # 4 - Venue checkin 
+    # 4 - Venue checkin
     # 5 - Instagram
     # 6 - Weight
     # 7 - Activity
@@ -53,7 +53,9 @@ class LogEntry(models.Model):
         from datetime import datetime, timedelta
         import pytz
 
-        difference = datetime.utcnow().replace(tzinfo=pytz.utc) - self.occurred_at
+        difference = datetime.utcnow().replace(
+            tzinfo=pytz.utc
+        ) - self.occurred_at
 
         # If within 60 min, show "X min ago"
         if difference < timedelta(hours=1):
@@ -107,9 +109,14 @@ class TextLogEntry(LogEntry):
     text_value = models.CharField(max_length=10000)
 
     def is_link(self):
-        print "Trying to match: " + self.text_value
         import re
-        regex = re.compile('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', re.IGNORECASE)
+        regex = re.compile(
+            (
+                'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]'
+                '|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
+
+            ), re.IGNORECASE
+        )
 
         return regex.match(self.text_value) is not None
 
