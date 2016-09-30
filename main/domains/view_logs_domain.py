@@ -62,7 +62,6 @@ def send_choose_category_message(current_profile):
         None
     )
 
-
 # Helper method to send message for user to view logs in specific category
 def send_view_specific_category_message(current_profile, category):
     # Send user message linking to log

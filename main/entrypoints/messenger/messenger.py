@@ -179,6 +179,7 @@ def handle_postback(fbid, payload):
     if state == 'persistent_menu_view_logs':
         if helper_util.user_has_created_account(current_profile): 
             view_logs_domain.send_view_logs_message(current_profile)
+            view_logs_domain.send_choose_category_message(current_profile)
         else:
             # Tell user to link account before viewing logs
             explain_link_message = 'Before you can view your logs, create an account here:'
@@ -213,12 +214,14 @@ def handle_message_received(fbid, text):
 
         if processed_text == 'view':
             view_logs_domain.send_view_logs_message(current_profile)
+            view_logs_domain.send_choose_category_message(current_profile)
         elif category_id != -1:
             category = LogContext.objects.get(id=category_id)
 
             view_logs_domain.send_view_specific_category_message(current_profile, category)
         else:
             view_logs_domain.send_view_logs_message(current_profile)
+            view_logs_domain.send_choose_category_message(current_profile)
     else:
         logs_domain.handle_logs_text(current_profile, text, processed_text)
 
