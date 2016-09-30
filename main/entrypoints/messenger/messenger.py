@@ -101,7 +101,7 @@ def messenger_callback(request):
     return HttpResponse(status=200)
 
 def send_cant_handle_message_type_message(fbid, message_type):
-    cant_handle_message_type_message = "Unfortunately, we can't yet handle {} :(. Please send me text or an image and keep that for you!".format(message_type)
+    cant_handle_message_type_message = "Unfortunately, we can't yet handle {} :(. Please send me text or an image and I'll remember that for you!".format(message_type)
     send_api_helper.send_basic_text_message(fbid, cant_handle_message_type_message)
     try:
         current_profile = Profile.objects.get(id=fbid)
@@ -204,7 +204,17 @@ def handle_message_received(fbid, text):
     
     # Use NLP to route
     if nlp.is_view_domain(current_profile, processed_text):
-        view_logs_domain.send_view_logs_message(current_profile)
+
+        category_id = triggers_view_category(current_profile, processed_text)
+
+        if processed_text == 'view':
+            view_logs_domain.send_view_logs_message(current_profile)
+        elif category_id != -1:
+            category = LogContext.objects.get(id=category_id)
+
+            view_logs_domain.send_view_category_message(current_profile, category)
+        else:
+            view_logs_domain.send_view_logs_message(current_profile)
     else:
         logs_domain.handle_logs_text(current_profile, text, processed_text)
 
