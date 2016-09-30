@@ -38,11 +38,19 @@
 <div class="row">
   <div class="log-entry" data-logentryid="{{log_entry.id}}">
     {% load tz %}
-    <div class="timestamp">{{log_entry.occurred_at}}</div>
+    <div class="row">
+      <div class="timestamp">{{log_entry.occurred_at_display_string}}</div>
+    </div>
     <img class="delete" src="{% static 'img/close.png' %}"/>
     {% if log_entry.entry_type == 0 %}
 
-    <p>{{log_entry.textlogentry.text_value}}</p>
+      <p>
+      {% if log_entry.textlogentry.is_link %}
+      <a href="{{log_entry.textlogentry.text_value}}">{{log_entry.textlogentry.text_value}}</a>
+      {% else %}
+      {{log_entry.textlogentry.text_value}}
+      {% endif %}
+      </p>
 
     {% elif log_entry.entry_type == 1 %}
 

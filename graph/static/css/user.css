@@ -66,6 +66,7 @@ a {
 a:hover {
 	color: #68A;
 	cursor: pointer;
+	text-decoration: underline;
 }
 
 p {
@@ -158,7 +159,7 @@ input {
 	font-weight: 100;
 }
 
-.log-context:hover, .log-back:hover {
+.log-context:hover, .log-back:hover, .log-category:hover {
 	background-color: #68A;
 	cursor: pointer;
 }
@@ -184,9 +185,25 @@ input {
 
 .timestamp {
 	text-align: left;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 	font-size: 14px;
 	color: #68A;
+	float: left;
+}
+
+.log-category {
+	font-weight: 100;
+	font-size: 12px;
+	border: 1px dotted #DDD;
+	padding: 3px;
+	border-radius: 3px;
+	margin-left: 20px;
+	color: #555;
+}
+
+.log-category:hover {
+	border: none;
+	color: white;
 }
 
 .log-back {
