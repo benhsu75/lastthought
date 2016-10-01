@@ -34,7 +34,6 @@ def get_log_context(log_context_id):
 
 
 # Endpoint methods
-@csrf_exempt
 def logs(request, logentry_id=None):
     if request.method == 'GET':
         return HttpResponse("GET LOGS", status=200)
