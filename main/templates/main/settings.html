@@ -49,7 +49,7 @@
                 // DELETE to /users
                 $.ajax({
                 method: 'DELETE',
-                url: '/users/{{user_id}}',
+                url: '/users/{{user_id}}/',
                 success: function() {
                       // Delete the html
                       window.location.href = "/";
@@ -79,7 +79,7 @@
             $.ajax({
             method: 'POST',
             data: payload,
-            url: '/users/{{user_id}}',
+            url: '/users/{{user_id}}/',
             success: function() {
                 console.log('success');
                 // Change the option that is seen as selected in the UI
