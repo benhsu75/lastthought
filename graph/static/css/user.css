@@ -303,7 +303,8 @@ input {
 	.context-box {
 		height: 100px;
 		line-height: 100px;
-		font-size: 40px;
+		font-size: 30px;
+		font-weight: 300;
 	}
 	select {
 		font-size: 20px;
