@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^log_contexts/(?P<logcontext_id>\d+)/$', log_views.log_contexts),
 
     # User settings endpoints
-    url(r'^users/(?P<user_id>\d+)', general.update_user),
+    url(r'^users/(?P<user_id>\d+)/$', general.update_user),
 
     # Display endpoints
     url(r'^users/(?P<fbid>\d+)/logs', log_views.index),
