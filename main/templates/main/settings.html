@@ -34,14 +34,21 @@
         $('.delete-account-button').click(function() {
             var confirmed = confirm("Are you sure you want to delete your account? You will lose all your thoughts! Please click OK only if you are OK with this!!")
 
-            var payload = {
-                'csrfmiddlewaretoken' : '{{ csrf_token }}'
+            function csrfSafeMethod(method) {
+              // these HTTP methods do not require CSRF protection
+              return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
             }
+            $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                  if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                      xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                  }
+              }
+            });
             if(confirmed) {
                 // DELETE to /users
                 $.ajax({
                 method: 'DELETE',
-                data: payload,
                 url: '/users/{{user_id}}',
                 success: function() {
                       // Delete the html
