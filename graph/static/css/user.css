@@ -304,6 +304,8 @@ input {
 		height: 100px;
 		line-height: 100px;
 		font-size: 40px;
+	}
+	.log-context {
 		font-weight: 300;
 	}
 	select {
