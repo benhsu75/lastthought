@@ -84,32 +84,37 @@
     // });
 
 $('.delete').click(function() {
-  var logEntryId = $(this).parent().data('logentryid');
+  var confirmed = confirm("Are you sure you want to delete this thought?");
 
-      // DELETE to /logs
-      function csrfSafeMethod(method) {
-          // these HTTP methods do not require CSRF protection
-          return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-      }
-      $.ajaxSetup({
-          beforeSend: function(xhr, settings) {
-              if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                  xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
-              }
-          }
-      });
-      $.ajax({
-        method: 'DELETE',
-        url: '/logs/' + logEntryId,
-        success: function() {
-              // Delete the html
-              var selector = '.log-entry[data-logentryid='+logEntryId+']';
-              var row = $(selector).parent();
-              var logEntryDiv = $(selector).parent().slideUp("iterm", function() {
-                row.delete();
-              });
-            }});
+  if(confirmed) {
+
+    var logEntryId = $(this).parent().data('logentryid');
+
+    // DELETE to /logs
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+            }
+        }
     });
+    $.ajax({
+      method: 'DELETE',
+      url: '/logs/' + logEntryId,
+      success: function() {
+            // Delete the html
+            var selector = '.log-entry[data-logentryid='+logEntryId+']';
+            var row = $(selector).parent();
+            var logEntryDiv = $(selector).parent().slideUp("iterm", function() {
+              row.delete();
+            });
+          }});
+    }
+  });
 
 $('.search-button').click(function() {
   var searchTerm = $.trim($('input[name=search]').val());
