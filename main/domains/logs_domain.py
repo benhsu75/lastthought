@@ -291,7 +291,11 @@ def apply_context_to_log(current_profile, text, payload):
             else:
                 # error
                 return
-        except (TextLogEntry.DoesNotExist, NumericLogEntry.DoesNotExist, ImageLogEntry.DoesNotExist):
+        except (
+            TextLogEntry.DoesNotExist,
+            NumericLogEntry.DoesNotExist,
+            ImageLogEntry.DoesNotExist
+        ):
             # Tell the user that the log entry was deleted
             send_thought_was_deleted_message(current_profile)
             return
@@ -302,7 +306,7 @@ def apply_context_to_log(current_profile, text, payload):
         log_entry.save()
 
         message_text = "Thought stored (y)"
-    
+
         send_category_applied_message(current_profile, message_text)
 
         # Get user to create account
@@ -329,7 +333,11 @@ def apply_context_to_log(current_profile, text, payload):
             else:
                 # error
                 return
-        except (TextLogEntry.DoesNotExist, NumericLogEntry.DoesNotExist, ImageLogEntry.DoesNotExist):
+        except (
+            TextLogEntry.DoesNotExist,
+            NumericLogEntry.DoesNotExist,
+            ImageLogEntry.DoesNotExist
+        ):
             # Tell the user that the log entry was deleted
             send_thought_was_deleted_message(current_profile)
             return
@@ -361,6 +369,7 @@ def send_category_applied_message(profile, text):
         None
     )
 
+
 def send_thought_was_deleted_message(profile):
     thought_was_deleted_message = (
         "That thought was deleted so it can't be categorized anymore"
@@ -375,6 +384,7 @@ def send_thought_was_deleted_message(profile):
         thought_was_deleted_message,
         None
     )
+
 
 def send_no_category_message(profile):
     log_confirm_message = (

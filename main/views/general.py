@@ -172,15 +172,13 @@ def settings(request):
 
     # Return view
     context = {
-        'user_id' : request.user.id
+        'user_id': request.user.id
     }
     template = loader.get_template('main/settings.html')
     return HttpResponse(template.render(context, request))
 
 
 def index(request):
-    
-
     if helper_util.authenticated_and_profile_exists(request):
         # Get page number
         if 'page' in request.GET:
@@ -196,6 +194,7 @@ def index(request):
     template = loader.get_template('main/index.html')
     return HttpResponse(template.render(context, request))
 
+
 def search(request):
     if 'query' in request.GET:
         query_term = request.GET['query']
@@ -209,10 +208,12 @@ def search(request):
 
     return redirect('/')
 
+
 def terms(request):
     context = {}
     template = loader.get_template('main/terms.html')
     return HttpResponse(template.render(context, request))
+
 
 def update_user(request, user_id):
     if request.method == 'POST':
@@ -242,10 +243,20 @@ def update_user(request, user_id):
     else:
         return HttpResponse(status=404)
 
+
 def send_deleted_account_message(profile):
     deleted_account_message = "We've successfully deleted your account and all of your thoughts. We're sorry to see you leave :("
-    send_api_helper.send_basic_text_message(profile.fbid, deleted_account_message)
-    message_log.log_message('deleted_account_message', profile, deleted_account_message, None)
+    send_api_helper.send_basic_text_message(
+        profile.fbid,
+        deleted_account_message
+    )
+    message_log.log_message(
+        'deleted_account_message',
+        profile,
+        deleted_account_message,
+        None
+    )
+
 
 def connect(request, fbid):
     if not helper_util.profile_exists(fbid):

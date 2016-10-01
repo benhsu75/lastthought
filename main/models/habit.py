@@ -1,6 +1,7 @@
 from django.db import models
 from user import *
 
+
 class Habit(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -14,7 +15,8 @@ class Habit(models.Model):
     # 1 = Binary
     # 2 = Text
     # 3 = File
-    
+
+
 class HabitEntry(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     sent_at = models.DateTimeField(auto_now_add=True)
@@ -23,7 +25,7 @@ class HabitEntry(models.Model):
     habit = models.ForeignKey(Habit)
 
     numeric_value = models.FloatField(null=True)
-    binary_value = models.SmallIntegerField(null=True) # 0 = False, 1 = True
+    binary_value = models.SmallIntegerField(null=True)  # 0 = False, 1 = True
     text_value = models.CharField(max_length=1000, null=True)
-    
+
     response_collected = models.SmallIntegerField(default=0)

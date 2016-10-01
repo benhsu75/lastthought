@@ -2,6 +2,7 @@ from main.models import *
 from datetime import datetime
 from django.utils import timezone
 
+
 def profile_exists(fbid):
     try:
         profile = Profile.objects.get(fbid=fbid)
@@ -9,8 +10,10 @@ def profile_exists(fbid):
     except Profile.DoesNotExist:
         return False
 
+
 def user_has_created_account(profile):
     return profile.user is not None
+
 
 def authenticated_and_profile_exists(request):
     if not request.user.is_authenticated():
@@ -19,8 +22,10 @@ def authenticated_and_profile_exists(request):
         return False
     return True
 
+
 def same_day_as_now(a):
     return (datetime.now(timezone.utc) - a).total_seconds() < 86400
+
 
 def is_number(s):
     try:

@@ -85,6 +85,7 @@ def send_account_link_message(fbid, text):
     r = requests.post(url_to_post, json=send_payload)
     print r.text
 
+
 def send_share_message(fbid, text):
     send_payload = {
         'recipient': {

@@ -7,9 +7,13 @@ from main.utils import constants
 
 NUM_TIMES_BEFORE_ASKING_PREF = 4
 
+
 def send_num_thoughts_helper(num_thoughts, profile, time_period):
     weekly_message = (
-        "You stored {} thoughts {} - tap the link below to view them!".format(num_thoughts, time_period)
+        "You stored {} thoughts {} - tap the link below to view them!".format(
+            num_thoughts,
+            time_period
+        )
     )
     send_api_helper.send_button_message(profile.fbid, weekly_message, [
         {
@@ -57,14 +61,22 @@ class Command(BaseCommand):
 
             if num_thoughts_this_day > 0:
                 # Send the view message to the user
-                send_num_thoughts_helper(num_thoughts_this_day, profile, 'today')
+                send_num_thoughts_helper(
+                    num_thoughts_this_day,
+                    profile,
+                    'today'
+                )
                 continue
 
             # Look at users reminder_settings field
-            if profile.reminder_settings == 0: # Always send daily
+            if profile.reminder_settings == 0:  # Always send daily
                 # Send the view message to the user
-                send_num_thoughts_helper(num_thoughts_this_day, profile, 'today')
-                
+                send_num_thoughts_helper(
+                    num_thoughts_this_day,
+                    profile,
+                    'today'
+                )
+
                 continue
             elif profile.reminder_settings == 1:
                 # Send the summary if it is Sunday
@@ -79,11 +91,15 @@ class Command(BaseCommand):
                     )
                     num_thoughts_this_week = len(last_week_logs)
 
-                    send_num_thoughts_helper(num_thoughts_this_week, profile, 'last week')
+                    send_num_thoughts_helper(
+                        num_thoughts_this_week,
+                        profile,
+                        'last week'
+                    )
                 continue
             elif profile.reminder_settings == 2:
-                # do nothing since user has elected to not receive notifications
+                # do nothing since user has elected to not receive
+                # notifications
                 continue
             else:
                 continue
-            

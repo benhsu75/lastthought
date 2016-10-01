@@ -28,8 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 AUTHENTICATION_BACKENDS = (
-        'django.contrib.auth.backends.ModelBackend',
-    )
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 # Application definition
 
@@ -99,7 +99,7 @@ conn = psycopg2.connect(
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'graph',                      
+        'NAME': 'graph',
         'USER': 'graphdbuser',
         'PASSWORD': 'password',
         'HOST': 'localhost',
@@ -137,4 +137,4 @@ STATIC_URL = '/static/'
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static/'),
-)   
+)

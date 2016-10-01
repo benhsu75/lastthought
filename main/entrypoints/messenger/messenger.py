@@ -17,10 +17,10 @@ from main.utils import constants
 import requests
 from main.views import general
 
+
 ######################################
 ######### MESSENGER WEBHOOK ##########
 ######################################
-
 @csrf_exempt
 def messenger_callback(request):
     if('hub.challenge' in request.GET):
@@ -30,8 +30,8 @@ def messenger_callback(request):
     body = json.loads(request.body)
 
     # Print request for debugging
-    print "------RECEIVED MESSAGE (BODY BELOW)------" 
-    print body 
+    print "------RECEIVED MESSAGE (BODY BELOW)------"
+    print body
     print '\n'
 
     # Loop through multiple entries
@@ -45,7 +45,8 @@ def messenger_callback(request):
 
             fbid = messaging['sender']['id']
 
-            # If user doesn't exist, then start onboarding flow and create new user
+            # If user doesn't exist, then start onboarding flow
+            # and create new user
             if not helper_util.profile_exists(fbid):
                 onboarding_domain.create_new_user(fbid)
                 continue
@@ -75,13 +76,25 @@ def messenger_callback(request):
                             continue
                     # Video
                     elif attachment_type == 'video':
-                        send_cant_handle_message_type_message(fbid, "video")
+                        send_cant_handle_message_type_message(
+                            fbid,
+                            "video"
+                        )
                     elif attachment_type == 'audio':
-                        send_cant_handle_message_type_message(fbid, "audio")
+                        send_cant_handle_message_type_message(
+                            fbid,
+                            "audio"
+                        )
                     elif attachment_type == 'location':
-                        send_cant_handle_message_type_message(fbid, "locations")
+                        send_cant_handle_message_type_message(
+                            fbid,
+                            "locations"
+                        )
                     else:
-                        send_cant_handle_message_type_message(fbid, "this content type")
+                        send_cant_handle_message_type_message(
+                            fbid,
+                            "this content type"
+                        )
                     continue
                 # Is normal message received
                 elif 'text' in messaging['message']:
@@ -89,7 +102,10 @@ def messenger_callback(request):
                     handle_message_received(fbid, message_text)
                     continue
                 else:
-                    send_cant_handle_message_type_message(fbid, "this content type")
+                    send_cant_handle_message_type_message(
+                        fbid,
+                        "this content type"
+                    )
             elif 'optin' in messaging:
                 # Plugin authentication webhook
                 handle_optin(messaging)
@@ -100,14 +116,24 @@ def messenger_callback(request):
 
     return HttpResponse(status=200)
 
+
 def send_cant_handle_message_type_message(fbid, message_type):
     cant_handle_message_type_message = "Unfortunately, we can't yet handle {} :(. Please send me text or an image and I'll remember that for you!".format(message_type)
-    send_api_helper.send_basic_text_message(fbid, cant_handle_message_type_message)
+    send_api_helper.send_basic_text_message(
+        fbid,
+        cant_handle_message_type_message
+    )
     try:
         current_profile = Profile.objects.get(id=fbid)
-        message_log.log_message('cant_handle_message_type_message', current_profile, get_started_message, None)
+        message_log.log_message(
+            'cant_handle_message_type_message',
+            current_profile,
+            get_started_message,
+            None
+        )
     except Profile.DoesNotExist:
         return
+
 
 @csrf_exempt
 def account_link(request):
@@ -119,6 +145,7 @@ def account_link(request):
 
     return general.fblogin_view(request, psid, redirect_uri)
 
+
 def get_psid_from_account_linking_token(token):
     url_to_get = 'https://graph.facebook.com/v2.6/me?access_token={}&fields=recipient&account_linking_token={}'.format(constants.FB_PAGE_ACCESS_TOKEN, token)
 
@@ -127,6 +154,7 @@ def get_psid_from_account_linking_token(token):
     psid = r.json()['recipient']
 
     return psid
+
 
 # Sends the user our initial message
 def handle_optin(messaging):
@@ -142,6 +170,7 @@ def handle_optin(messaging):
             onboarding_domain.send_create_account_message(profile)
         else:
             onboarding_domain.create_new_user(fbid)
+
 
 # When the user responds by tapping a quick reply
 def handle_quick_reply(fbid, text, payload):
@@ -161,9 +190,13 @@ def handle_quick_reply(fbid, text, payload):
     elif state == 'view_specific_category':
         category_id = payload['category_id']
         category = LogContext.objects.get(id=category_id)
-        view_logs_domain.send_view_specific_category_message(current_profile, category)
+        view_logs_domain.send_view_specific_category_message(
+            current_profile,
+            category
+        )
     else:
         misunderstood_domain.handle_misunderstood(current_profile, text, text)
+
 
 # Handles postbacks
 def handle_postback(fbid, payload):
@@ -177,14 +210,22 @@ def handle_postback(fbid, payload):
     state = json_payload['state']
 
     if state == 'persistent_menu_view_logs':
-        if helper_util.user_has_created_account(current_profile): 
+        if helper_util.user_has_created_account(current_profile):
             view_logs_domain.send_view_logs_message(current_profile)
             view_logs_domain.send_choose_category_message(current_profile)
         else:
             # Tell user to link account before viewing logs
             explain_link_message = 'Before you can view your logs, create an account here:'
-            send_api_helper.send_basic_text_message(current_profile.fbid, explain_link_message)
-            message_log.log_message('explain_link_message', current_profile, explain_link_message, None)
+            send_api_helper.send_basic_text_message(
+                current_profile.fbid,
+                explain_link_message
+            )
+            message_log.log_message(
+                'explain_link_message',
+                current_profile,
+                explain_link_message,
+                None
+            )
 
             onboarding_domain.send_create_account_message(current_profile)
     elif state == 'get_started':
@@ -193,6 +234,7 @@ def handle_postback(fbid, payload):
     else:
         # Error - never should reach here
         return
+
 
 # When the user responds by sending any text message
 def handle_message_received(fbid, text):
@@ -206,11 +248,14 @@ def handle_message_received(fbid, text):
 
     # Standardize text
     processed_text = text.strip().lower()
-    
+
     # Use NLP to route
     if nlp.is_view_domain(current_profile, processed_text):
 
-        category_id = nlp.id_of_triggered_view_category(current_profile, processed_text)
+        category_id = nlp.id_of_triggered_view_category(
+            current_profile,
+            processed_text
+        )
 
         if processed_text == 'view':
             view_logs_domain.send_view_logs_message(current_profile)
@@ -218,12 +263,16 @@ def handle_message_received(fbid, text):
         elif category_id != -1:
             category = LogContext.objects.get(id=category_id)
 
-            view_logs_domain.send_view_specific_category_message(current_profile, category)
+            view_logs_domain.send_view_specific_category_message(
+                current_profile,
+                category
+            )
         else:
             view_logs_domain.send_view_logs_message(current_profile)
             view_logs_domain.send_choose_category_message(current_profile)
     else:
         logs_domain.handle_logs_text(current_profile, text, processed_text)
+
 
 def handle_image_received(fbid, image_url):
     try:
