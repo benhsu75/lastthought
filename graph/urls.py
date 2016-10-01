@@ -2,6 +2,7 @@ from django.conf.urls import url, patterns
 from django.contrib import admin
 from main.views import general, log_views
 from main.entrypoints.messenger import messenger
+from main.entrypoints.twilio import twilio
 from django.conf import settings
 
 urlpatterns = [
@@ -10,6 +11,9 @@ urlpatterns = [
     # Messenger webhooks
     url(r'^messenger_callback/', messenger.messenger_callback),
     url(r'^messenger_account_link/', messenger.account_link),
+
+    # Twilio webhooks
+    url(r'^twilio_callback/', twilio.twilio_callback),
 
     # Facebook Login
     url(r'^fblogin_view/', general.fblogin_view),
