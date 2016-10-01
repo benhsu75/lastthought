@@ -49,7 +49,6 @@ def logs(request, logentry_id=None):
         return HttpResponse(status=404)
 
 
-@csrf_exempt
 def log_contexts(request, logcontext_id=None):
     if request.method == 'GET':
         return HttpResponse("GET LOGS", status=200)

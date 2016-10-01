@@ -95,6 +95,7 @@
 </div>
 
 {% csrf_token %}
+
 <script type="text/javascript">
 $('.delete').click(function() {
 
@@ -107,6 +108,7 @@ $('.delete').click(function() {
     var payload = {
         'csrfmiddlewaretoken' : '{{ csrf_token }}'
     }
+    console.log(payload);
     $.ajax({
       method: 'DELETE',
       data: payload,
