@@ -17,7 +17,7 @@ def create_new_user(fbid):
         ) = fb_profile_helper.get_user_profile_data(fbid)
 
     # If user doesn't exist, create user
-    p = Profile(fbid=fbid, utc_offset=timezone, send_reminders_flag=True)
+    p = Profile(fbid=fbid, utc_offset=timezone, send_reminders_flag=True, reminder_settings=0)
     p.save()
 
     # Create default categories
