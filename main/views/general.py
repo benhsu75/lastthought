@@ -171,7 +171,9 @@ def settings(request):
     #     return redirect('/login')
 
     # Return view
-    context = {}
+    context = {
+        'user_id' : request.user.id
+    }
     template = loader.get_template('main/settings.html')
     return HttpResponse(template.render(context, request))
 
@@ -211,6 +213,30 @@ def terms(request):
     context = {}
     template = loader.get_template('main/terms.html')
     return HttpResponse(template.render(context, request))
+
+def update_user(request, user_id):
+    if request.method == 'POST':
+        if 'reminder_settings' in request.POST:
+            user = User.objects.get(id=user_id)
+
+            profile = user.profile
+
+            # Update setting
+            profile.reminder_settings = request.POST['reminder_settings']
+            profile.save()
+
+            return HttpResponse(status=200)
+        else:
+            return HttpResponse(status=404)
+    elif request.method == 'DELETE':
+        user = User.objects.get(id=user_id)
+
+        # Delete user
+        user.delete()
+
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse(status=404)
 
 
 def connect(request, fbid):

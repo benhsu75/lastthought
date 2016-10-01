@@ -298,6 +298,42 @@ input {
 	opacity: 0.8;
 }
 
+.delete-account-button {
+	background-color: red;
+	height: 40px;
+	width: 140px;
+	border: none;
+	color: white;
+	font-size: 15px;
+}
+
+.delete-account-button:hover {
+	cursor: pointer;
+	opacity: .6;
+	outline: none;
+}
+
+.summary-freq-setting {
+	margin-top: 10px;
+	width: 500px;
+	background-color: white;
+	border: 1px solid #1787FB;
+	color: #1787FB;
+	text-align: center;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.summary-freq-setting.selected {
+	background-color: #1787FB;
+	color: white;
+}
+
+.summary-freq-setting:hover {
+	opacity: .8;
+	cursor: pointer;
+}
+
 @media all and (max-width:1000px){
 	.col-4 { width: calc(33.3% - 10px); }	
 	.container { max-width: none; }
@@ -366,5 +402,25 @@ input {
 		font-size: 30px;
 		line-height: 55px;
 		margin-left: 20px;
+	}
+
+	.delete-account-button {
+		background-color: red;
+		height: 100px;
+		width: 90%;
+		border: none;
+		color: white;
+		font-size: 40px;
+		margin: auto;
+	}
+	.summary-freq-setting {
+		margin-top: 20px;
+		width: 90%;
+		background-color: white;
+		border: 1px solid #1787FB;
+		color: #1787FB;
+		text-align: center;
+		padding-top: 10px;
+		padding-bottom: 10px;
 	}
 }

@@ -5,6 +5,77 @@
 <hr>
 <br>
 
-<button>Delete Account</button>
+<!-- <h2>Settings</h2><br> -->
+
+<h3>How frequently should we message you?</h3>
+
+<div>
+    <div class="row">
+        <div class="summary-freq-setting selected" data-val="0">Daily - we will send you a daily summary of your thoughts</div>
+    </div>
+    <div class="row">
+        <div class="summary-freq-setting" data-val="1">Weekly - we will send you a weekly summary of your thoughts</div>
+    </div>
+    <div class="row">
+        <div class="summary-freq-setting" data-val="2">Off - we won't send you message updates</div>
+    </div>
+    
+</div>
+
+<br>
+
+<h3>Account Management</h3>
+<button class="delete-account-button">Delete Account</button>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.delete-account-button').click(function() {
+            var confirmed = confirm("Are you sure you want to delete your account? You will lose all your thoughts! Please click OK only if you are OK with this!!")
+
+            if(confirmed) {
+                // DELETE to /users
+                $.ajax({
+                method: 'DELETE',
+                url: '/users/{{user_id}}',
+                success: function() {
+                      // Delete the html
+                      window.location.href = "/";
+                    }
+                  })
+            }
+        });
+
+        $('.summary-freq-setting').click(function() {
+            var val = $(this).data("val");
+
+            var selectedVal = $('.summary-freq-setting.selected').data('val');
+
+            if(val == selectedVal) {
+                // User clicked the current setting so don't do anything
+                console.log('hello');
+                return;
+            }
+
+            var payload = {
+                'reminder_settings' : val
+            };
+
+            console.log('hi');
+            // Change setting
+            $.ajax({
+            method: 'POST',
+            data: payload,
+            url: '/users/{{user_id}}',
+            success: function() {
+                console.log('success');
+                // Change the option that is seen as selected in the UI
+                $('.summary-freq-setting.selected').removeClass('selected');
+                $('.summary-freq-setting[data-val='+val+']').addClass('selected');
+                }
+              });
+            
+        });
+    });
+</script>
 
 {% endblock %}
