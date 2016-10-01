@@ -1,6 +1,6 @@
 # This file will store constants
 
-BASE_HEROKU_URL = 'http://userdatagraph.herokuapp.com'
+BASE_HEROKU_URL = 'https://userdatagraph.herokuapp.com'
 
 AFFIRMATIVE_SYNONYMS = [
     'yes',
