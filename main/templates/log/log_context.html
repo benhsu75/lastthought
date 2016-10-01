@@ -128,14 +128,16 @@ $('.delete').click(function() {
               }
           }
       });
+
       $.ajax({
         method: 'DELETE',
         url: '/logs/' + logEntryId,
         success: function() {
               // Delete the html
-              var selector = '.log-entry[data-logentryid='+logEntryId+']'
+              var selector = '.log-entry[data-logentryid='+logEntryId+']';
+              var row = $(selector).parent();
               var logEntryDiv = $(selector).parent().slideUp("fast", function() {
-                $(this).delete();
+                row.delete();
               });
             }
           })
