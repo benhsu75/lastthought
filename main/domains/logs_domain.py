@@ -294,8 +294,7 @@ def apply_context_to_log(current_profile, text, payload):
                 return
         except (TextLogEntry.DoesNotExist, NumericLogEntry.DoesNotExist, ImageLogEntry.DoesNotExist):
             # Tell the user that the log entry was deleted
-
-
+            send_thought_was_deleted_message(current_profile)
             return
 
         # Get context
@@ -316,6 +315,28 @@ def apply_context_to_log(current_profile, text, payload):
             onboarding_domain.send_create_account_message(current_profile)
 
     elif "add_new_context_flag" in payload:
+
+        # Confirm if log still exists - if it doesn't, tell user
+        entry_id = payload['log_entry_id']
+
+        # Get log entry
+        entry_type = payload['entry_type']
+        entry_id = payload['log_entry_id']
+
+        try:
+            if entry_type == 'text':
+                log_entry = TextLogEntry.objects.get(id=entry_id)
+            elif entry_type == 'numeric':
+                log_entry = NumericLogEntry.objects.get(id=entry_id)
+            elif entry_type == 'image':
+                log_entry = ImageLogEntry.objects.get(id=entry_id)
+            else:
+                # error
+                return
+        except (TextLogEntry.DoesNotExist, NumericLogEntry.DoesNotExist, ImageLogEntry.DoesNotExist):
+            # Tell the user that the log entry was deleted
+            send_thought_was_deleted_message(current_profile)
+            return
 
         message_text = "What is the name of the category you want to add?"
         send_ask_for_category_name_message(current_profile, message_text)
@@ -344,6 +365,20 @@ def send_category_applied_message(profile, text):
         None
     )
 
+def send_thought_was_deleted_message(profile):
+    thought_was_deleted_message = (
+        "That thought was deleted so it can't be categorized anymore"
+    )
+    send_api_helper.send_basic_text_message(
+        profile.fbid,
+        thought_was_deleted_message
+    )
+    message_log.log_message(
+        'thought_was_deleted_message',
+        profile,
+        thought_was_deleted_message,
+        None
+    )
 
 def send_no_category_message(profile):
     log_confirm_message = (
