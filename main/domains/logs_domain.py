@@ -282,14 +282,20 @@ def apply_context_to_log(current_profile, text, payload):
         entry_type = payload['entry_type']
         entry_id = payload['log_entry_id']
 
-        if entry_type == 'text':
-            log_entry = TextLogEntry.objects.get(id=entry_id)
-        elif entry_type == 'numeric':
-            log_entry = NumericLogEntry.objects.get(id=entry_id)
-        elif entry_type == 'image':
-            log_entry = ImageLogEntry.objects.get(id=entry_id)
-        else:
-            # error
+        try:
+            if entry_type == 'text':
+                log_entry = TextLogEntry.objects.get(id=entry_id)
+            elif entry_type == 'numeric':
+                log_entry = NumericLogEntry.objects.get(id=entry_id)
+            elif entry_type == 'image':
+                log_entry = ImageLogEntry.objects.get(id=entry_id)
+            else:
+                # error
+                return
+        except TextLogEntry.DoesNotExist, NumericLogEntry.DoesNotExist, ImageLogEntry.DoesNotExist:
+            # Tell the user that the log entry was deleted
+            
+
             return
 
         # Get context
