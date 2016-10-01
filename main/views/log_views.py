@@ -202,7 +202,7 @@ def log_context_show(request, log_context_id):
         log_entry_list = log_entry_list.filter(
             textlogentry__text_value__icontains=query_term
         )
- 
+
     p = Paginator(log_entry_list, NUM_ENTRIES_PER_PAGE)
     num_pages = p.num_pages
     current_page = p.page(page_no)
