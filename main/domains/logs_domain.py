@@ -292,9 +292,9 @@ def apply_context_to_log(current_profile, text, payload):
             else:
                 # error
                 return
-        except TextLogEntry.DoesNotExist, NumericLogEntry.DoesNotExist, ImageLogEntry.DoesNotExist:
+        except (TextLogEntry.DoesNotExist, NumericLogEntry.DoesNotExist, ImageLogEntry.DoesNotExist):
             # Tell the user that the log entry was deleted
-            
+
 
             return
 
