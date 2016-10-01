@@ -258,6 +258,16 @@ input {
 	background-color: #FFF;
 }
 
+.no-logs {
+	padding: 20px;
+	border: 1px dashed #DDD;
+	text-align: left;
+	font-size: 16px;
+	line-height: 25px;
+	margin-bottom: 20px;
+	background-color: #FFF;
+}
+
 .type-circle {
 	height: 50px;
 	width: 50px;

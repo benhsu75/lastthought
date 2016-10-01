@@ -33,6 +33,14 @@
   {% endif %}
 </div>
 
+{% if log_entry_list|length > 0 %}
+<div class="row">
+  <div class="no-logs">
+    <p>Looks like you have nothing logged for {{ log_context.context_name }}. <a href="https://m.me/609388442561960">Message us</a> to store your thoughts!</p>
+  </div>
+</div>
+{% else %}
+
 {% for log_entry in log_entry_list %}
 {% if log_entry.entry_type < 3 %}
 <div class="row">
@@ -65,6 +73,7 @@
 </div>
 {% endif %}
 {% endfor %}
+{% endif %}
 <div style="height: 50px;"></div>
 <div>
   {% if has_prev %}
