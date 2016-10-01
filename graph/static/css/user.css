@@ -428,4 +428,7 @@ input {
 		line-height: 130px;
 		height: 130px;
 	}
+	.fixed-chat {
+		display: none;
+	}
 }
