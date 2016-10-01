@@ -35,7 +35,7 @@
             var confirmed = confirm("Are you sure you want to delete your account? You will lose all your thoughts! Please click OK only if you are OK with this!!")
 
             var payload = {
-                'csrfmiddlewaretoken' : {{ csrf_token }}
+                'csrfmiddlewaretoken' : '{{ csrf_token }}'
             }
             if(confirmed) {
                 // DELETE to /users
@@ -64,7 +64,7 @@
 
             var payload = {
                 'reminder_settings' : val,
-                'csrfmiddlewaretoken' : {{ csrf_token }}
+                'csrfmiddlewaretoken' : '{{ csrf_token }}'
             };
 
             console.log('hi');
