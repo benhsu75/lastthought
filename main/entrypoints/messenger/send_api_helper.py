@@ -74,8 +74,7 @@ def send_account_link_message(fbid, text):
                         'image_url': 'https://pbs.twimg.com/profile_images/675002642196729857/A0OpcJpA.png',
                         'buttons': [{
                             'type': 'account_link',
-                            'url': 'https://userdatagraph.herokuapp.com/messenger_account_link',
-                            "messenger_extensions": True
+                            'url': 'https://userdatagraph.herokuapp.com/messenger_account_link'
                         }]
                     }]
                 }
