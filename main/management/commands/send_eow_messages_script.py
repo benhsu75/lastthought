@@ -56,13 +56,13 @@ class Command(BaseCommand):
 
             if num_thoughts_this_day > 0:
                 # Send the view message to the user
-                send_num_thoughts_helper(num_thoughts_this_week, profile, 'today')
+                send_num_thoughts_helper(num_thoughts_this_day, profile, 'today')
                 continue
 
             # Look at users reminder_settings field
             if profile.reminder_settings == 0: # Always send daily
                 # Send the view message to the user
-                send_num_thoughts_helper(num_thoughts_this_week, profile, 'today')
+                send_num_thoughts_helper(num_thoughts_this_day, profile, 'today')
                 continue
             elif profile.reminder_settings == 1:
                 # Send the summary if it is Sunday
