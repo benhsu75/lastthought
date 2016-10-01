@@ -124,7 +124,7 @@ $('.delete').click(function() {
         var selector = '.log-entry[data-logentryid='+logEntryId+']';
         var row = $(selector).parent();
         var logEntryDiv = $(selector).parent().slideUp("fast", function() {
-            row.delete();
+            row.remove();
           });
       }
     });
