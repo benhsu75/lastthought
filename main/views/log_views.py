@@ -177,7 +177,7 @@ def log_context_show(request, log_context_id):
     if 'query' in request.GET:
         query_term = request.GET['query']
     else:
-        query_term = None
+        query_term = ""
 
     # Authenticate
     fbid = request.user.profile.fbid
@@ -200,7 +200,7 @@ def log_context_show(request, log_context_id):
     ).order_by('-occurred_at')
 
     # Filter by search term
-    if query_term is not None:
+    if query_term is not "":
         log_entry_list = log_entry_list.filter(textlogentry__text_value__icontains=query_term)
 
     p = Paginator(log_entry_list, NUM_ENTRIES_PER_PAGE)
