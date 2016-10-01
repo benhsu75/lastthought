@@ -226,7 +226,8 @@ def log_context_show(request, log_context_id):
         'has_prev': has_prev,
         'has_next': has_next,
         'prev_page_no': prev_page_no,
-        'next_page_no': next_page_no
+        'next_page_no': next_page_no,
+        'query_term' : query_term
     }
     template = loader.get_template('log/log_context.html')
     return HttpResponse(template.render(context, request))
