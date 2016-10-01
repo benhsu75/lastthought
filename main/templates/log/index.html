@@ -105,20 +105,26 @@ $('.delete').click(function() {
     var logEntryId = $(this).parent().data('logentryid');
 
     // DELETE to /logs
-    var payload = {
-        'csrfmiddlewaretoken' : '{{ csrf_token }}'
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
     }
-    console.log(payload);
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+            }
+        }
+    });
     $.ajax({
       method: 'DELETE',
-      data: payload,
-      url: '/logs/' + logEntryId,
+      url: '/logs/' + logEntryId + '?csrfmiddlewaretoken={{csrf_token}}',
       success: function() {
-      // Delete the html
-      var selector = '.log-entry[data-logentryid='+logEntryId+']'
-      var logEntryDiv = $(selector).parent().slideUp("fast", function() {
-          $(this).delete();
-        });
+        // Delete the html
+        var selector = '.log-entry[data-logentryid='+logEntryId+']'
+        var logEntryDiv = $(selector).parent().slideUp("fast", function() {
+            $(this).delete();
+          });
       }
     });
   }
