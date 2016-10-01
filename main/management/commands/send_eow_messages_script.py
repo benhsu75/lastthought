@@ -78,7 +78,7 @@ class Command(BaseCommand):
                     num_thoughts_this_week = len(last_week_logs)
 
                     send_num_thoughts_helper(num_thoughts_this_week, profile, 'last week')
-                    continue
+                continue
             elif profile.reminder_settings == 2:
                 # do nothing since user has elected to not receive notifications
                 continue
