@@ -151,14 +151,14 @@ def search(request, fbid, query_term):
     # Check if there is at least one result
     results_found_flag = (len(log_entry_list) > 0)
 
-
     context = {
         'log_entry_list': log_entry_list,
-        'query_term' : query_term,
-        'results_found_flag' : results_found_flag
+        'query_term': query_term,
+        'results_found_flag': results_found_flag
     }
     template = loader.get_template('log/search.html')
     return HttpResponse(template.render(context, request))
+
 
 def log_context_show(request, log_context_id):
     # Get user
@@ -199,7 +199,9 @@ def log_context_show(request, log_context_id):
 
     # Filter by search term
     if query_term is not "":
-        log_entry_list = log_entry_list.filter(textlogentry__text_value__icontains=query_term)
+        log_entry_list = log_entry_list.filter(
+            textlogentry__text_value__icontains=query_term
+        )
 
     p = Paginator(log_entry_list, NUM_ENTRIES_PER_PAGE)
     num_pages = p.num_pages
@@ -217,15 +219,20 @@ def log_context_show(request, log_context_id):
 
     current_log_entry_list = current_page.object_list
 
+    log_context_list = LogContext.objects.filter(
+        log=user_log
+    ).order_by('context_name')
+
     context = {
         'log_context': log_context,
+        'log_context_list': log_context_list,
         'fbid': fbid,
         'log_entry_list': current_log_entry_list,
         'has_prev': has_prev,
         'has_next': has_next,
         'prev_page_no': prev_page_no,
         'next_page_no': next_page_no,
-        'query_term' : query_term
+        'query_term': query_term
     }
     template = loader.get_template('log/log_context.html')
     return HttpResponse(template.render(context, request))

@@ -3,18 +3,28 @@
 {% block content %}
 
 
-<hr>
-
-<div class="row title-section">
-  <h2>Category: <span class="context-title">{{ log_context.context_name }}</span></h2>
-  <input type="hidden" name="log-context-id" value="{{log_context.id}}">
-  <div class="log-context-delete-button">(Delete)</div>
-</div>
-
 <div class="row search-section">
-  <input type="text" placeholder="Search for your thoughts..." name="search" value="{{query_term}}"/>
+  <input type="text" placeholder='Search in "{{ log_context.context_name }}"...' name="search" value="{{query_term}}"/>
   <div class="search-button">Search</div>
 </div>
+
+<div class="row context-section">
+  {% for context in log_context_list %}
+    <div class="col-4 context-box">
+      <a href="/categories/{{context.id}}">
+        {% if context.id == log_context.id %}
+        <div class="log-context selected-context">
+        {% else %}
+        <div class="log-context">
+        {% endif %}
+          {{ context.context_name }}
+        </div>
+      </a>
+    </div>
+  {% endfor %}
+
+</div>
+<br>
 
  <hr>
 
@@ -68,12 +78,12 @@
 {% endif %}
 {% endfor %}
 {% endif %}
-<div>
+<div class="row pagination-section">
   {% if has_prev %}
-  <a href="/categories/{{log_context.id}}/?page={{prev_page_no}}">Newer</a>
+  <a href="/categories/{{log_context.id}}/?page={{prev_page_no}}"><div class="new-nav">Newer ></div></a>
   {% endif %}
   {% if has_next %}
-  <a href="/categories/{{log_context.id}}/?page={{next_page_no}}">Older</a>
+  <a href="/categories/{{log_context.id}}/?page={{next_page_no}}"><div class="old-nav">< Older</div></a>
   {% endif %}
 </div>
 
