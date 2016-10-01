@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from main.message_log import message_log
 from main.utils import constants
 
+NUM_TIMES_BEFORE_ASKING_PREF = 4
 
 def send_num_thoughts_helper(num_thoughts, profile, time_period):
     weekly_message = (
@@ -63,6 +64,7 @@ class Command(BaseCommand):
             if profile.reminder_settings == 0: # Always send daily
                 # Send the view message to the user
                 send_num_thoughts_helper(num_thoughts_this_day, profile, 'today')
+                
                 continue
             elif profile.reminder_settings == 1:
                 # Send the summary if it is Sunday
