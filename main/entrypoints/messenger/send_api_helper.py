@@ -75,7 +75,7 @@ def send_account_link_message(fbid, text):
                         'buttons': [{
                             'type': 'account_link',
                             'url': 'https://userdatagraph.herokuapp.com/messenger_account_link',
-                            "messenger_extensions": true
+                            "messenger_extensions": True
                         }]
                     }]
                 }
