@@ -4,25 +4,30 @@ from main.utils import helper_util, constants
 from main.models import *
 import json
 
+
 # Helper method to send message for user to view logs
 def send_view_logs_message(current_profile):
     # Send user message linking to log
     log_view_message = (
         "Click to view all your thoughts"
     )
-    send_api_helper.send_button_message(current_profile.fbid, log_view_message, [
-        {
+    send_api_helper.send_button_message(
+        current_profile.fbid,
+        log_view_message,
+        [{
             'type': 'web_url',
             'url': constants.BASE_HEROKU_URL,
-            'title': 'View All'    
-        }
-    ])
+            'title': 'View All',
+            "messenger_extensions": true
+        }]
+    )
     message_log.log_message(
         'log_view_message',
         current_profile,
         log_view_message,
         None
     )
+
 
 # Helper method to send message to user to drill down into a specific category
 def send_choose_category_message(current_profile):
@@ -64,20 +69,27 @@ def send_choose_category_message(current_profile):
         None
     )
 
+
 # Helper method to send message for user to view logs in specific category
 def send_view_specific_category_message(current_profile, category):
     # Send user message linking to log
     log_view_message = (
         "Click to view your {} category".format(category.context_name)
     )
-    link_to_view_category = '{}/categories/{}'.format(constants.BASE_HEROKU_URL, category.id)
-    send_api_helper.send_button_message(current_profile.fbid, log_view_message, [
-        {
+    link_to_view_category = '{}/categories/{}'.format(
+        constants.BASE_HEROKU_URL,
+        category.id
+    )
+    send_api_helper.send_button_message(
+        current_profile.fbid,
+        log_view_message,
+        [{
             'type': 'web_url',
             'url': link_to_view_category,
-            'title': 'View {}'.format(category.context_name)    
-        }
-    ])
+            'title': 'View {}'.format(category.context_name),
+            "messenger_extensions": true
+        }]
+    )
     message_log.log_message(
         'log_view_message',
         current_profile,

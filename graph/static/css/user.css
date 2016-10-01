@@ -4,6 +4,7 @@
 	max-width: 700px;
 	position: relative;
 	padding: 30px;
+	font-weight: 300;
 }
 
 .col-4 {
@@ -108,7 +109,7 @@ input {
 	padding: 10px;
 	width: calc(100% - 20px - 2px - 70px);
 	float: left;
-	font-weight: 100;
+	/*font-weight: 100;*/
 }
 
 ::-webkit-input-placeholder {
@@ -132,7 +133,7 @@ input {
 	padding: 10px;
 	background-color: #1787FB;
 	color: white;
-	font-weight: 100;
+	/*font-weight: 100;*/
 }
 
 .search-button:hover {
@@ -160,7 +161,7 @@ input {
 	color: white;
 	border-radius: 2px;
 	text-align: center;
-	font-weight: 100;
+	/*font-weight: 100;*/
 }
 
 .log-context:hover, .log-back:hover, .log-category:hover {
@@ -196,7 +197,7 @@ input {
 }
 
 .log-category {
-	font-weight: 100;
+	/*font-weight: 100;*/
 	font-size: 12px;
 	border: 1px dotted #DDD;
 	padding: 3px;
@@ -216,7 +217,7 @@ input {
 	left: 0px;
 	z-index: 1;
 	width: 100%;
-	background-color: #8AC;
+	background-color: #1787FB;
 	padding-left: 3px;
 	padding-right: 3px;
 	font-size: 14px;

@@ -5,12 +5,41 @@
   <title>LastThought</title>
   <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}"/>
   <link rel="stylesheet" type="text/css" href="{% static 'css/user.css' %}"/>
-  <link href="https://fonts.googleapis.com/css?family=Roboto:100, 300" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Lato:300,900" rel="stylesheet">
   <!-- jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+  <!-- Messenger SDK -->
+  <script>
+
+  console.log("HELLO");
+  (function(d, s, id){
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'Messenger'));
+  window.extAsyncInit = function() {
+    MessengerExtensions.getUserID(function success(uids) {
+      console.log(uids.psid);
+      $(".fixed-chat").hide();
+    }, function error(err) {
+      console.log("ITS ME")
+      $(".fixed-chat").hide();
+      // $(".fixed-chat").hide();
+    }); 
+  };
+
+  </script>
 </head>
 <body>
+  <a href="https://m.me/609388442561960" class="fixed-chat">
+    <div class="log-back">
+      Log a thought
+    </div>
+  </a>
   <div class="container">
     <a href="/" class="header-link"><h1><span class="h-light">LAST</span><span class="h-strong" style="margin-left: 1px;">THOUGHT</span></h1></a>
 
@@ -23,5 +52,6 @@
     {% block content %}
     {% endblock %}
   </div>
+  <div style="height: 50px;"></div>
 </body>
 </html>

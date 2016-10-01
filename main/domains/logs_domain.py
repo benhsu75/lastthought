@@ -12,6 +12,7 @@ from main.domains import onboarding_domain
 import datetime
 from django.utils import timezone
 
+
 # Global handler for anything logs related
 def handle_logs_text(current_profile, text, processed_text):
     # Convert to UTF-8 (handles emojis)
@@ -34,6 +35,7 @@ def handle_logs_text(current_profile, text, processed_text):
         else:
             handle_text_log_entry(current_profile, entry_raw_text)
 
+
 # Handles a text log entry
 def handle_text_log_entry(current_profile, entry_text):
     user_log = Log.find_or_create(current_profile)
@@ -46,7 +48,12 @@ def handle_text_log_entry(current_profile, entry_text):
         send_log_too_long_message(current_profile)
         return
 
-    text_log_entry = TextLogEntry(log=user_log, text_value=entry_text, entry_type=0, occurred_at=timezone.now())
+    text_log_entry = TextLogEntry(
+        log=user_log,
+        text_value=entry_text,
+        entry_type=0,
+        occurred_at=timezone.now()
+    )
     text_log_entry.save()
 
     num_log_entries = len(LogEntry.objects.filter(log=user_log))
@@ -54,15 +61,22 @@ def handle_text_log_entry(current_profile, entry_text):
     # Ask the user to apply a context
     send_context_message(current_profile, "text", text_log_entry.id)
 
+
 # Handles a numeric log entry
 def handle_numeric_log_entry(current_profile, numeric_value):
     user_log = Log.find_or_create(current_profile)
 
-    numeric_log_entry = NumericLogEntry(log=user_log, numeric_value=numeric_value, entry_type=1, occurred_at=datetime.datetime.now())
+    numeric_log_entry = NumericLogEntry(
+        log=user_log,
+        numeric_value=numeric_value,
+        entry_type=1,
+        occurred_at=datetime.datetime.now()
+    )
     numeric_log_entry.save()
 
     # Ask the user to apply a context
     send_context_message(current_profile, "numeric", numeric_log_entry.id)
+
 
 # Handles an image entry
 def handle_image_log_entry(current_profile, image_url):
@@ -72,9 +86,10 @@ def handle_image_log_entry(current_profile, image_url):
     print 'DOWNLOADING IMAGE FROM FB'
 
     from StringIO import StringIO
-    
+
     image_response = requests.get(image_url)
-    # image_response.raw.decode_content = True # handle spurious Content-Encoding
+    # image_response.raw.decode_content = True
+    # handle spurious Content-Encoding
     im = Image.open(StringIO(image_response.content))
     image_width, image_height = im.size
 
@@ -84,18 +99,29 @@ def handle_image_log_entry(current_profile, image_url):
     random_id = str(current_profile.fbid) + '-' + str(random.getrandbits(128))
     image_file_name = random_id + '.jpg'
     # fp = StringIO(im)
-    s3.Bucket('userdatagraph-images').put_object(Key=image_file_name, Body=StringIO(image_response.content))
-
+    s3.Bucket('userdatagraph-images').put_object(
+        Key=image_file_name,
+        Body=StringIO(image_response.content)
+    )
 
     # Get Url and set image_url
-    uploaded_image_url = 'https://s3.amazonaws.com/userdatagraph-images/' + image_file_name
+    uploaded_image_url = 'https://s3.amazonaws.com/userdatagraph-images/'
+    + image_file_name
     print 'GOT THE NEW URL AS: ' + uploaded_image_url
 
-    image_log_entry = ImageLogEntry(log=user_log, image_url=uploaded_image_url, entry_type=2, image_width=image_width, image_height=image_height, occurred_at=datetime.datetime.now())
+    image_log_entry = ImageLogEntry(
+        log=user_log,
+        image_url=uploaded_image_url,
+        entry_type=2,
+        image_width=image_width,
+        image_height=image_height,
+        occurred_at=datetime.datetime.now()
+    )
     image_log_entry.save()
 
     # Ask the user to apply a context
     send_context_message(current_profile, "image", image_log_entry.id)
+
 
 # Helper method that asks the user to categorize their diary entry
 def send_context_message(current_profile, entry_type, entry_id):
@@ -110,7 +136,9 @@ def send_context_message(current_profile, entry_type, entry_id):
     # Send message to user to allow them to categorize their diary entry
     user_log = Log.find_or_create(current_profile)
 
-    log_contexts = LogContext.objects.filter(log=user_log).order_by('context_name')
+    log_contexts = LogContext.objects.filter(
+        log=user_log
+    ).order_by('context_name')
 
     quick_replies = []
 
@@ -135,7 +163,7 @@ def send_context_message(current_profile, entry_type, entry_id):
     quick_replies.append({
         "content_type": "text",
         "title": "Add a new category",
-        "image_url" : "http://i.imgur.com/x7TulFM.png",
+        "image_url": "http://i.imgur.com/x7TulFM.png",
         "payload": json.dumps({
             "state": "log_context_response",
             "entry_type": entry_type,
@@ -157,27 +185,42 @@ def send_context_message(current_profile, entry_type, entry_id):
         None
     )
 
+
 def send_max_number_categories_message(current_profile):
     # Send message explaining
     max_number_categories_message = 'You\'ve already reached the maximum of 8 categories. To add a new category, first go to our website and delete an existing category.'
-    send_api_helper.send_button_message(current_profile.fbid, max_number_categories_message, [
-        {
+    send_api_helper.send_button_message(
+        current_profile.fbid,
+        max_number_categories_message,
+        [{
             'type': 'web_url',
             'url': constants.BASE_HEROKU_URL,
-            'title': 'View Thoughts'    
-        }
-    ])
-    message_log.log_message('max_number_categories_message', current_profile, max_number_categories_message, None)
+            'title': 'View Thoughts',
+            "messenger_extensions": true
+        }]
+    )
+    message_log.log_message(
+        'max_number_categories_message',
+        current_profile,
+        max_number_categories_message,
+        None
+    )
 
 
 def send_category_name_too_long_message(current_profile):
     # Send message explaining
     category_name_too_long_message = 'Please try again'
     send_api_helper.send_basic_text_message(current_profile.fbid)
-    message_log.log_message('category_name_too_long_message', current_profile, category_name_too_long_message, None)
+    message_log.log_message(
+        'category_name_too_long_message',
+        current_profile,
+        category_name_too_long_message,
+        None
+    )
 
 
-# Adds a new context based on the user response and applies that context to the log
+# Adds a new context based on the user response and applies
+# that context to the log
 def add_and_apply_new_context(current_profile, text):
     message_log.log_message(
         'log_new_context_response',
@@ -213,13 +256,17 @@ def add_and_apply_new_context(current_profile, text):
     recent_entry.log_context = context
     recent_entry.save()
 
-    message_text = "\"" + context.context_name + "\"" + " was applied to your log entry."
+    message_text = "\""
+    + context.context_name
+    + "\""
+    + " was applied to your log entry."
     send_category_applied_message(current_profile, message_text)
 
     # Get user to create account
     if not helper_util.user_has_created_account(current_profile):
         onboarding_domain.send_almost_done_message(current_profile)
         onboarding_domain.send_create_account_message(current_profile)
+
 
 # Applies an existing context to the log
 def apply_context_to_log(current_profile, text, payload):
@@ -237,7 +284,7 @@ def apply_context_to_log(current_profile, text, payload):
 
         if entry_type == 'text':
             log_entry = TextLogEntry.objects.get(id=entry_id)
-        elif entry_type == 'numeric':   
+        elif entry_type == 'numeric':
             log_entry = NumericLogEntry.objects.get(id=entry_id)
         elif entry_type == 'image':
             log_entry = ImageLogEntry.objects.get(id=entry_id)
@@ -250,7 +297,10 @@ def apply_context_to_log(current_profile, text, payload):
         log_entry.log_context = context
         log_entry.save()
 
-        message_text = "\"" + context.context_name + "\"" + " was applied to your diary entry."
+        message_text = "\""
+        + context.context_name
+        + "\""
+        + " was applied to your diary entry."
 
         send_category_applied_message(current_profile, message_text)
 
@@ -273,8 +323,8 @@ def apply_context_to_log(current_profile, text, payload):
             onboarding_domain.send_almost_done_message(current_profile)
             onboarding_domain.send_create_account_message(current_profile)
 
-# MESSAGE HELPER METHODS
 
+# MESSAGE HELPER METHODS
 def send_category_applied_message(profile, text):
     successful_context_message = text
     send_api_helper.send_basic_text_message(
@@ -288,10 +338,11 @@ def send_category_applied_message(profile, text):
         None
     )
 
+
 def send_no_category_message(profile):
     log_confirm_message = (
-            "I logged this for you!"
-        )
+        "I logged this for you!"
+    )
     send_api_helper.send_basic_text_message(
         profile.fbid,
         log_confirm_message
@@ -303,16 +354,17 @@ def send_no_category_message(profile):
         None
     )
 
+
 def send_ask_for_category_name_message(profile, new_context_message):
     # Create "Cancel" quick reply
     quick_replies = []
     quick_replies.append({
-            "content_type": "text",
-            "title": "Cancel",
-            "payload": json.dumps({
-                "state": "cancel_new_category"
-            })
+        "content_type": "text",
+        "title": "Cancel",
+        "payload": json.dumps({
+            "state": "cancel_new_category"
         })
+    })
 
     # Send message
     send_api_helper.send_quick_reply_message(
@@ -327,12 +379,30 @@ def send_ask_for_category_name_message(profile, new_context_message):
         None
     )
 
+
 def send_log_too_long_message(current_profile):
     log_too_long_message = "We cannot store that much text! Please enter less than 10,000 characters!"
-    send_api_helper.send_basic_text_message(current_profile.fbid, log_too_long_message)
-    message_log.log_message('log_too_long_message', current_profile, log_too_long_message, None)
+    send_api_helper.send_basic_text_message(
+        current_profile.fbid,
+        log_too_long_message
+    )
+    message_log.log_message(
+        'log_too_long_message',
+        current_profile,
+        log_too_long_message,
+        None
+    )
+
 
 def send_successful_new_category_cancel(profile):
     send_successful_new_category_cancel = "OK - we saved your thought but no category was applied."
-    send_api_helper.send_basic_text_message(profile.fbid, send_successful_new_category_cancel)
-    message_log.log_message('send_successful_new_category_cancel', profile, send_successful_new_category_cancel, None)
+    send_api_helper.send_basic_text_message(
+        profile.fbid,
+        send_successful_new_category_cancel
+    )
+    message_log.log_message(
+        'send_successful_new_category_cancel',
+        profile,
+        send_successful_new_category_cancel,
+        None
+    )

@@ -5,15 +5,17 @@ from datetime import datetime, timedelta
 from main.message_log import message_log
 from main.utils import constants
 
+
 def send_num_thoughts_helper(num_thoughts, profile):
     weekly_message = (
-            "You stored {} thoughts last week - tap the link below to view them!".format(num_thoughts)
-        )
+        "You stored {} thoughts last week - tap the link below to view them!".format(num_thoughts)
+    )
     send_api_helper.send_button_message(profile.fbid, weekly_message, [
         {
             'type': 'web_url',
             'url': constants.BASE_HEROKU_URL,
-            'title': 'View Thoughts'    
+            'title': 'View Thoughts',
+            "messenger_extensions": true
         }
     ])
     message_log.log_message(
@@ -23,8 +25,8 @@ def send_num_thoughts_helper(num_thoughts, profile):
         None
     )
 
+
 class Command(BaseCommand):
-    
     def handle(self, *args, **options):
         # Get current UTC hour
         current_datetime = datetime.utcnow()
@@ -48,13 +50,9 @@ class Command(BaseCommand):
             last_week_logs = LogEntry.objects.filter(
                 log=user_log,
                 occurred_at__gt=one_week_ago_datetime
-                )
+            )
             # TODO
             num_thoughts_this_week = len(last_week_logs)
 
             # Send user message with link to view logs (in batch)
             send_num_thoughts_helper(num_thoughts_this_week, profile)
-
-    
-
-        
