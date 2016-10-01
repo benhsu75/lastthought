@@ -403,7 +403,6 @@ input {
 		line-height: 55px;
 		margin-left: 20px;
 	}
-
 	.delete-account-button {
 		background-color: red;
 		height: 100px;
@@ -422,5 +421,10 @@ input {
 		text-align: center;
 		padding-top: 10px;
 		padding-bottom: 10px;
+	}
+	.log-back {
+		font-size: 20px;
+		line-height: 70px;
+		height: 70px;
 	}
 }

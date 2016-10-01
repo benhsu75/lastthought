@@ -15,7 +15,7 @@ def send_num_thoughts_helper(num_thoughts, profile):
             'type': 'web_url',
             'url': constants.BASE_HEROKU_URL,
             'title': 'View Thoughts',
-            "messenger_extensions": true
+            "messenger_extensions": True
         }
     ])
     message_log.log_message(

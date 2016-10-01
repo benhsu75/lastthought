@@ -18,7 +18,7 @@ def send_view_logs_message(current_profile):
             'type': 'web_url',
             'url': constants.BASE_HEROKU_URL,
             'title': 'View All',
-            "messenger_extensions": true
+            "messenger_extensions": True
         }]
     )
     message_log.log_message(
@@ -87,7 +87,7 @@ def send_view_specific_category_message(current_profile, category):
             'type': 'web_url',
             'url': link_to_view_category,
             'title': 'View {}'.format(category.context_name),
-            "messenger_extensions": true
+            "messenger_extensions": True
         }]
     )
     message_log.log_message(
