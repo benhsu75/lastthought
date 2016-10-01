@@ -13,6 +13,12 @@
 	margin: 5px;
 }
 
+.col-3 {
+	width: calc(33% - 10px);
+	text-align: center;
+	margin: 5px;
+}
+
 h1 {
 	font-family: 'Lato', sans-serif;
 	margin: 20px 0px;
@@ -304,11 +310,9 @@ input {
 
 .delete-account-button {
 	background-color: red;
-	height: 40px;
-	width: 140px;
 	border: none;
 	color: white;
-	font-size: 15px;
+	padding: 20px;
 }
 
 .delete-account-button:hover {
@@ -319,13 +323,11 @@ input {
 
 .summary-freq-setting {
 	margin-top: 10px;
-	width: 500px;
 	background-color: white;
 	border: 1px solid #1787FB;
 	color: #1787FB;
 	text-align: center;
-	padding-top: 10px;
-	padding-bottom: 10px;
+	padding: 20px;
 }
 
 .summary-freq-setting.selected {
@@ -338,8 +340,13 @@ input {
 	cursor: pointer;
 }
 
+.freq-setting {
+	/*text-align: center;*/
+}
+
 @media all and (max-width:1000px){
 	.col-4 { width: calc(33.3% - 10px); }	
+	.col-3 { width: calc(100%); }
 	.container { max-width: none; }
 	h1 { font-size: 70px; }
 	h3 { font-size: 30px; }
@@ -408,23 +415,13 @@ input {
 		margin-left: 20px;
 	}
 	.delete-account-button {
-		background-color: red;
-		height: 100px;
-		width: 90%;
-		border: none;
-		color: white;
-		font-size: 40px;
-		margin: auto;
+		padding: 40px;
+		font-size: 30px;
 	}
 	.summary-freq-setting {
 		margin-top: 20px;
-		width: 90%;
-		background-color: white;
-		border: 1px solid #1787FB;
-		color: #1787FB;
-		text-align: center;
-		padding-top: 10px;
-		padding-bottom: 10px;
+		padding: 40px;
+		font-size: 30px;
 	}
 	.log-back {
 		font-size: 40px;
