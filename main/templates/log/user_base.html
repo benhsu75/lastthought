@@ -24,9 +24,9 @@
   window.extAsyncInit = function() {
     MessengerExtensions.getUserID(function success(uids) {
       console.log(uids.psid);
-      $(".fixed-chat").show();
-    }, function error(err) {
       $(".fixed-chat").hide();
+    }, function error(err) {
+      $(".fixed-chat").show();
     }); 
   };
 
