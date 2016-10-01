@@ -302,11 +302,8 @@ def apply_context_to_log(current_profile, text, payload):
         log_entry.log_context = context
         log_entry.save()
 
-        message_text = "\""
-        + context.context_name
-        + "\""
-        + " was applied to your diary entry."
-
+        message_text = "Categorized it as {}".format(context.context_name)
+    
         send_category_applied_message(current_profile, message_text)
 
         # Get user to create account
