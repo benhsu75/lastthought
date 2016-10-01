@@ -27,15 +27,21 @@
 <h3>Account Management</h3>
 <button class="delete-account-button">Delete Account</button>
 
+{% csrf_token %}
+
 <script type="text/javascript">
     $(document).ready(function() {
         $('.delete-account-button').click(function() {
             var confirmed = confirm("Are you sure you want to delete your account? You will lose all your thoughts! Please click OK only if you are OK with this!!")
 
+            var payload = {
+                'csrfmiddlewaretoken' : {{ csrf_token }}
+            }
             if(confirmed) {
                 // DELETE to /users
                 $.ajax({
                 method: 'DELETE',
+                data: payload,
                 url: '/users/{{user_id}}',
                 success: function() {
                       // Delete the html
@@ -57,7 +63,8 @@
             }
 
             var payload = {
-                'reminder_settings' : val
+                'reminder_settings' : val,
+                'csrfmiddlewaretoken' : {{ csrf_token }}
             };
 
             console.log('hi');
