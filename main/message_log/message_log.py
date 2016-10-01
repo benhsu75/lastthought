@@ -36,7 +36,8 @@ message_mapping = {
     'category_name_too_long_message' : 52,
     'log_too_long_message' : 53,
     'choose_category_to_view_message' : 54,
-    'thought_was_deleted_message' : 55
+    'thought_was_deleted_message' : 55,
+    'deleted_account_message' : 56
 }
 
 

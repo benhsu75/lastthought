@@ -229,7 +229,11 @@ def update_user(request, user_id):
         else:
             return HttpResponse(status=404)
     elif request.method == 'DELETE':
+
         user = User.objects.get(id=user_id)
+
+        # Send message telling user that their account was deleted
+        send_deleted_account_message(user.profile)
 
         # Delete user
         user.delete()
@@ -238,6 +242,10 @@ def update_user(request, user_id):
     else:
         return HttpResponse(status=404)
 
+def send_deleted_account_message(profile):
+    deleted_account_message = "We've successfully deleted your account and all of your thoughts. We're sorry to see you leave :("
+    send_api_helper.send_basic_text_message(profile.fbid, deleted_account_message)
+    message_log.log_message('deleted_account_message', profile, deleted_account_message, None)
 
 def connect(request, fbid):
     if not helper_util.profile_exists(fbid):
