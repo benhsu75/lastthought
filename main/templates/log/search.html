@@ -17,7 +17,7 @@
 </div>
 
 
-{% if log_entry_list|length > 0 %}
+{% if log_entry_list|length == 0 %}
 <div class="row">
   <div class="no-logs">
     <p>Your search "{{ query_term }}" did not return any results :(</p>
