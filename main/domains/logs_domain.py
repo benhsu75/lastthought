@@ -105,8 +105,7 @@ def handle_image_log_entry(current_profile, image_url):
     )
 
     # Get Url and set image_url
-    uploaded_image_url = 'https://s3.amazonaws.com/userdatagraph-images/'
-    + image_file_name
+    uploaded_image_url = 'https://s3.amazonaws.com/userdatagraph-images/{}'.format(image_file_name)
     print 'GOT THE NEW URL AS: ' + uploaded_image_url
 
     image_log_entry = ImageLogEntry(
@@ -302,7 +301,7 @@ def apply_context_to_log(current_profile, text, payload):
         log_entry.log_context = context
         log_entry.save()
 
-        message_text = "Categorized it as {}".format(context.context_name)
+        message_text = "Thought stored (y)"
     
         send_category_applied_message(current_profile, message_text)
 
