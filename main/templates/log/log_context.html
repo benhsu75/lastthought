@@ -80,20 +80,25 @@
 <script type="text/javascript">
 $(document).ready(function() {
   $('.log-context-delete-button').click(function() {
-    var logContextId = $('input[name=log-context-id]').val();
-    console.log("asdf: " + logContextId);
+    var confirmed = confirm("Are you sure you want to delete this category? Deleting the category will not delete your thoughts in the category.");
 
-        // POST to delete context
+    if(confirmed) {
+      var logContextId = $('input[name=log-context-id]').val();
+      console.log("asdf: " + logContextId);
 
-        $.ajax({
-          method: 'DELETE',
-          url: '/log_contexts/' + logContextId,
-          success: function() {
-                // Clear fields
-                window.location.href = "/users/{{fbid}}/logs";
-              }
-            })
-      });
+          // POST to delete context
+
+          $.ajax({
+            method: 'DELETE',
+            url: '/log_contexts/' + logContextId,
+            success: function() {
+                  // Clear fields
+                  window.location.href = "/users/{{fbid}}/logs";
+                }
+              })
+        });
+    }
+    
 });
 
 $('.delete').click(function() {
