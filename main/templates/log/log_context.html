@@ -3,12 +3,6 @@
 {% block content %}
 
 
-<a href="/">
-  <div class="log-back">
-    Back Home
-  </div>
-</a>
-
 <hr>
 
 <div class="row title-section">
@@ -74,7 +68,6 @@
 {% endif %}
 {% endfor %}
 {% endif %}
-<div style="height: 50px;"></div>
 <div>
   {% if has_prev %}
   <a href="/categories/{{log_context.id}}/?page={{prev_page_no}}">Newer</a>

@@ -96,24 +96,24 @@
 <script type="text/javascript">
 $('.delete').click(function() {
 
-    var confirmed = confirm("Are you sure you want to delete this thought?");
+  var confirmed = confirm("Are you sure you want to delete this thought?");
 
-    if(confirmed) {
-        var logEntryId = $(this).parent().data('logentryid');
+  if(confirmed) {
+    var logEntryId = $(this).parent().data('logentryid');
 
-        // DELETE to /logs
-        $.ajax({
-        method: 'DELETE',
-        url: '/logs/' + logEntryId,
-        success: function() {
-              // Delete the html
-              var selector = '.log-entry[data-logentryid='+logEntryId+']'
-              var logEntryDiv = $(selector).parent().slideUp("fast", function() {
-                $(this).delete();
-              });
-            }});
-        
-    }
+    // DELETE to /logs
+    $.ajax({
+      method: 'DELETE',
+      url: '/logs/' + logEntryId,
+      success: function() {
+      // Delete the html
+      var selector = '.log-entry[data-logentryid='+logEntryId+']'
+      var logEntryDiv = $(selector).parent().slideUp("fast", function() {
+          $(this).delete();
+        });
+      }
+    });
+  }
 });
 
 $('.search-button').click(function() {
