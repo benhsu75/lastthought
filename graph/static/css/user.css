@@ -17,6 +17,7 @@ h1 {
 	font-family: 'Lato', sans-serif;
 	margin: 20px 0px;
 	color: #555;
+	display: inline-block;
 }
 
 h2 {
