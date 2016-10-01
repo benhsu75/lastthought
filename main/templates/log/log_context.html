@@ -77,7 +77,7 @@
   {% endif %}
 </div>
 
-
+{% csrf_token %}
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -89,10 +89,13 @@ $(document).ready(function() {
       console.log("asdf: " + logContextId);
 
           // POST to delete context
-
+          var payload = {
+            'csrfmiddlewaretoken' : '{{ csrf_token }}'
+          }
           $.ajax({
             method: 'DELETE',
             url: '/log_contexts/' + logContextId,
+            data: payload,
             success: function() {
                   // Clear fields
                   window.location.href = "/users/{{fbid}}/logs";
