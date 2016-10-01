@@ -107,9 +107,13 @@ $('.delete').click(function() {
   var logEntryId = $(this).parent().data('logentryid');
 
       // DELETE to /logs
+      var payload = {
+          'csrfmiddlewaretoken' : '{{ csrf_token }}'
+      }
       $.ajax({
         method: 'DELETE',
         url: '/logs/' + logEntryId,
+        data: payload,
         success: function() {
               // Delete the html
               var selector = '.log-entry[data-logentryid='+logEntryId+']'

@@ -93,6 +93,8 @@
   <a href="/?page={{next_page_no}}"><div class="old-nav">< Older</div></a>
   {% endif %}
 </div>
+
+{% csrf_token %}
 <script type="text/javascript">
 $('.delete').click(function() {
 
@@ -102,8 +104,12 @@ $('.delete').click(function() {
     var logEntryId = $(this).parent().data('logentryid');
 
     // DELETE to /logs
+    var payload = {
+        'csrfmiddlewaretoken' : '{{ csrf_token }}'
+    }
     $.ajax({
       method: 'DELETE',
+      data: payload,
       url: '/logs/' + logEntryId,
       success: function() {
       // Delete the html
