@@ -256,8 +256,12 @@ input {
 	padding-bottom: 20px;
 }
 
+
+.context-delete {
+	text-align: center;
+}
+
 .log-context-delete-button {
-	float: left;
 	line-height: 24px;
 	margin-left: 10px;
 	color: #CCC;

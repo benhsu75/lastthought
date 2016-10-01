@@ -22,11 +22,14 @@
       </a>
     </div>
   {% endfor %}
-
 </div>
-<br>
 
- <hr>
+<br>
+<hr>
+<br>
+<div class="row context-delete">
+    <span class="log-context-delete-button">Delete this category ("{{ log_context.context_name }}")</span>
+</div>
 
 <div class="row pagination-section">
   {% if has_prev %}
