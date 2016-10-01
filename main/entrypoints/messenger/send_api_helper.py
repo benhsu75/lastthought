@@ -94,7 +94,8 @@ def send_share_message(fbid, text):
                     'elements' : [{
                         'title' : "Share LastThought",
                         'subtitle' : text,
-                        'image_url' : '',
+                        "item_url": constants.BASE_HEROKU_URL,
+                        "image_url":"https://pbs.twimg.com/profile_images/675002642196729857/A0OpcJpA.png",
                         'buttons' : [{
                             'type' : 'element_share'
                         }]
@@ -105,4 +106,5 @@ def send_share_message(fbid, text):
     }
     url_to_post = constants.FB_SEND_BASE_URL + constants.FB_PAGE_ACCESS_TOKEN
     r = requests.post(url_to_post, json=send_payload)
+    print r.text
 

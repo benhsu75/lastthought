@@ -29,7 +29,6 @@ FB_LOGIN_REDIRECT_URI = 'https://userdatagraph.herokuapp.com/fblogin_redirect'
 
 # Lyft
 LYFT_CLIENT_ID = 'OyrF54XChtFI'
-
 LYFT_CLIENT_SECRET = 'ylm69n0CMpPSt5iWAr6iFq1yfdmapq_t'
 
 # Foursquare
