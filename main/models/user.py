@@ -19,6 +19,11 @@ class Profile(models.Model):
 
     send_reminders_flag = models.BooleanField(default=True)
 
+    reminder_settings = models.IntegerField()
+    # 0 - Default - send daily
+    # 1 - Send weekly
+    # 2 - Don't send any
+
 # Models for third party connection
 class ThirdPartyConnection(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
