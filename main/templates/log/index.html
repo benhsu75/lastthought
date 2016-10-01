@@ -112,7 +112,7 @@ $('.delete').click(function() {
     $.ajax({
       method: 'DELETE',
       data: payload,
-      url: '/logs/' + logEntryId,
+      url: '/logs/' + logEntryId + '?csrfmiddlewaretoken={{csrf_token}}',
       success: function() {
       // Delete the html
       var selector = '.log-entry[data-logentryid='+logEntryId+']'
