@@ -233,11 +233,6 @@ def add_and_apply_new_context(current_profile, text):
     # Check how many categories the user has
     categories = LogContext.objects.filter(log=user_log)
 
-    # Tell the user they can't add anymore
-    if len(categories) >= 8:
-        send_max_number_categories_message(current_profile)
-        return
-
     # Category has max_length
     MAX_LENGTH = 15
     if len(text) > MAX_LENGTH:
@@ -315,6 +310,11 @@ def apply_context_to_log(current_profile, text, payload):
             onboarding_domain.send_create_account_message(current_profile)
 
     elif "add_new_context_flag" in payload:
+
+         # Tell the user they can't add anymore
+        if len(categories) >= 8:
+            send_max_number_categories_message(current_profile)
+            return
 
         # Confirm if log still exists - if it doesn't, tell user
         entry_id = payload['log_entry_id']
