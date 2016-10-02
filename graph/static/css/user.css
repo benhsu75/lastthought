@@ -262,8 +262,6 @@ input {
 }
 
 .log-context-delete-button {
-	line-height: 24px;
-	margin-left: 10px;
 	color: #CCC;
 }
 
@@ -440,5 +438,8 @@ input {
 		font-size: 40px;
 		line-height: 130px;
 		height: 130px;
+	}
+	.log-context-delete-button {
+		font-size: 35px;
 	}
 }
