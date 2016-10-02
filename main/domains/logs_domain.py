@@ -311,6 +311,11 @@ def apply_context_to_log(current_profile, text, payload):
 
     elif "add_new_context_flag" in payload:
 
+        user_log = Log.objects.filter(profile=current_profile)[0]
+
+        # Check how many categories the user has
+        categories = LogContext.objects.filter(log=user_log)
+
          # Tell the user they can't add anymore
         if len(categories) >= 8:
             send_max_number_categories_message(current_profile)
