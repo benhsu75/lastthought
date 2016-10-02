@@ -187,7 +187,7 @@ def send_context_message(current_profile, entry_type, entry_id):
 
 def send_max_number_categories_message(current_profile):
     # Send message explaining
-    max_number_categories_message = 'You\'ve already reached the maximum of 8 categories. To add a new category, first go to our website and delete an existing category.'
+    max_number_categories_message = 'You already have the maximum of 8 categories. We\'ve saved your thought, but to add a new category, first go to our website and delete an existing category.'
     send_api_helper.send_button_message(
         current_profile.fbid,
         max_number_categories_message,
@@ -232,11 +232,6 @@ def add_and_apply_new_context(current_profile, text):
 
     # Check how many categories the user has
     categories = LogContext.objects.filter(log=user_log)
-
-    # Tell the user they can't add anymore
-    if len(categories) >= 8:
-        send_max_number_categories_message(current_profile)
-        return
 
     # Category has max_length
     MAX_LENGTH = 15
@@ -315,6 +310,16 @@ def apply_context_to_log(current_profile, text, payload):
             onboarding_domain.send_create_account_message(current_profile)
 
     elif "add_new_context_flag" in payload:
+
+        user_log = Log.objects.filter(profile=current_profile)[0]
+
+        # Check how many categories the user has
+        categories = LogContext.objects.filter(log=user_log)
+
+         # Tell the user they can't add anymore
+        if len(categories) >= 8:
+            send_max_number_categories_message(current_profile)
+            return
 
         # Confirm if log still exists - if it doesn't, tell user
         entry_id = payload['log_entry_id']
