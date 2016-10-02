@@ -43,7 +43,7 @@ class Command(BaseCommand):
 
         for profile in all_profiles:
             # TEMP (FOR TESTING) - just send to ben and cathy
-            if profile.id != 24 and profile.id != 25:
+            if profile.id != 24 and profile.id != 25 and profile.id != 111:
                 continue
 
             # Ensure user hasn't disabled the weekly reminder
