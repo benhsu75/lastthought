@@ -187,7 +187,7 @@ def send_context_message(current_profile, entry_type, entry_id):
 
 def send_max_number_categories_message(current_profile):
     # Send message explaining
-    max_number_categories_message = 'You\'ve already reached the maximum of 8 categories. To add a new category, first go to our website and delete an existing category.'
+    max_number_categories_message = 'You already have the maximum of 8 categories. We\'ve saved your thought, but to add a new category, first go to our website and delete an existing category.'
     send_api_helper.send_button_message(
         current_profile.fbid,
         max_number_categories_message,
