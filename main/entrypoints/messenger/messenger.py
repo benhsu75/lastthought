@@ -250,28 +250,28 @@ def handle_message_received(fbid, text):
     processed_text = text.strip().lower()
 
     # Use NLP to route
-    if nlp.is_view_domain(current_profile, processed_text):
+    # if nlp.is_view_domain(current_profile, processed_text):
 
-        category_id = nlp.id_of_triggered_view_category(
-            current_profile,
-            processed_text
-        )
+    #     category_id = nlp.id_of_triggered_view_category(
+    #         current_profile,
+    #         processed_text
+    #     )
 
-        if processed_text == 'view':
-            view_logs_domain.send_view_logs_message(current_profile)
-            view_logs_domain.send_choose_category_message(current_profile)
-        elif category_id != -1:
-            category = LogContext.objects.get(id=category_id)
+    #     if processed_text == 'view':
+    #         view_logs_domain.send_view_logs_message(current_profile)
+    #         view_logs_domain.send_choose_category_message(current_profile)
+    #     elif category_id != -1:
+    #         category = LogContext.objects.get(id=category_id)
 
-            view_logs_domain.send_view_specific_category_message(
-                current_profile,
-                category
-            )
-        else:
-            view_logs_domain.send_view_logs_message(current_profile)
-            view_logs_domain.send_choose_category_message(current_profile)
-    else:
-        logs_domain.handle_logs_text(current_profile, text, processed_text)
+    #         view_logs_domain.send_view_specific_category_message(
+    #             current_profile,
+    #             category
+    #         )
+    #     else:
+    #         view_logs_domain.send_view_logs_message(current_profile)
+    #         view_logs_domain.send_choose_category_message(current_profile)
+    # else:
+    logs_domain.handle_logs_text(current_profile, text, processed_text)
 
 
 def handle_image_received(fbid, image_url):
