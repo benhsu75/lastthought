@@ -297,7 +297,14 @@ def apply_context_to_log(current_profile, text, payload):
         log_entry.log_context = context
         log_entry.save()
 
-        message_text = "Thought stored (y)"
+        
+
+        # If this is the first message, also tell user they don't have to categorize every thought
+        user_log = Log.find_or_create(current_profile)
+        if len(LogEntry.objects.filter(log=user_log)) == 1:
+            message_text = "Thought stored (y). In the future, you can also not categorize a thought by simply not responding, but we'll still keep your thought" 
+        else:
+            message_text = "Thought stored (y)"
 
         send_category_applied_message(current_profile, message_text)
 
