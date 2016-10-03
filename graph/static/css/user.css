@@ -420,6 +420,9 @@ input {
 	.search-button {
 		display: none;
 	}
+	input[name="search"] {
+		font-size: 50px;
+	}
 	.pagination-section {
 		font-size: 40px;
 		margin: 30px 0px;
