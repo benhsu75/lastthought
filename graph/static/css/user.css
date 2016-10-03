@@ -109,6 +109,10 @@ select {
 	margin-bottom: 20px;
 }
 
+input[name="search"] {
+	font-size: 18px;
+}
+
 input {
 	border: none;
 	border-top: 1px solid #DDD;
