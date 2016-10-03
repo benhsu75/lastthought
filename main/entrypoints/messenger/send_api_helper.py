@@ -99,7 +99,7 @@ def send_share_message(fbid, text):
                     'elements': [{
                         'title': "Share LastThought",
                         'subtitle': text,
-                        "item_url": constants.BASE_HEROKU_URL,
+                        "item_url": constants.BASE_URL,
                         "image_url": "https://pbs.twimg.com/profile_images/675002642196729857/A0OpcJpA.png",
                         'buttons': [{
                             'type': 'element_share'

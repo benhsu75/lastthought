@@ -16,7 +16,7 @@ def send_view_logs_message(current_profile):
         log_view_message,
         [{
             'type': 'web_url',
-            'url': constants.BASE_HEROKU_URL,
+            'url': constants.BASE_URL,
             'title': 'View All',
             "messenger_extensions": True
         }]
@@ -77,7 +77,7 @@ def send_view_specific_category_message(current_profile, category):
         "Click to view your {} category".format(category.context_name)
     )
     link_to_view_category = '{}/categories/{}'.format(
-        constants.BASE_HEROKU_URL,
+        constants.BASE_URL,
         category.id
     )
     send_api_helper.send_button_message(

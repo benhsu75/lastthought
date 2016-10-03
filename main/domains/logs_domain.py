@@ -193,7 +193,7 @@ def send_max_number_categories_message(current_profile):
         max_number_categories_message,
         [{
             'type': 'web_url',
-            'url': constants.BASE_HEROKU_URL,
+            'url': constants.BASE_URL,
             'title': 'View Thoughts',
             "messenger_extensions": True
         }]

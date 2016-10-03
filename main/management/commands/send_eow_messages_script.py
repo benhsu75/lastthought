@@ -18,7 +18,7 @@ def send_num_thoughts_helper(num_thoughts, profile, time_period):
     send_api_helper.send_button_message(profile.fbid, weekly_message, [
         {
             'type': 'web_url',
-            'url': constants.BASE_HEROKU_URL,
+            'url': constants.BASE_URL,
             'title': 'View Thoughts',
             "messenger_extensions": True
         }
