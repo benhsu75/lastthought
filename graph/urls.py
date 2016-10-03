@@ -8,6 +8,9 @@ from django.conf import settings
 urlpatterns = [
     url(r'^$', general.index),
 
+
+    url(r'^qualia/$', log_views.qualia),
+
     # Messenger webhooks
     url(r'^messenger_callback/', messenger.messenger_callback),
     url(r'^messenger_account_link/', messenger.account_link),
