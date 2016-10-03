@@ -12,6 +12,11 @@ from datetime import date, datetime
 from django.core.paginator import Paginator
 
 
+def qualia(request):
+    context = {}
+    template = loader.get_template('log/qualia_isbn.html')
+    return HttpResponse(template.render(context, request))
+
 # Helper methods
 def get_log_entry(log_entry_id):
     if log_entry_id is None:
