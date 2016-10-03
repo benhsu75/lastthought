@@ -250,10 +250,7 @@ def add_and_apply_new_context(current_profile, text):
     recent_entry.log_context = context
     recent_entry.save()
 
-    message_text = "\""
-    + context.context_name
-    + "\""
-    + " was applied to your log entry."
+    message_text = "Thought stored and new category created (y)"
     send_category_applied_message(current_profile, message_text)
 
     # Get user to create account
