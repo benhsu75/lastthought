@@ -172,6 +172,20 @@ $('input[name=search]').keyup(function(event){
   }
 });
 
+// Listen for / hotkey to search
+  $(document).keypress(function(e) {
+    var key = e.which;
+
+    switch(key) {
+      case 47:
+        $('input[name=search]').select();
+        e.preventDefault();
+        break;
+      default:
+        break;
+    }
+  });
+  
 </script>
 
 {% endblock %}
