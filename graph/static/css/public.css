@@ -96,7 +96,7 @@ a:hover {
 	width: auto;
 	height: 20px;
 	margin-top: 10px;
-	margin-left: 10px;
+	margin-left: 20px;
 	float: left;
 }
 
@@ -145,7 +145,7 @@ ul > li, ol > li {
 		width: 100%;
 	}
 	.login {
-		font-size: 25px;
+		font-size: 30px;
 		margin: 50px;
 	}
 	.inner-cta {
@@ -166,6 +166,6 @@ ul > li, ol > li {
 	.get-started-button > img {
 		height: 50px;
 		margin-top: 25px;
-		margin-left: 25px;
+		margin-left: 50px;
 	}
 }
