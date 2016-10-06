@@ -6,7 +6,7 @@ from main.entrypoints.twilio import twilio
 from django.conf import settings
 from django.views.generic.base import RedirectView
 
-favicon_view = RedirectView.as_view(url='/static/favicon.png', permanent=True)
+favicon_view = RedirectView.as_view(url='/static/favicon.ico', permanent=True)
 
 urlpatterns = [
     url(r'^$', general.index),
