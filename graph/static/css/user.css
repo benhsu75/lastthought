@@ -111,6 +111,7 @@ select {
 
 input[name="search"] {
 	font-size: 18px;
+	height: 24px;
 }
 
 input {
