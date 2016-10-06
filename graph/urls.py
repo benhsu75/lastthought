@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^qualia/$', log_views.qualia),
 
     # Favicon
-    url(r'^favicon.ico/$', favicon_view),
+    url(r'^favicon\.ico$', favicon_view),
 
     # Messenger webhooks
     url(r'^messenger_callback/', messenger.messenger_callback),
