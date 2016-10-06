@@ -4,12 +4,17 @@ from main.views import general, log_views
 from main.entrypoints.messenger import messenger
 from main.entrypoints.twilio import twilio
 from django.conf import settings
+from django.views.generic.base import RedirectView
+
+favicon_view = RedirectView.as_view(url='/static/favicon.png', permanent=True)
 
 urlpatterns = [
     url(r'^$', general.index),
 
-
     url(r'^qualia/$', log_views.qualia),
+
+    # Favicon
+    url(r'^favicon.ico/$', favicon_view),
 
     # Messenger webhooks
     url(r'^messenger_callback/', messenger.messenger_callback),
@@ -21,7 +26,7 @@ urlpatterns = [
     # Facebook Login
     url(r'^fblogin_view/', general.fblogin_view),
     url(r'^fblogin_redirect/', general.fblogin_redirect),
-
+ 
     # Account management
     url(r'^logout/', general.logout_view),
     url(r'^login/', general.login_view),

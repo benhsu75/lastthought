@@ -279,3 +279,5 @@ def connect(request, fbid):
 
     template = loader.get_template('main/connect.html')
     return HttpResponse(template.render(context, request))
+
+
