@@ -2,7 +2,7 @@
 
 BASE_HEROKU_URL = 'https://userdatagraph.herokuapp.com'
 
-BASE_URL = 'http://www.lastthought.me'
+BASE_URL = 'https://www.lastthought.me'
 
 AFFIRMATIVE_SYNONYMS = [
     'yes',
