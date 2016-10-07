@@ -184,4 +184,9 @@ ul > li, ol > li {
 		height: 500px;
 		margin-top: 200px;
 	}
+	.demo-phone {
+		height: auto;
+		width: 90%;
+		vertical-align: middle;
+	}
 }
