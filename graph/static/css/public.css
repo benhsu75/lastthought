@@ -7,6 +7,13 @@
 	padding: 0px 60px;
 }
 
+.landing-footer {
+	background-color: #888;
+	height: 50px;
+	position: absolute;
+	top: 50px;
+}
+
 .login {
 	position: absolute;
 	right: 0;
