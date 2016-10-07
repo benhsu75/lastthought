@@ -35,6 +35,9 @@ def create_new_user(fbid):
     links_context = LogContext(log=user_log, context_name="Links")
     links_context.save()
 
+    read_watch_category = LogContext(log=user_log, context_name="Read/Watch")
+    read_watch_category.save()
+
     # Send user intro message
     welcome_message = "Hey " + first_name + "! LastThought is a bot that helps you store your thoughts!"
     send_api_helper.send_basic_text_message(fbid, welcome_message)
