@@ -70,7 +70,7 @@ def send_account_link_message(fbid, text):
                 'payload': {
                     'template_type': 'generic',
                     'elements': [{
-                        'title': 'UserDataGraph Diary',
+                        'title': 'Sign Up for LastThought',
                         'buttons': [{
                             'type': 'account_link',
                             'url': 'http://www.lastthought.me/messenger_account_link'
