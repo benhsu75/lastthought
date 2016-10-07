@@ -8,10 +8,23 @@
 }
 
 .landing-footer {
-	background-color: #888;
+	border-top: 1px solid #DDD;
 	height: 50px;
-	position: absolute;
-	top: 50px;
+	background-color: white;
+}
+
+.footer-link {
+	line-height: 50px;
+}
+
+.tandc {
+	float: right;
+	margin-right: 100px;
+}
+
+.email {
+	float: left;
+	margin-left: 100px;
 }
 
 .login {
@@ -186,6 +199,7 @@ ul > li, ol > li {
 	}
 	.mob-only {
 		display: block;
+		height: auto;
 	}
 	.landing-section {
 		height: 700px;
@@ -195,5 +209,12 @@ ul > li, ol > li {
 		height: auto;
 		width: 85%;
 		vertical-align: middle;
+	}
+	.footer-link {
+		line-height: 100px;
+		font-size: 25px;
+	}
+	.landing-footer {
+		height: 100px;
 	}
 }
