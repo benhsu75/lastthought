@@ -71,7 +71,6 @@ def send_account_link_message(fbid, text):
                     'template_type': 'generic',
                     'elements': [{
                         'title': 'UserDataGraph Diary',
-                        'image_url': 'https://pbs.twimg.com/profile_images/675002642196729857/A0OpcJpA.png',
                         'buttons': [{
                             'type': 'account_link',
                             'url': 'http://www.lastthought.me/messenger_account_link'
