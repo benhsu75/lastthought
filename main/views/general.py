@@ -202,10 +202,15 @@ def search(request):
     else:
         return redirect('/')
 
+    if 'page' in request.GET:
+        page_no = request.GET['page']
+    else:
+        page_no = 1
+
     if helper_util.authenticated_and_profile_exists(request):
         if hasattr(request.user, 'profile'):
             fbid = request.user.profile.fbid
-            return log_views.search(request, fbid, query_term)
+            return log_views.search(request, fbid, query_term, page_no)
 
     return redirect('/')
 

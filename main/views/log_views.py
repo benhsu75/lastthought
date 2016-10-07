@@ -133,7 +133,7 @@ def index(request, fbid, page_no=1):
 
 
 # View methods
-def search(request, fbid, query_term):
+def search(request, fbid, query_term, page_no):
     # Check if user is authenticated
     # if not request.user.is_authenticated():
     #     return redirect('/')
@@ -156,10 +156,30 @@ def search(request, fbid, query_term):
     # Check if there is at least one result
     results_found_flag = (len(log_entry_list) > 0)
 
+    p = Paginator(log_entry_list, NUM_ENTRIES_PER_PAGE)
+    num_pages = p.num_pages
+    current_page = p.page(page_no)
+
+    has_prev = current_page.has_previous()
+    has_next = current_page.has_next()
+
+    prev_page_no = -1
+    next_page_no = -1
+    if has_prev:
+        prev_page_no = current_page.previous_page_number()
+    if has_next:
+        next_page_no = current_page.next_page_number()
+
+    current_log_entry_list = current_page.object_list
+
     context = {
-        'log_entry_list': log_entry_list,
+        'log_entry_list': current_log_entry_list,
         'query_term': query_term,
-        'results_found_flag': results_found_flag
+        'results_found_flag': results_found_flag,
+        'has_prev': has_prev,
+        'has_next': has_next,
+        'prev_page_no': prev_page_no,
+        'next_page_no': next_page_no
     }
     template = loader.get_template('log/search.html')
     return HttpResponse(template.render(context, request))
