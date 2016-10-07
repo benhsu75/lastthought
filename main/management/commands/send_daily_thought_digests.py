@@ -43,7 +43,7 @@ class Command(BaseCommand):
 
         for profile in all_profiles:
             # TEMP (FOR TESTING) - just send to ben and cathy
-            if profile.id != 24 and profile.id != 25 and profile.id != 111:
+            if profile.id != 24 and profile.id != 25:
                 continue
 
             # Ensure user hasn't disabled the weekly reminder
@@ -56,7 +56,6 @@ class Command(BaseCommand):
                 log=user_log,
                 occurred_at__gt=one_day_ago_datetime
             )
-            # TODO
             num_thoughts_this_day = len(last_day_logs)
 
             if num_thoughts_this_day > 0:
@@ -66,40 +65,4 @@ class Command(BaseCommand):
                     profile,
                     'today'
                 )
-                continue
-
-            # Look at users reminder_settings field
-            if profile.reminder_settings == 0:  # Always send daily
-                # Send the view message to the user
-                send_num_thoughts_helper(
-                    num_thoughts_this_day,
-                    profile,
-                    'today'
-                )
-
-                continue
-            elif profile.reminder_settings == 1:
-                # Send the summary if it is Sunday
-                if current_datetime.weekday() == 7:
-                    # Count how many thoughts the user had in the past week
-                    week_delta = timedelta(days=7)
-                    one_week_ago_datetime = current_datetime - week_delta
-
-                    last_week_logs = LogEntry.objects.filter(
-                        log=user_log,
-                        occurred_at__gt=one_week_ago_datetime
-                    )
-                    num_thoughts_this_week = len(last_week_logs)
-
-                    send_num_thoughts_helper(
-                        num_thoughts_this_week,
-                        profile,
-                        'last week'
-                    )
-                continue
-            elif profile.reminder_settings == 2:
-                # do nothing since user has elected to not receive
-                # notifications
-                continue
-            else:
                 continue
