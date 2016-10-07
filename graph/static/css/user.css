@@ -427,6 +427,8 @@ input {
 	.pagination-section {
 		font-size: 40px;
 		margin: 30px 0px;
+	}
+	.pagination-bt {
 		margin-bottom: 100px;
 	}
 	.log-context-delete-button {
