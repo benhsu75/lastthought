@@ -181,12 +181,12 @@ ul > li, ol > li {
 		display: block;
 	}
 	.landing-section {
-		height: 500px;
+		height: 700px;
 		margin-top: 200px;
 	}
 	.demo-phone {
 		height: auto;
-		width: 90%;
+		width: 85%;
 		vertical-align: middle;
 	}
 }
