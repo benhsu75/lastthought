@@ -172,7 +172,8 @@ def settings(request):
 
     # Return view
     context = {
-        'user_id': request.user.id
+        'user_id': request.user.id,
+        'reminder_settings' : request.user.profile.reminder_settings
     }
     template = loader.get_template('main/settings.html')
     return HttpResponse(template.render(context, request))
