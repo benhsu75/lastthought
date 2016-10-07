@@ -53,6 +53,15 @@ a:hover {
 	margin-bottom: 20px;
 }
 
+.eg {
+	border-bottom: 3px solid #AAA;
+	color: #666;
+}
+
+.mob-only {
+	display: none;
+}
+
 
 .cta {
 	text-align: left;
@@ -167,5 +176,12 @@ ul > li, ol > li {
 		height: 50px;
 		margin-top: 25px;
 		margin-left: 50px;
+	}
+	.mob-only {
+		display: block;
+	}
+	.landing-section {
+		height: 500px;
+		margin-top: 200px;
 	}
 }

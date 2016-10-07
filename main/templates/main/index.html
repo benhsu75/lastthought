@@ -18,12 +18,12 @@
     <div class="row">
       <div class="col-2 phone-eg">
         <span class="helper"></span>
-        <img class="demo-phone" src="{% static 'img/wireframe-placeholder.png' %}"/>
+        <img class="demo-phone" src="{% static 'img/landing-phone.png' %}"/>
       </div>
       <div class="col-2 cta-section">
         <div class="cta">
           <div class="inner-cta">
-            <div class="h1">Never forget a thought again.</div>
+            <div class="h1">Never forget <br class="mob-only"><span class="replace-eg">a thought</span> again.</div>
             <div class="get-started">
               <div class="get-started-button"><img src="{% static 'img/facebook-messenger-logo.png' %}"><span>Get Started</span></div>
             </div> 
@@ -32,6 +32,12 @@
       </div>
     </div>
   </div>
+   <div class="row mob-only">
+    <div class="col-2" style="text-align: center;">
+      <span class="helper"></span>
+      <img class="demo-phone" src="{% static 'img/landing-phone.png' %}"/>
+    </div>
+  </div> 
 
   <div class="login">
     Already a user? <a href="https://www.facebook.com/dialog/oauth?client_id=257720774614110&redirect_uri=http://www.lastthought.me/fblogin_redirect&response_type=code&scope=public_profile,email">Login with Facebook</a> to see your thoughts.
@@ -46,6 +52,24 @@
     $('.get-started-button').click(function() {
       window.location.href = 'https://m.me/609388442561960';
     });
+
+    var words = ["a <span class='eg'>thought</span>","an <span class='eg'>idea</span>", "a <span class='eg'>book</span>", "a <span class='eg'>link</span>", "a <span class='eg'>place to go</span>"]
+
+    var i = 0;
+
+    var rotateEg = function() {
+      $(".replace-eg").html(words[i]);
+      if (i == 0) {
+        window.setTimeout(rotateEg, 1500);
+      } else {
+        window.setTimeout(rotateEg, 1200);
+      }
+      i = (i+1) % words.length;
+    }
+
+    setTimeout(rotateEg, 0);
+
+
 
   });
 </script>
