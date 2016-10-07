@@ -171,7 +171,7 @@ def send_context_message(current_profile, entry_type, entry_id):
         })
     })
 
-    add_context_message = "Categorize your diary entry:"
+    add_context_message = "Categorize your thought:"
     send_api_helper.send_quick_reply_message(
         current_profile.fbid,
         add_context_message,
