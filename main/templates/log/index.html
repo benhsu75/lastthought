@@ -132,6 +132,11 @@
 
   $('.search-button').click(function() {
     var searchTerm = $.trim($('input[name=search]').val());
+
+    if(searchTerm.length == 0) {
+      return;
+    }
+    
     window.location.href = "/search?query=" + searchTerm;
   });
 
