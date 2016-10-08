@@ -42,7 +42,7 @@ urlpatterns = [
     url(r'^users/(?P<user_id>\d+)/$', general.update_user),
 
     # Display endpoints
-    url(r'^users/(?P<fbid>\d+)/logs', log_views.index),
+    # url(r'^users/(?P<fbid>\d+)/logs', log_views.index),
     url(
         r'^categories/(?P<log_context_id>\d+)',
         log_views.log_context_show

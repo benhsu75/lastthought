@@ -77,8 +77,8 @@ NUM_ENTRIES_PER_PAGE = 20
 # View methods
 def index(request, fbid, page_no=1):
     # Check if user is authenticated
-    # if not request.user.is_authenticated():
-    #     return redirect('/')
+    if not request.user.is_authenticated():
+        return redirect('/')
 
     # Get user
     if helper_util.profile_exists(fbid):
@@ -130,8 +130,8 @@ def index(request, fbid, page_no=1):
 # View methods
 def search(request, fbid, query_term, page_no):
     # Check if user is authenticated
-    # if not request.user.is_authenticated():
-    #     return redirect('/')
+    if not request.user.is_authenticated():
+        return redirect('/')
 
     # Get user
     if helper_util.profile_exists(fbid):
