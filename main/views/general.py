@@ -167,13 +167,13 @@ def login_view(request):
 
 def settings(request):
     # If user logged in already
-    # if not helper_util.authenticated_and_profile_exists(request):
-    #     return redirect('/login')
+    if not helper_util.authenticated_and_profile_exists(request):
+        return redirect('/login')
 
     # Return view
     context = {
         'user_id': request.user.id,
-        # 'reminder_settings' : request.user.profile.reminder_settings
+        'reminder_settings' : request.user.profile.reminder_settings
     }
     template = loader.get_template('main/settings.html')
     return HttpResponse(template.render(context, request))
