@@ -453,4 +453,10 @@ input {
 	.log-context-delete-button {
 		font-size: 35px;
 	}
+	.questions-comments {
+		font-size: 30px;
+	}
+	.terms {
+		font-size: 30px;
+	}
 }
