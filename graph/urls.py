@@ -11,8 +11,6 @@ favicon_view = RedirectView.as_view(url='/static/favicon.ico', permanent=True)
 urlpatterns = [
     url(r'^$', general.index),
 
-    url(r'^qualia/$', log_views.qualia),
-
     # Favicon
     url(r'^favicon\.ico$', favicon_view),
 
