@@ -364,7 +364,7 @@ input {
 	/*text-align: center;*/
 }
 
-@media all and (max-width:1000px){
+@media only screen and (max-width:1000px){
 	.col-4 { width: calc(33.3% - 10px); }	
 	.col-3 { width: calc(100%); }
 	.container { max-width: none; }
