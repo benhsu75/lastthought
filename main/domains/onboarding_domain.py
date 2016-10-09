@@ -111,7 +111,7 @@ def send_create_account_message(profile):
 
 
 def send_finished_onboarding_message(profile):
-    finished_onboarding_message = "You're all set! You can view your thoughts anytime by tapping View Thoughts in the bottom left menu or go to {}".format(constants.BASE_URl)
+    finished_onboarding_message = "You're all set! You can view your thoughts anytime by tapping View Thoughts in the bottom left menu or go to {}".format(constants.BASE_URL)
     send_api_helper.send_basic_text_message(
         profile.fbid,
         finished_onboarding_message
