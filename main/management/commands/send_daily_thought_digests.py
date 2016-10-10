@@ -45,9 +45,6 @@ class Command(BaseCommand):
         all_profiles = Profile.objects.all()
 
         for profile in all_profiles:
-            # TEMP (FOR TESTING) - just send to ben and cathy
-            if profile.id != 24 and profile.id != 25:
-                continue
 
             # Ensure user hasn't disabled the weekly reminder
             if not profile.send_reminders_flag:
