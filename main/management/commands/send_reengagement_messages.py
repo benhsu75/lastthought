@@ -51,7 +51,7 @@ def send_second_engage_message(profile):
     )
 
 def send_third_engage_message(profile):
-    third_engage_message = 'Everything that we don\t write down we forget. What\'s something you\'ve been thinking about and how do you feel about it?'
+    third_engage_message = 'Everything that we don\'t write down we forget. LastThought can help you store those quick bites of information that you want to keep for the future.'
     send_api_helper.send_basic_text_message(profile.fbid, third_engage_message)
     message_log.log_message(
         'third_engage_message',
