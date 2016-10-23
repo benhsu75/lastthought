@@ -23,7 +23,9 @@ def create_new_user(fbid):
         fbid=fbid,
         utc_offset=timezone,
         send_reminders_flag=True,
-        reminder_settings=0
+        reminder_settings=0,
+        first_name=first_name,
+        last_name=last_name
     )
     p.save()
 
