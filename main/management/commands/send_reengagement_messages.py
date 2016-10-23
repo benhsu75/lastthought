@@ -27,6 +27,8 @@ class Command(BaseCommand):
                 send_second_engage_message(profile)
             elif days_since_signup == 7:
                 send_third_engage_message(profile)
+            elif days_since_signup == 10:
+                send_photo_engage_message(profile)
             elif days_since_signup == 14:
                 send_fourth_engage_message(profile)
 
@@ -67,5 +69,15 @@ def send_fourth_engage_message(profile):
         'fourth_engage_message',
         profile,
         fourth_engage_message,
+        None
+    )
+
+def send_photo_engage_message(profile):
+    photo_engage_message = 'LastThought can also store photos! Message a photo and I\'ll help you remember that too!'
+    send_api_helper.send_basic_text_message(profile.fbid, photo_engage_message)
+    message_log.log_message(
+        'photo_engage_message',
+        profile,
+        photo_engage_message,
         None
     )
