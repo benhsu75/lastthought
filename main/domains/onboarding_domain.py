@@ -75,7 +75,7 @@ def send_get_started_message(profile):
 
 
 def send_categories_explanation_message(profile):
-    categories_explanation_message = "If you want, you can categorize each thought that you send to me! You can then view your thoughts by category on our site. Try categorizing it:"
+    categories_explanation_message = "If you want, you can categorize each thought that you send to me! You can then view your thoughts by category on our site."
     send_api_helper.send_basic_text_message(
         profile.fbid,
         categories_explanation_message
