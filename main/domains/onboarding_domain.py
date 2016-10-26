@@ -64,7 +64,7 @@ def send_learn_more_message(profile):
 
 
 def send_get_started_message(profile):
-    get_started_message = "Let's get started! Tell me one thing that made you happy today!"
+    get_started_message = "Let's get started! Start by either sending me a thought you want to remember, something you want to read/watch, or a link to save."
     send_api_helper.send_basic_text_message(profile.fbid, get_started_message)
     message_log.log_message(
         'get_started_message',
