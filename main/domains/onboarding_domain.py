@@ -23,7 +23,9 @@ def create_new_user(fbid):
         fbid=fbid,
         utc_offset=timezone,
         send_reminders_flag=True,
-        reminder_settings=0
+        reminder_settings=0,
+        first_name=first_name,
+        last_name=last_name
     )
     p.save()
 
@@ -62,7 +64,7 @@ def send_learn_more_message(profile):
 
 
 def send_get_started_message(profile):
-    get_started_message = "Let's get started! Tell me one thing that made you happy today!"
+    get_started_message = "Let's get started! Start by either sending me a thought you want to remember, something you want to read/watch, or a link to save."
     send_api_helper.send_basic_text_message(profile.fbid, get_started_message)
     message_log.log_message(
         'get_started_message',
@@ -73,7 +75,7 @@ def send_get_started_message(profile):
 
 
 def send_categories_explanation_message(profile):
-    categories_explanation_message = "If you want, you can categorize each thought that you send to me! You can then view your thoughts by category on our site. Try categorizing it as a Thought:"
+    categories_explanation_message = "If you want, you can categorize each thought that you send to me! You can then view your thoughts by category on our site."
     send_api_helper.send_basic_text_message(
         profile.fbid,
         categories_explanation_message

@@ -42,6 +42,7 @@ message_mapping = {
     'second_engage_message' : 58,
     'third_engage_message' : 59,
     'fourth_engage_message' : 60,
+    'photo_engage_message' : 61,
 }
 
 
