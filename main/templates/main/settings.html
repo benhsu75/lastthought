@@ -78,7 +78,7 @@
             if(confirmed) {
                 // DELETE to /users
                 $.ajax({
-                method: 'DELETE',
+                type: 'DELETE',
                 url: '/users/{{user_id}}/',
                 success: function() {
                       // Delete the html

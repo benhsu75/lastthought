@@ -99,7 +99,7 @@ def send_share_message(fbid, text):
                         'title': "Share LastThought",
                         'subtitle': text,
                         "item_url": constants.BASE_URL,
-                        "image_url": "https://pbs.twimg.com/profile_images/675002642196729857/A0OpcJpA.png",
+                        "image_url": "http://i.imgur.com/T9kdDK3.png",
                         'buttons': [{
                             'type': 'element_share'
                         }]
