@@ -30,7 +30,7 @@ def messenger_callback(request):
     body = json.loads(request.body)
 
     # Print request for debugging
-    print "------RECEIVED MESSAGE (BODY BELOW)------"
+    print "------RECEIVED MESSAGE  (BODY BELOW)------"
     print body
     print '\n'
 
@@ -74,6 +74,10 @@ def messenger_callback(request):
 
                             handle_image_received(fbid, image_url)
                             continue
+                    elif attachment_type == 'fallback':
+                        message_text = messaging['message']['text']
+                        handle_message_received(fbid, message_text)
+                        continue
                     # Video
                     elif attachment_type == 'video':
                         send_cant_handle_message_type_message(
